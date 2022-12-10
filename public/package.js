@@ -14,7 +14,7 @@ function search() {
     if (tds.length === 0 || filter === "") {
       found = true;
     }
-    for (j = 0; j < tds.length; j++) {
+    for (j = 0; j < tds.length-2; j++) {
       let td = tds[j];
       if (td) {
         txtValue = td.textContent || td.innerText;
