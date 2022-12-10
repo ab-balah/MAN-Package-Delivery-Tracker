@@ -1,0 +1,9 @@
+.icon {
+  width: 2rem;
+  margin: auto;
+  justify-self:center;
+}
+
+.iocns {
+    width: min-content;
+}
