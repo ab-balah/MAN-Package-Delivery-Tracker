@@ -9,10 +9,7 @@ app.use(express.urlencoded({ extended: false }));
 nunjucks.configure("views", { express: app });
 
 app.get("/", (req, res) => {
-  res.render(
-    "C:/Users/xmxm7/Desktop/GitHub/ICS-321_Project/views/packagesView.html",
-    { data: { button: "Singup" } }
-  );
+  res.render();
 });
 
 app.use((req, res) => {
