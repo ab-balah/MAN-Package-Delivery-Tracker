@@ -10,111 +10,191 @@
       integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
       crossorigin="anonymous"
     />
-
-    <title>MAN Shipping</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <!-- <header>
-        <nav class="navbar navbar-expand-lg fixed-top " style="background-color:#FFFFFF ; color: #153C3F;">
-            <div class="container-fluid">
-                <a class="navbar-brand"  style="color: black;" href="#">
-                    <img src="../public/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                    MAN LOGISTIC
-                  </a>
-            
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active"   style="color: #153C3F;" aria-current="page" href="CustomerPage">My packages</a>
-                  </li>
-            </ul>
-        
-        <div class="d-flex align-items-right">
-          <button type="button" class="btn btn-link px-3 me-2">
-            Login
-          </button>
-          <button type="button" class="btn btn-primary me-3">
-            Sign up
-          </button>
-         
-        </div>
-            </div>
-          </nav>
-    </header> -->
-
-    <div class="col-6 mx-auto">
-      <h1>Sign Up</h1>
-      <form>
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="signup_firstname_input">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="signup_firstname_input"
-              placeholder="First Name"
-              required
-            />
-          </div>
-          <div class="form-group col-6">
-            <label for="signup_lastname_input">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="signup_lastname_input"
-              placeholder="Last Name"
-              required
-            />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="signup_ssn_input">SSN</label>
+    <section class="mx-auto w-75">
+      <div class="mb-2 table-responsive">
+        <h2>Package Tracking</h2>
+        <p>Show the list of packages with search</p>
+        <div class="input-group mb-3">
           <input
+            id="myInput"
+            onkeyup="search()"
             type="text"
             class="form-control"
-            id="signup_ssn_input"
-            placeholder="Social Security Number"
-            required
+            id="pkg-search"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="basic-addon2"
           />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+              id="pkg-new-btn"
+            >
+              Add New
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="signup_email_input">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="signup_email_input"
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="signup_phone_input">Phone Number</label>
+        <table id="myTable" class="table table-bordered w-100 .table-hover">
+          <thead>
+            <tr>
+              <th>Package Number</th>
+              <!-- <th>Catagory</th> -->
+              <!-- <th>Wegight (KG)</th> -->
+              <!-- <th>Dimentions (CM) W-H-L</th> -->
+              <!-- <th>Packa</th> -->
+              <th>Destination</th>
+              <th>Value</th>
+              <!-- <th>Status</th> -->
+              <!-- <th>Delivery Date</th> -->
+              <th>Sender SSN</th>
+              <th>Receiver SSN</th>
+              <th>Retail Center ID</th>
+              <th>Time</th>
+              <!-- <th>Payment Status</th> -->
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <!-- <tr>
+                  <td colspan="4">Nothing to show yet</td>
+              </tr> -->
+            {% for item in data %}
+            <tr>
+              <td>
+                <a href="/package/{{item.Package_number}}"
+                  >{{item.Package_number}}</a
+                >
+              </td>
+              <td>{{item.Destination}}</td>
+              <td>{{item.Value}}</td>
+              <td>{{item.Sender_SSN}}</td>
+              <td>{{item.Receiver_SSN}}</td>
+              <td>{{item.RC_ID}}</td>
+              <td>{{item.Time}}</td>
+              <td>
+                <button
+                  id="{{item.Package_number}}"
+                  class="btn btn-outline-secondary"
+                >
+                  Edit
+                </button>
+              </td>
+              <td>
+                <button
+                  id="{{item.Package_number}}"
+                  class="btn btn-outline-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="9">Nothing to show yet</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section>
+      <dialog id="modal">
+        <form method="dialog" class="edit-new-form">
+          <div class="mb-3 package_number">
+            <label for="package_number" class="form-label"
+              >Package Number</label
+            >
             <input
-              type="tel"
+              type="text"
               class="form-control"
-              id="signup_phone_input"
-              placeholder="+XXX-XX-XXX-XXXX"
-              pattern="[+][0-9]{3}-[0-9]{2}-[0-9]{3}-[0-9]{4}"
+              id="package_number"
+              name="package_number"
+              placeholder="Package Number"
               required
             />
           </div>
-          <div class="form-group col-6">
-            <label for="signup_birthdate_input">Birth date</label>
+          <div class="mb-3">
+            <label for="catagory" class="form-label">Catagory</label>
+            <select name="catagory" id="catagory" class="form-select" required>
+              <option value="Chemical">Chemical</option>
+              <option value="Electronic">Electronic</option>
+              <option value="Food">Food</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Jewelry">Jewelry</option>
+              <option value="Metal">Metal</option>
+              <option value="Paper">Paper</option>
+              <option value="Plastic">Plastic</option>
+              <option value="Textile">Textile</option>
+              <option value="Wood">Wood</option>
+              <option value="Plant">Plant</option>
+              <option value="Machine">Machine</option>
+              <option value="Device">Device</option>
+              <option value="Instrument">Instrument</option>
+              <option value="Appliance">Appliance</option>
+              <option value="Clothes">Clothes</option>
+              <option value="Medicine">Medicine</option>
+              <option value="Toy">Toy</option>
+              <option value="Regular">Regular</option>
+              <option value="Fragile">Fragile</option>
+              <option value="Breakable">Breakable</option>
+              <option value="Valuable">Valuable</option>
+              <option value="Refrigerated">Refrigerated</option>
+              <option value="Frozen">Frozen</option>
+              <option value="Dry">Dry</option>
+              <option value="Solid">Solid</option>
+              <option value="Liquid">Liquid</option>
+              <option value="Gas">Gas</option>
+              <option value="Powder">Powder</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="mb-3 weight">
+            <label for="weight" class="form-label">Weight (KG)</label>
             <input
-              type="date"
+              type="text"
               class="form-control"
-              id="signup_birthdate_input"
+              id="weight"
+              name="weight"
+              placeholder="Weight"
               required
             />
           </div>
-        </div>
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="signup_country_input">Country</label>
+          <div class="mb-3 dimentions">
+            <label for="dimentions" class="form-label"
+              >Dimentions W-H-L (CM)</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="dimentions"
+              name="dimentions"
+              placeholder="Dimentions"
+              required
+            />
+          </div>
+          <div class="mb-3 destination">
+            <label for="destination" class="form-label">Destination</label>
             <select
-              id="signup_country_input"
-              name="country"
-              class="form-control"
+              id="destination"
+              name="destination"
+              class="form-select"
               required
             >
               <option value="Afghanistan">Afghanistan</option>
@@ -175,9 +255,6 @@
               <option value="Colombia">Colombia</option>
               <option value="Comoros">Comoros</option>
               <option value="Congo">Congo</option>
-              <option value="Congo, The Democratic Republic of The">
-                Congo, The Democratic Republic of The
-              </option>
               <option value="Cook Islands">Cook Islands</option>
               <option value="Costa Rica">Costa Rica</option>
               <option value="Cote D'ivoire">Cote D'ivoire</option>
@@ -417,74 +494,100 @@
               <option value="Zimbabwe">Zimbabwe</option>
             </select>
           </div>
-          <div class="form-group col-6">
-            <label for="signup_city_input">City</label>
+          <div class="mb-3 value">
+            <label for="value" class="form-label">Value</label>
             <input
               type="text"
               class="form-control"
-              id="signup_city_input"
-              placeholder="City"
+              id="value"
+              name="value"
+              placeholder="Value"
               required
             />
           </div>
-        </div>
-        <div class="form-group">
-          <label for="signup_streetaddress_input">Street Address</label>
-          <input
-            type="text"
-            class="form-control"
-            id="signup_streetaddress_input"
-            placeholder="Street Address"
-            required
-          />
-        </div>
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="signup_username_input">Username</label>
+          <div class="mb-3 status">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status" required>
+              <option value="In Transit">In Transit</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Lost">Lost</option>
+              <option value="Damaged">Damaged</option>
+            </select>
+          </div>
+          <div class="mb-3 delivery_date">
+            <label for="delivery_date" class="form-label">Delivery Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="delivery_date"
+              name="delivery_date"
+              placeholder="Delivery Date"
+              required
+            />
+          </div>
+          <div class="mb-3 sender_ssn">
+            <label for="sender_ssn" class="form-label">Sender SSN</label>
             <input
               type="text"
               class="form-control"
-              id="signup_username_input"
-              placeholder="Username"
+              id="sender_ssn"
+              name="sender_ssn"
+              placeholder="Sender SSN"
               required
             />
           </div>
-          <div class="form-group col-6">
-            <label for="signup_password_input">Password</label>
+          <div class="mb-3 receiver_ssn">
+            <label for="receiver_ssn" class="form-label">Receiver SSN</label>
             <input
-              type="password"
+              type="text"
               class="form-control"
-              id="signup_password_input"
-              placeholder="Password"
+              id="receiver_ssn"
+              name="receiver_ssn"
+              placeholder="Receiver SSN"
               required
             />
           </div>
-        </div>
-        <div class="form-group">
-          <div class="form-check">
+          <div class="mb-3 rc_id">
+            <label for="rc_id" class="form-label">Retail Center ID</label>
             <input
-              class="form-check-input"
-              type="checkbox"
-              id="gridCheck"
+              type="text"
+              class="form-control"
+              id="rc_id"
+              name="rc_id"
+              placeholder="Retail Center ID"
               required
             />
-            <label class="form-check-label" for="gridCheck"
-              >Agree to terms and conditions</label
+          </div>
+          <div class="mb-3 time">
+            <label for="time" class="form-label">Time</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="time"
+              name="time"
+              placeholder="Time"
+              required
+            />
+          </div>
+          <div class="mb-3 payment_status">
+            <label for="payment_status" class="form-label"
+              >Payment Status</label
             >
+            <select
+              class="form-select"
+              id="payment_status"
+              name="payment_status"
+              required
+            >
+              <option value="1">Paid</option>
+              <option value="0" selected>Not Paid</option>
+            </select>
           </div>
-        </div>
-        <button type="submit" class="btn btn-primary col-12">Sign up</button>
-      </form>
-    </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
+          <input type="submit" class="btn btn-primary submit" value="Submit" />
+          <input type="reset" class="btn btn-secondary cancel" id="cancel-btn" value="Cancel" />
+        </form>
+      </dialog>
+    </section>
+    <script src="package.js"></script>
   </body>
 </html>

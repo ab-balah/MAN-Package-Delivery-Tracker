@@ -1,6 +1,6 @@
 function search() {
   // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
+  var input, filter, table, tr, i, txtValue;
   input = document.getElementById("myInput");
   filter =
     typeof input.value === "number" ? input.value : input.value.toUpperCase();
@@ -14,7 +14,7 @@ function search() {
     if (tds.length === 0 || filter === "") {
       found = true;
     }
-    for (j = 0; j < tds.length-2; j++) {
+    for (j = 0; j < tds.length - 2; j++) {
       let td = tds[j];
       if (td) {
         txtValue = td.textContent || td.innerText;
@@ -38,3 +38,22 @@ function search() {
     }
   }
 }
+
+const newBtn = document.querySelector("#pkg-new-btn");
+const editBtn = document.querySelector("#pkg-edit-btn");
+const cancelBtn = document.querySelector("#cancel-btn");
+const modal = document.querySelector("#modal");
+
+newBtn.addEventListener("click", () => {
+  modal.showModal();
+});
+
+cancelBtn.addEventListener("click", () => {
+  modal.classList.add("hide");
+  modal.addEventListener("animationend", function animationEnd() {
+    console.log("animationend");
+    modal.classList.remove("hide");
+    modal.close();
+    modal.removeEventListener("animationend", animationEnd, false);
+  });
+});
