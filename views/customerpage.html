@@ -42,17 +42,61 @@
          
 
           
-<ul class="nav nav-pills" role="tablist">
+<ul class="nav nav-pills d-flex justify-content-center" style="margin-top: 30px;" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" data-bs-toggle="pill" href="#description"> <h2>sent Packages</h2></a>
+    <a class="nav-link active" data-bs-toggle="pill" href="#sentPackages"> sent Packages</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="pill" href="#incomingPackages" onclick=""><h2>incoming Packages</h2></a>
+    <a class="nav-link" data-bs-toggle="pill" href="#incomingPackages" onclick="">incoming Packages</a>
   </li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" style="margin-top: 40px;">
   <section id="sentPackages" class="container tab-pane active">
-      <h1>Section 1</h1>
+    <table id="myTable" class="table align-middle mb-0 bg-white" >
+      <thead class="bg-light" >
+        <tr >
+          <th>Package Number</th>
+          <th>Destination</th>
+          <th>Value</th>
+          <th>Sender SSN</th>
+          <th>Reciever SSN</th>
+          <th>Retail Center ID</th>
+          <th>Time</th>
+          <th>payment</th>
+          
+        </tr>
+      </thead>
+    <tbody class="table-group-divider">
+      <!-- <tr>
+              <td colspan="4">Nothing to show yet</td>
+          </tr> -->
+      <tr class="lead">
+        <td><a href="/package/991020301">991020302</a></td>
+        <td>Riyadh</td>
+        <td>1000</td>
+        <td>21000201</td>
+        <td>24002010</td>
+        <td>5</td>
+        <td>11-02-2022</td>
+        <td><button class="btn btn-outline-secondary">pay</button></td>
+        </tr>
+
+      <tr class="lead">
+        <td><a href="/package/991020301">991020302</a></td>
+        <td>Riyadh</td>
+        <td>1000</td>
+        <td>21000201</td>
+        <td>24002010</td>
+        <td>5</td>
+        <td>11-02-2022</td>
+        <td><button class="btn btn-outline-secondary">pay</button></td>
+        </tr>
+      
+     
+    </tbody>
+  </table>
+</section>
+<script src="../public/package.js"></script>
   </section>
 
   <section id = "incomingPackages" class="container tab-pane fade">

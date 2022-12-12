@@ -43,7 +43,7 @@ function addNewAccount(data){
 }
 
 function addPackage(data){
-    let add_package_statement = db.prepare('INSERT INTO Person(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);')
+    let add_package_statement = db.prepare('INSERT INTO Package(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);')
     let add_package_result = add_package_statement.run(data.Package_number, data.Category, data.Weight, data.Width, data.Height, data.Length, data.destination, data.Value, data.Status, data.Final_delivery_Date, data.Sender_SSN, data.Receiver_SSN, data.RC_ID, data.Time, data.Is_Paid)
     if(result.changes==1){
         return true;
@@ -51,4 +51,8 @@ function addPackage(data){
         return false;
     }
 }
+
+
+
+
 
