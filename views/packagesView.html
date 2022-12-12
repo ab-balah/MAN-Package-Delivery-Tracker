@@ -25,112 +25,92 @@
     ></script>
   </head>
   <body>
-    <div class="packageNav">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item">
-          <a
-            class="nav-link active"
-            id="pills-home-tab"
-            data-toggle="pill"
-            href="#pills-home"
-            role="tab"
-            aria-controls="pills-home"
-            aria-selected="true"
-            >Home</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            id="pills-profile-tab"
-            data-toggle="pill"
-            href="#pills-profile"
-            role="tab"
-            aria-controls="pills-profile"
-            aria-selected="false"
-            >Profile</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            id="pills-contact-tab"
-            data-toggle="pill"
-            href="#pills-contact"
-            role="tab"
-            aria-controls="pills-contact"
-            aria-selected="false"
-            >Contact</a
-          >
-        </li>
-      </ul>
-      <div class="tab-content" id="pills-tabContent">
-        <div
-          class="tab-pane fade show active"
-          id="pills-home"
-          role="tabpanel"
-          aria-labelledby="pills-home-tab"
-        >
-          ...
-        </div>
-        <div
-          class="tab-pane fade"
-          id="pills-profile"
-          role="tabpanel"
-          aria-labelledby="pills-profile-tab"
-        >
-          ...
-        </div>
-        <div
-          class="tab-pane fade"
-          id="pills-contact"
-          role="tabpanel"
-          aria-labelledby="pills-contact-tab"
-        >
-          ...
+    <section class="mx-auto w-75">
+      <div class="mb-2">
+        <h2>Package Tracking</h2>
+        <p>Show the list of packages with search</p>
+        <div class="input-group mb-3 rounded-right">
+          <input
+            id="myInput"
+            onkeyup="search()"
+            type="text"
+            class="form-control rounded-left"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="basic-addon2"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary rounded-0" type="button">
+              Add New
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="table">
-      <section class="col-10 mx-auto">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Package Number</th>
-              <th>Destination</th>
-              <th>Value</th>
-              <th>Status</th>
-              <th>Last Event</th>
-              <th>Last Event Date</th>
-              <th>Location</th>
-              <th class="icons">Details</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr class="nothing">
-              <td colspan="7">Nothing to show yet</td>
-            </tr>
-            <tr>
-              <td><a href="/package/991020301">991020301</a></td>
-              <td>Riyadh</td>
-              <td>1000</td>
-              <td>In Transit</td>
-              <td>Dspatshed from origin</td>
-              <td>01-02-2022</td>
-              <th>China</th>
-              <td>
-                <input class="icon" type="image" src="/public/details.png" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </div>
-    <script>
-      $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-        e.target; // newly activated tab
-        e.relatedTarget; // previous active tab
-      });
-    </script>
+      <table id="myTable" class="table table-bordered w-100">
+        <thead>
+          <tr>
+            <th>Package Number</th>
+            <th>Destination</th>
+            <th>Value</th>
+            <th>Sender SSN</th>
+            <th>Reciever SSN</th>
+            <th>Retail Center ID</th>
+            <th>Time</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <!-- <tr>
+                  <td colspan="4">Nothing to show yet</td>
+              </tr> -->
+          <tr>
+            <td><a href="/package/991020301">991020302</a></td>
+            <td>Riyadh</td>
+            <td>1000</td>
+            <td>21000201</td>
+            <td>24002010</td>
+            <td>5</td>
+            <td>11-02-2022</td>
+            <td><button class="btn btn-outline-secondary">Edit</button></td>
+            <td><button class="btn btn-outline-danger">Delete</button></td>
+          </tr>
+          <tr>
+            <td><a href="/package/991020301">991020303</a></td>
+            <td>Dammam</td>
+            <td>500</td>
+            <td>23000201</td>
+            <td>25002010</td>
+            <td>3</td>
+            <td>04-08-2011</td>
+            <td><button class="btn btn-outline-secondary">Edit</button></td>
+            <td><button class="btn btn-outline-danger">Delete</button></td>
+          </tr>
+          <tr>
+            <td><a href="/package/991020301">991020304</a></td>
+            <td>China</td>
+            <td>10000</td>
+            <td>21000301</td>
+            <td>24003010</td>
+            <td>20</td>
+            <td>10-04-2020</td>
+            <td><button class="btn btn-outline-secondary">Edit</button></td>
+            <td><button class="btn btn-outline-danger">Delete</button></td>
+          </tr>
+          <tr>
+            <td><a href="/package/991020301">991020301</a></td>
+            <td>UAE</td>
+            <td>50</td>
+            <td>24002010</td>
+            <td>21000201</td>
+            <td>1</td>
+            <td>05-03-2019</td>
+            <td><button class="btn btn-outline-secondary">Edit</button></td>
+            <td><button class="btn btn-outline-danger">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <script src="../public/package.js"></script>
   </body>
 </html>
