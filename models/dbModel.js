@@ -90,7 +90,7 @@ function addPackage(data){
 
 
 
-=======
+
 function addPackage(data) {
   let add_package_statement = db.prepare(
     "INSERT INTO Person(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
@@ -118,4 +118,3 @@ function addPackage(data) {
     return false;
   }
 }
->>>>>>> 3c76921cd78c41d4ed09040c91886d29bf5cd012

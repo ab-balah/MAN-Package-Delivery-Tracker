@@ -19,6 +19,7 @@ const isLoggedIn = (req, res, next) => {
 
 app.use(express.static("public"));
 app.use("/admin", express.static("public"));
+app.use("/Mypackages", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 nunjucks.configure("views", { express: app });
@@ -62,8 +63,10 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/packages", (req, res) => {
-  // res.render(path.resolve(__dirname,'views/packagesPage.html'));
-});
+  res.render(path.resolve(__dirname, "views/customerpage.html"),{packages:dummyPackages.data});
+
+
+ });
 
 app.get("/package/:id", (req, res) => {
   // res.render(path.resolve(__dirname,'views/packageInfoPage.html'));
