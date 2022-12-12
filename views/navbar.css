@@ -23,6 +23,7 @@
  .navbar{
   color: #153C3F;
   position: sticky;
+  z-index: 1000;
   top: 0;
 
 }
