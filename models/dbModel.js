@@ -42,41 +42,44 @@ function getUserPassword(username) {
 }
 
 function addNewAccount(data) {
-  //validation
-  let person_validation 
-  //Add the information to Person
-  let add_person_statement = db.prepare(
-    "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
-  );
-  let add_person_result = add_person_statement.run(
-    data.SSN,
-    data.Fname,
-    data.Lname,
-    data.Phone,
-    data.Email,
-    data.Birth_Date
-  );
+  try{
+    //Add the information to Person
+    let add_person_statement = db.prepare(
+      "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
+    );
+    let add_person_result = add_person_statement.run(
+      data.SSN,
+      data.Fname,
+      data.Lname,
+      data.Phone,
+      data.Email,
+      data.Birth_Date
+    );
+    
+    //Add the information to Customer
+    let add_customer_statement = db.prepare(
+      "INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);"
+    );
+    let add_customer_result = add_customer_statement.run(
+      data.SSN,
+      data.Country,
+      data.city,
+      data.Street_address
+    );
+    //Add the account to Customer_Account
+    let add_account_statement = db.prepare(
+      "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
+    );
+    let add_account_result = add_account_statement.run(
+      data.Username,
+      data.Password,
+      data.SSN
+    );
+  }catch(e){
+    throw(e)
+  }
   
-  //Add the information to Customer
-  let add_customer_statement = db.prepare(
-    "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
-  );
-  let add_customer_result = add_customer_statement.run(
-    data.SSN,
-    data.Country,
-    data.city,
-    data.Street_address
-  );
-  //Add the account to Customer_Account
-  let add_account_statement = db.prepare(
-    "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
-  );
-  let add_account_result = add_account_statement.run(
-    data.Username,
-    data.Password,
-    data.Customer_SSN
-  );
-
+  
 }
 
 
