@@ -119,6 +119,12 @@ function addPackage(data) {
   }
 }
 
+function getPackagesInfo(){
+    var packages = db.prepare('select * from Package').all()
+    return packages
+
+}
+
 function getSenderPackages(CustomerSSN){
     var packages= db.prepare(`
     select distinct p.Package_number,p.Width,p.Weight,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
@@ -145,14 +151,15 @@ function getIncomingPackages(CustomerSSN){
     and p.Receiver_SSN = ?
     order by p.Status
     `).all([CustomerSSN])
-    
+
 
     return packages
 
 
 }
+console.log(getPackagesInfo())
 
-module.exports = {getSenderPackages,getIncomingPackages}
+module.exports = {getPackagesInfo,getSenderPackages,getIncomingPackages}
 
 
 
