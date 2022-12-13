@@ -111,6 +111,10 @@ app.get("/admin/users", (req, res) => {
   // res.render(path.resolve(__dirname,'views/adminUsersPage.html'));
 });
 
+app.post("/signup", (req,res)=>{
+  let status = Functions.addNewAccount(req.body)
+})
+
 app.use((req, res) => {
   res.status(404).send("404 not found");
 });
