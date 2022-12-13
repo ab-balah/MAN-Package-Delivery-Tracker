@@ -85,7 +85,7 @@
         <td>{{package.Time}}</td>
         <td>{{package.Status}}</td>
         {% if package.Is_Paid %}
-        <td><button class="btn btn-outline-secondary">pay</button></td>
+        <td><button class="btn btn-outline-secondary" onclick="document.getElementById('modal').showModal()">pay</button></td>
         {% else %}
         <td><button class="btn btn-outline-secondary" disabled>paid</button></td>
         {% endif %}
@@ -94,7 +94,7 @@
         {% else %}
         
         <tr>
-          <td colspan="4">Nothing to show yet</td>
+          <td colspan="8" class ="lead display-6 mx-auto">Nothing to show yet</td>
       </tr>
            
           {% endif %}
@@ -132,10 +132,29 @@
       </tbody>
     </table>
   </section>
-
-
 </div>
         
+<section>
+  <dialog id="modal">
+    <form method="dialog" class="edit-new-form">
+      <div class="mb-3 package_number">
+        <label for="package_number" class="form-label"
+          >Package Number</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="package_number"
+          name="package_number"
+          placeholder="Package Number"
+          required
+        />
+      </div>
+    </form>
+  </dialog>
+</section>
+
+
           
              
 
@@ -148,11 +167,11 @@
 
 
     
+</body>
 <div class="container">
   <footer class="py-3 my-4">
     <hr>
     <p class="text-center text-muted">© 2021 MAN, Inc.   2030 Vision</p>
   </footer>
 </div>
-</body>
 </html>
