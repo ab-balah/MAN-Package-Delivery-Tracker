@@ -73,7 +73,7 @@ var init_Array =[person_table,Customer_table,Company_Employee_table,Customer_Acc
 
 try{
 
-    
+    /*
     var vehicleID=  db.prepare(insertV).run()
     var locationID=  db.prepare(insertLocation).run()
 
@@ -97,6 +97,11 @@ db.prepare(insert_Shipped_By).run([1,1])
    db.exec('delete from Locations')
    db.exec('delete from Vehicle')*/
 
+ /*
+ db.prepare("INSERT INTO Package(Category,Weight,Width,Height,Length,destination,Value,Status,Final_delivery_Date,Sender_SSN,Receiver_SSN,RC_ID,Time,Is_Paid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(["chemical",19.2,12,15,12,'makkah',130,'delivered','2022-12-13','1','3',1,'2021-1-1 11:12:13',1])
+*/
+db.prepare('INSERT INTO Sender(Sender_SSN) values (?)').run(['3'])
+db.prepare('INSERT INTO Receiver(Receiver_SSN) values (?)').run(['1'])
    
 
 

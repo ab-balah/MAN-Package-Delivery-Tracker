@@ -4,6 +4,7 @@ const nunjucks = require("nunjucks");
 const session = require("express-session");
 const path = require("path");
 const app = express();
+const Functions = require('./models/dbModel')
 const isAdmin = (req, res, next) => {
   if (req.session?.roles !== 100) {
     return res.status(401).send("You cannot view this page.");
@@ -63,9 +64,8 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/packages", (req, res) => {
-  res.render(path.resolve(__dirname, "views/customerpage.html"),{packages:dummyPackages.data});
-
-
+  console.log(Functions.getSenderPackages)
+  res.render(path.resolve(__dirname, "views/customerpage.html"),{packages:Functions.getSenderPackages('1')});
  });
 
 app.get("/package/:id", (req, res) => {

@@ -75,7 +75,7 @@ function addNewAccount(data) {
   );
 }
 
-<<<<<<< HEAD
+
 function addPackage(data){
     let add_package_statement = db.prepare('INSERT INTO Package(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);')
     let add_package_result = add_package_statement.run(data.Package_number, data.Category, data.Weight, data.Width, data.Height, data.Length, data.destination, data.Value, data.Status, data.Final_delivery_Date, data.Sender_SSN, data.Receiver_SSN, data.RC_ID, data.Time, data.Is_Paid)
@@ -118,3 +118,23 @@ function addPackage(data) {
     return false;
   }
 }
+
+function getSenderPackages(CustomerSSN){
+    var packages= db.prepare(`
+    select distinct p.Package_number,p.Width,p.Weight,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
+    from Package p,Customer c,Sender s,Receiver r,Customer c1,person per,person per1
+    where p.Sender_SSN = s.Sender_SSN AND p.Receiver_SSN = r.Receiver_SSN 
+    and c.Customer_SSN = s.Sender_SSN and c1.Customer_SSN =  r.Receiver_SSN  and C.Customer_SSN=per.SSN and C1.Customer_SSN = per1.SSN
+    and p.Sender_SSN = ?
+    order by p.Status
+    `).all([CustomerSSN])
+
+    return packages
+
+
+}
+
+module.exports = {getSenderPackages}
+
+
+
