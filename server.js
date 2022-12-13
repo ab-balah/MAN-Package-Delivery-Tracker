@@ -25,6 +25,7 @@ app.use("/packages", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 nunjucks.configure("views", { express: app });
+
 app.use(
   session({
     secret: "a very strong secret",
@@ -78,6 +79,11 @@ app.get("/user/sentPackages/:Customer_SSN",(req, res) => {
   var Packages = Functions.getIncomingPackages(req.params.Customer_SSN)
   res.send(JSON.stringify(Packages))
 
+});
+app.get("/pay/:package_number",(req, res) => {
+  console.log('payed')
+  var Packages = Functions.updatePay(req.params.package_number)
+  res.end()
 });
 
 app.get("/package/:id", (req, res) => {

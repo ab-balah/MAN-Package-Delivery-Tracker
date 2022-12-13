@@ -21,7 +21,7 @@ function incomingPackages(Customer_SSN){
       <td>${package.RC_ID}</td>
       <td>${package.Time}</td>
       <td>${package.Status}</td>
-      ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary">pay</button></td>': '<td><button class="btn btn-outline-secondary" disabled>paid</button></td>'}
+      ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary" onclick="pay('+package.Package_number+","+package.Weight+","+package.Height+","+package.Width+","+package.Length+","+package.Value+","+"'1'"+'">pay</button></td>': "<td><button class='btn btn-outline-secondary' disabled>paid</button></td>"}
       </tr>`
           
           });
@@ -60,7 +60,7 @@ function sentPackages(Customer_SSN){
     <td>${package.RC_ID}</td>
     <td>${package.Time}</td>
     <td>${package.Status}</td>
-    ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary">pay</button></td>': '<td><button class="btn btn-outline-secondary" disabled>paid</button></td>'}
+    ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary" onclick="pay('+package.Package_number+","+package.Weight+","+package.Height+","+package.Width+","+package.Length+","+package.Value+","+"'1')"+'">pay</button></td>': "<td><button class='btn btn-outline-secondary' disabled>paid</button></td>"}
     </tr>`
         
         });
@@ -73,4 +73,28 @@ function sentPackages(Customer_SSN){
   xhttp.send();
 
 
+}
+
+
+
+
+
+function Package_payed(package_number,Customer_SSN){
+ 
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    
+    
+      if (this.readyState == 4 && this.status == 200) {
+       
+      
+  }
+  
+  
+}
+xhttp.open("GET", "/pay/"+package_number);
+xhttp.send();
+
+  sentPackages(Customer_SSN)
+  incomingPackages(Customer_SSN)
 }
