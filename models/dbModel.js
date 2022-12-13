@@ -42,15 +42,8 @@ function getUserPassword(username) {
 }
 
 function addNewAccount(data) {
-  //Add the account to Customer_Account
-  let add_account_statement = db.prepare(
-    "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
-  );
-  let add_account_result = add_account_statement.run(
-    data.Username,
-    data.Password,
-    data.Customer_SSN
-  );
+  //validation
+  let person_validation 
   //Add the information to Person
   let add_person_statement = db.prepare(
     "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
@@ -63,6 +56,7 @@ function addNewAccount(data) {
     data.Email,
     data.Birth_Date
   );
+  
   //Add the information to Customer
   let add_customer_statement = db.prepare(
     "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
@@ -73,22 +67,17 @@ function addNewAccount(data) {
     data.city,
     data.Street_address
   );
+  //Add the account to Customer_Account
+  let add_account_statement = db.prepare(
+    "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
+  );
+  let add_account_result = add_account_statement.run(
+    data.Username,
+    data.Password,
+    data.Customer_SSN
+  );
+
 }
-
-
-function addPackage(data){
-    let add_package_statement = db.prepare('INSERT INTO Package(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);')
-    let add_package_result = add_package_statement.run(data.Package_number, data.Category, data.Weight, data.Width, data.Height, data.Length, data.destination, data.Value, data.Status, data.Final_delivery_Date, data.Sender_SSN, data.Receiver_SSN, data.RC_ID, data.Time, data.Is_Paid)
-    if(result.changes==1){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-
-
-
 
 
 function addPackage(data) {
@@ -164,7 +153,7 @@ function updatePay(package_number){
 }
 
 
-module.exports = {getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+module.exports = {getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages}
 
 
 
