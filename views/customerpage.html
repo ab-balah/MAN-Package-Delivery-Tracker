@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <script src="AJAXFunctions.js"></script>
     <title>MAN Shipping|Customer page</title>
 </head>
 <body>
@@ -44,10 +45,10 @@
           
 <ul class="nav nav-pills d-flex justify-content-center" style="margin-top: 30px;" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" data-bs-toggle="pill" href="#sentPackages"> sent Packages</a>
+    <a class="nav-link active" data-bs-toggle="pill" onclick="sentPackages('1')" href="#sentPackages"> sent Packages</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="pill" href="#incomingPackages" onclick="">incoming Packages</a>
+    <a class="nav-link" data-bs-toggle="pill" href="#incomingPackages" onclick="incomingPackages('1')">incoming Packages</a>
   </li>
 </ul>
 <div class="tab-content" style="margin-top: 40px;">
@@ -68,10 +69,11 @@
           
         </tr>
       </thead>
-    <tbody class="table-group-divider">
+    <tbody id="sent" class="table-group-divider">
       <!-- <tr>
               <td colspan="4">Nothing to show yet</td>
           </tr> -->
+          {% if packages.length%}
           {%for package in packages%}
       <tr class="lead">
         <td><a href="/package/"+{{package.Package_number}}>{{package.Package_number}}</a></td>
@@ -89,6 +91,13 @@
         {% endif %}
         </tr>
         {% endfor %}
+        {% else %}
+        
+        <tr>
+          <td colspan="4">Nothing to show yet</td>
+      </tr>
+           
+          {% endif %}
       
      
     </tbody>
@@ -98,7 +107,7 @@
 
 
   <section id = "incomingPackages" class="container tab-pane fade">
-      <h1>Section 2</h1>
+    
 
       <table id="myTable" class="table align-middle mb-0 bg-white" >
         <thead class="bg-light" >
@@ -116,34 +125,15 @@
             
           </tr>
         </thead>
-      <tbody class="table-group-divider">
-        <!-- <tr>
-                <td colspan="4">Nothing to show yet</td>
-            </tr> -->
-            {%for package in packages%}
-        <tr class="lead">
-          <td><a href="/package/"+{{package.Package_number}}>{{package.Package_number}}</a></td>
-          <td>{{package.destination}}</td>
-          <td>{{package.Value}}</td>
-          <td>{{package.sender}}</td>
-          <td>{{package.Reciver}}</td>
-          <td>{{package.RC_ID}}</td>
-          <td>{{package.Time}}</td>
-          <td>{{package.Status}}</td>
-          {% if package.Is_Paid %}
-          <td><button class="btn btn-outline-secondary">pay</button></td>
-          {% else %}
-          <td><button class="btn btn-outline-secondary" disabled>paid</button></td>
-          {% endif %}
-          </tr>
-          {% endfor %}
+      <tbody id="incoming" class="table-group-divider">
+        
         
        
       </tbody>
     </table>
   </section>
 
-  </section>
+
 </div>
         
           

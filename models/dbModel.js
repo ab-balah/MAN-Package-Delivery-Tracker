@@ -134,7 +134,25 @@ function getSenderPackages(CustomerSSN){
 
 }
 
-module.exports = {getSenderPackages}
+
+
+function getIncomingPackages(CustomerSSN){
+    var packages= db.prepare(`
+    select distinct p.Package_number,p.Width,p.Weight,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
+    from Package p,Customer c,Sender s,Receiver r,Customer c1,person per,person per1
+    where p.Sender_SSN = s.Sender_SSN AND p.Receiver_SSN = r.Receiver_SSN 
+    and c.Customer_SSN = s.Sender_SSN and c1.Customer_SSN =  r.Receiver_SSN  and C.Customer_SSN=per.SSN and C1.Customer_SSN = per1.SSN
+    and p.Receiver_SSN = ?
+    order by p.Status
+    `).all([CustomerSSN])
+    
+
+    return packages
+
+
+}
+
+module.exports = {getSenderPackages,getIncomingPackages}
 
 
 
