@@ -11,14 +11,14 @@ function getUserRole(username) {
   );
   let result1 = statement1.get(username);
   if (result1 != undefined) {
-    return 100;
+    return "Admin";
   }
   let statement2 = db.prepare(
     "SELECT Username FROM Customer_Account WHERE Username = ?;"
   );
   let result2 = statement2.get(username);
   if (result2 != undefined) {
-    return 50;
+    return "Customer";
   }
   return undefined;
 }
@@ -140,15 +140,16 @@ function getUserSSN(username){
     "SELECT Employee_SSN FROM Admin_Account WHERE Username = ?;"
   );
   let result1 = statement1.get(username);
+  console.log(result1)
   if (result1 != undefined) {
-    return result1;
+    return result1.Employee_SSN;
   }
   let statement2 = db.prepare(
     "SELECT Customer_SSN FROM Customer_Account WHERE Username = ?;"
   );
   let result2 = statement2.get(username);
   if (result2 != undefined) {
-    return result2;
+    return result2.Customer_SSN;
   }
   return undefined;
 }
