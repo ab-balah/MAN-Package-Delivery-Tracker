@@ -155,6 +155,43 @@ function getUserSSN(username){
   return undefined;
 }
 
+function getCompletedPayments(){
+  let statement = db.prepare(
+    `
+    SELECT Package_number, Weight, Width, Height, Length, Value 
+    FROM Package WHERE is_Paid = 1;
+    `
+  )
+  let result = statement.all()
+  return result
+}
+
+function getPackagesBetweenDates(date1, date2){
+  let statement = db.prepare(
+    `
+    SELECT *
+    FROM Package
+    WHERE Time BETWEEN ? AND ?;
+    `
+  )
+  let result = statement.all(date1, date2)
+  return result
+}
+
+function getPackagesBetweenDatesCountedCategory(date1, date2){
+  let statement = db.prepare(
+    `
+    SELECT Category, COUNT(*) AS Count
+    FROM Package
+    WHERE Time BETWEEN ? AND ?
+    GROUP BY Category;
+    `
+  )
+  let result = statement.all(date1, date2)
+  return result
+}
+
+
 function addPackage(data){
     let add_package_statement = db.prepare('INSERT INTO Package(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);')
     let add_package_result = add_package_statement.run(data.Package_number, data.Category, data.Weight, data.Width, data.Height, data.Length, data.destination, data.Value, data.Status, data.Final_delivery_Date, data.Sender_SSN, data.Receiver_SSN, data.RC_ID, data.Time, data.Is_Paid)
@@ -282,7 +319,7 @@ function TrackPackage(package_number){
 
 
 
-module.exports = {updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+module.exports = {getPackagesBetweenDatesCountedCategory, getPackagesBetweenDates, getCompletedPayments, updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 

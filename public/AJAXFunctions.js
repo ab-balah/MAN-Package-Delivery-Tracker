@@ -162,6 +162,119 @@ function edit_userinfo_form(){
   })
 }
 
+async function getReport(type){
+  if(type==="payments"){
+    let table_body = document.getElementById("payments_table_body")
+    let fetchData = {
+      method:"post"
+    };
+    let data = await fetch("/admin/reports/payments",fetchData);
+    if(data.ok){
+      let data_array = await data.json()
+      if(data_array.length>0){
+        table_body.innerHTML=""
+        data_array.forEach(element => {
+          table_body.innerHTML+= `
+          <tr>
+          <td><a href="/admin/packageInfo/`+element.Package_number+`">`+element.Package_number+`</a></td>
+            <td>`+element.Payment+`</td>
+          </tr>
+          `
+        });
+      }else{
+        table_body.innerHTML=`
+        <tr>
+            <td colspan="2">No results found</td>
+        </tr>
+        `
+      }
+    }
+  }else if(type==="packagedates"){
+    let table_body = document.getElementById("packagedates_table_body")
+    let sendData = {
+      Time1: document.getElementById("showpackage_time1").value.replace("T"," "),
+      Time2: document.getElementById("showpackage_time2").value.replace("T"," ")
+    }
+    let fetchData = {
+      method:"post",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(sendData)
+    };
+    let data = await fetch("/admin/reports/packagedates",fetchData);
+    if(data.ok){
+      let data_array = await data.json()
+      if(data_array.length>0){
+        table_body.innerHTML=""
+        data_array.forEach(element => {
+          table_body.innerHTML+= `
+          <tr>
+            <td><a href="/admin/packageInfo/`+element.Package_number+`">`+element.Package_number+`</a></td>
+            <td>`+element.Payment+`</td>
+          </tr>
+          `
+        });
+      }else{
+        table_body.innerHTML=`
+        <tr>
+            <td colspan="2">No results found</td>
+        </tr>
+        `
+      }
+    }
+  }else if(type==="packagetypes"){
+    let table_body = document.getElementById("packagetypes_table_body")
+    let sendData = {
+      Time1: document.getElementById("packagetypes_time1").value.replace("T"," "),
+      Time2: document.getElementById("packagetypes_time2").value.replace("T"," ")
+    }
+    let fetchData = {
+      method:"post",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(sendData)
+    };
+    let data = await fetch("/admin/reports/packagetypes",fetchData);
+    if(data.ok){
+      let data_array = await data.json()
+      
+      if(data_array.length>0){
+        let entries = {
+          Regular:0,
+          Fragile:0,
+          Liquid:0,
+          Chemical:0
+        }
+        table_body.innerHTML=""
+        data_array.forEach(element => {
+          console.log(element.Category)
+          entries[element.Category] = element.Count
+        });
+        table_body.innerHTML+= `
+        <tr>
+          <td>`+entries.Regular+`</td>
+          <td>`+entries.Fragile+`</td>
+          <td>`+entries.Liquid+`</td>
+          <td>`+entries.Chemical+`</td>
+        </tr>
+        `
+      }else{
+        table_body.innerHTML=`
+        <tr>
+            <td colspan="2">No results found</td>
+        </tr>
+        `
+      }
+    }
+  }else if(type==="packagetrack"){
+
+  }else{
+
+  }
+}
+
 async function update_userinfo(){
   let form = document.getElementById("profile_form")
   formData = {}

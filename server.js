@@ -5,6 +5,7 @@ const session = require("express-session");
 const path = require("path");
 const app = express();
 const Functions = require("./models/dbModel");
+const paymentCalculator = require("./models/paymentCalculator")
 const countryList = require("./models/countryList").countryList
 const isAdmin = (req, res, next) => {
   if (!req.session?.role.includes("Admin")) {
@@ -164,7 +165,7 @@ app.post("/login", (req,res)=>{
     req.session.role = userRoles
     console.log(req.session)
     if(userRoles.includes("Admin")){
-      res.redirect('/admin')
+      res.redirect('/admin/reports')
     }else{
       res.redirect('/packages')
     }
@@ -192,6 +193,37 @@ app.post("/account", isLoggedIn,isCustomer, (req,res)=>{
   }
 })
 
+app.post("/admin/reports/:type", isLoggedIn, isAdmin, (req,res)=>{
+  let type = req.params.type
+  if(type==="payments"){
+    let completed_payments = Functions.getCompletedPayments()
+    let data = []
+    completed_payments.forEach(element => {
+      let payment = paymentCalculator.calculatePayment(element)
+      data.push({
+        Package_number: element.Package_number,
+        Payment: payment
+      })
+    });
+    res.send(JSON.stringify(data))
+  }else if(type==="packagedates"){
+    let dates = req.body
+    let packages = Functions.getPackagesBetweenDates(dates.Time1, dates.Time2)
+    let data = []
+    packages.forEach(element => {
+      let payment = paymentCalculator.calculatePayment(element)
+      data.push({
+        Package_number: element.Package_number,
+        Payment: payment
+      })
+    });
+    res.send(JSON.stringify(data))
+  }else if(type==="packagetypes"){
+    let dates = req.body
+    let packages = Functions.getPackagesBetweenDatesCountedCategory(dates.Time1, dates.Time2)
+    res.send(JSON.stringify(packages))
+  }
+})
 
 app.use((req, res) => {
   res.status(404).send("404 not found");
