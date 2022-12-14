@@ -67,7 +67,8 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/packages",isLoggedIn, (req, res) => {
-  res.render(path.resolve(__dirname, "views/customerpage.html"), { packages: Functions.getSenderPackages("1") });
+  console.log(req.session)
+  res.render(path.resolve(__dirname, "views/customerpage.html"), { packages: Functions.getSenderPackages(req.session.ssn.Customer_SSN),userSSN: req.session.ssn.Customer_SSN });
 });
 
 app.get("/user/sentPackages/:Customer_SSN",isLoggedIn, (req, res) => {
