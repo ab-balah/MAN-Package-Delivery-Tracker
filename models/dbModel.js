@@ -185,7 +185,6 @@ function getPackagesBetweenDatesCountedCategory(date1, date2){
   return result
 }
 
-<<<<<<< Updated upstream
 function addPackage(data) {
   let package = db
     .prepare(
@@ -208,7 +207,7 @@ function addPackage(data) {
       data.Is_Paid,
     ]);
   return package;
-=======
+
 function getPackagesBasedOnLocationsAndCategoriesAndStatus(data){
   let statement = db.prepare(
     `
