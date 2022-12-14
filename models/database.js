@@ -103,7 +103,7 @@ db.prepare(insert_Shipped_By).run([1,1])
 /*db.prepare('INSERT INTO Sender(Sender_SSN) values (?)').run(['3'])
 db.prepare('INSERT INTO Receiver(Receiver_SSN) values (?)').run(['1'])
   */
-        
+   
 
 }
 catch(error){
