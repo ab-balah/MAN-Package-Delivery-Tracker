@@ -7,7 +7,13 @@ const app = express();
 const Functions = require("./models/dbModel");
 const countryList = require("./models/countryList").countryList
 const isAdmin = (req, res, next) => {
-  if (req.session?.role !== "Admin") {
+  if (!req.session?.role.includes("Admin")) {
+    return res.status(401).send("You cannot view this page.");
+  }
+  next();
+};
+const isCustomer = (req, res, next) => {
+  if (!req.session?.role.includes("Customer")) {
     return res.status(401).send("You cannot view this page.");
   }
   next();
@@ -66,20 +72,20 @@ app.get("/about", (req, res) => {
   // res.render(path.resolve(__dirname,'views/aboutPage.html'));
 });
 
-app.get("/packages",isLoggedIn, (req, res) => {
+app.get("/packages",isLoggedIn,isCustomer, (req, res) => {
   console.log(req.session)
   res.render(path.resolve(__dirname, "views/customerpage.html"), { packages: Functions.getSenderPackages(req.session.ssn),userSSN: req.session.ssn });
 });
 
-app.get("/user/sentPackages/:Customer_SSN",isLoggedIn, (req, res) => {
+app.get("/user/sentPackages/:Customer_SSN",isLoggedIn, isCustomer, (req, res) => {
   var Packages = Functions.getSenderPackages(req.params.Customer_SSN);
   res.send(JSON.stringify(Packages));
 });
-app.get("/user/incomingPackages/:Customer_SSN",isLoggedIn, (req, res) => {
+app.get("/user/incomingPackages/:Customer_SSN",isLoggedIn,isCustomer, (req, res) => {
   var Packages = Functions.getIncomingPackages(req.params.Customer_SSN);
   res.send(JSON.stringify(Packages));
 });
-app.get("/admin/packageInfo/:Package_number",isAdmin, (req, res) => {
+app.get("/admin/packageInfo/:Package_number",isLoggedIn,isAdmin, (req, res) => {
   var Packages = Functions.getPackagesInfoById(req.params.Package_number);
   res.send(JSON.stringify(Packages));
 });
@@ -124,7 +130,7 @@ app.get("/admin/packages",isLoggedIn,isAdmin, (req, res) => {
 app.get("/admin/users",isLoggedIn, isAdmin, (req, res) => {
   // res.render(path.resolve(__dirname,'views/adminUsersPage.html'));
 });
-app.get("/account", isLoggedIn, (req,res)=>{
+app.get("/account", isLoggedIn,isCustomer, (req,res)=>{
   
   let userInfo = Functions.getCompleteUserInformation(req.session.username)
   console.log(userInfo)
@@ -152,12 +158,12 @@ app.post("/login", (req,res)=>{
   }
   if(password===dbPassword.Password){
     let userSSN = Functions.getUserSSN(username)
-    let userRole = Functions.getUserRole(username)
+    let userRoles = Functions.getUserRole(username)
     req.session.username = username
     req.session.ssn = userSSN
-    req.session.role = userRole
+    req.session.role = userRoles
     console.log(req.session)
-    if(userRole==="Admin"){
+    if(userRoles.includes("Admin")){
       res.redirect('/admin')
     }else{
       res.redirect('/packages')
@@ -172,7 +178,7 @@ app.post("/logout", (req,res)=>{
   res.redirect('/')
 })
 
-app.post("/account", isLoggedIn, (req,res)=>{
+app.post("/account", isLoggedIn,isCustomer, (req,res)=>{
   try{
     let userData = req.body
     userData.SSN = req.session.ssn

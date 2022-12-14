@@ -6,21 +6,22 @@ const db = new Database(path.resolve(__dirname, "Database.db3"), {
 });
 
 function getUserRole(username) {
+  let roles = []
   let statement1 = db.prepare(
     "SELECT Username FROM Admin_Account WHERE Username = ?;"
   );
   let result1 = statement1.get(username);
   if (result1 != undefined) {
-    return "Admin";
+    roles.push("Admin")
   }
   let statement2 = db.prepare(
     "SELECT Username FROM Customer_Account WHERE Username = ?;"
   );
   let result2 = statement2.get(username);
   if (result2 != undefined) {
-    return "Customer";
+    roles.push("Customer")
   }
-  return undefined;
+  return roles;
 }
 
 function getUserPassword(username) {
