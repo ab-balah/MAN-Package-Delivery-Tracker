@@ -7,7 +7,7 @@ const app = express();
 const Functions = require("./models/dbModel");
 const countryList = require("./models/countryList").countryList
 const isAdmin = (req, res, next) => {
-  if (req.session?.roles !== 100) {
+  if (req.session?.role !== "Admin") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
@@ -152,9 +152,16 @@ app.post("/login", (req,res)=>{
   }
   if(password===dbPassword.Password){
     let userSSN = Functions.getUserSSN(username)
+    let userRole = Functions.getUserRole(username)
     req.session.username = username
-    req.session.ssn = userSSN.Customer_SSN
-    res.redirect('/')
+    req.session.ssn = userSSN
+    req.session.role = userRole
+    console.log(req.session)
+    if(userRole==="Admin"){
+      res.redirect('/admin')
+    }else{
+      res.redirect('/packages')
+    }
   }else{
     res.sendStatus(403)
   }
