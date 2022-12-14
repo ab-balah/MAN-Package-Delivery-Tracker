@@ -118,7 +118,12 @@ app.get("/admin/users", (req, res) => {
 });
 
 app.post("/signup", (req,res)=>{
-  let status = Functions.addNewAccount(req.body)
+  console.log(req.body)
+  try{
+    Functions.addNewAccount(req.body)
+  }catch(e){
+    res.sendStatus(500)
+  }
 })
 
 app.use((req, res) => {

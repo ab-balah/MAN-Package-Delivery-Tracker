@@ -1,5 +1,5 @@
 
-
+console.log(document.getElementById("signup_form").querySelectorAll("input, select"))
 
 function incomingPackages(Customer_SSN){
    
@@ -77,21 +77,32 @@ function sentPackages(Customer_SSN){
 
 async function signup(){
   let form = document.getElementById("signup_form")
-  let formData = new FormData(form);
+  formData = {}
+  form.querySelectorAll("input, select").forEach(element=>{
+    if(element.getAttribute("name")){
+      formData[element.getAttribute("name")] = element.value
+    }
+  })
   let fetchData = {
       method:"post",
-      body:formData
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(formData)
   };
+  console.log(fetchData)
   let status = await fetch("/signup",fetchData);
-  if(reviews.ok){
-      if(status){
-        window.location.replace(window.location.hostname+"/login")
-      }else{
-        document.getElementById('signup_failure').classList.remove('invisible_component')
-      }
+  console.log(status)
+  if(status.ok){
+    if(status.body){
+      window.location.replace(window.location.hostname+"/login")
+    }else{
+      document.getElementById('signup_failure').classList.remove('invisible_component')
+    }
   }else{
-      return;
+    document.getElementById('signup_failure').classList.remove('invisible_component');
   }
+  console.log("here")
 }
 
 
