@@ -147,6 +147,48 @@ async function logout(){
   }
 }
 
+function edit_userinfo_form(){
+  let form = document.getElementById("profile_form")
+  form.querySelectorAll("input").forEach(element=>{
+    if(element.getAttribute("name")!="SSN" && element.getAttribute("name")!="Username"){
+      element.removeAttribute('readonly')
+    }
+  })
+  form.querySelectorAll("select").forEach(element=>{
+    element.removeAttribute('disabled')
+  })
+  form.querySelectorAll("button").forEach(element=>{
+    element.removeAttribute('disabled')
+  })
+}
+
+async function update_userinfo(){
+  let form = document.getElementById("profile_form")
+  formData = {}
+  form.querySelectorAll("input, select").forEach(element=>{
+    if(element.getAttribute("name")){
+      if(element.getAttribute("name")!="SSN" && element.getAttribute("name")!="Username"){
+        formData[element.getAttribute("name")] = element.value
+      }
+    }
+  })
+  let fetchData = {
+    method:"post",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(formData)
+  };
+  console.log(fetchData)
+  let status = await fetch("/account",fetchData);
+  if(status.ok){
+    window.location.replace(status.url)
+  }else{
+    document.getElementById('userinfo_failure').classList.remove('invisible_component');
+  }
+  
+}
+
 function Package_payed(package_number,Customer_SSN){
  
   const xhttp = new XMLHttpRequest();

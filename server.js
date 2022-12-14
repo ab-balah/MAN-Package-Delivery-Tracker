@@ -5,7 +5,7 @@ const session = require("express-session");
 const path = require("path");
 const app = express();
 const Functions = require("./models/dbModel");
-
+const countryList = require("./models/countryList").countryList
 const isAdmin = (req, res, next) => {
   if (req.session?.roles !== 100) {
     return res.status(401).send("You cannot view this page.");
@@ -124,7 +124,12 @@ app.get("/admin/packages",isLoggedIn,isAdmin, (req, res) => {
 app.get("/admin/users",isLoggedIn, isAdmin, (req, res) => {
   // res.render(path.resolve(__dirname,'views/adminUsersPage.html'));
 });
-
+app.get("/account", isLoggedIn, (req,res)=>{
+  
+  let userInfo = Functions.getCompleteUserInformation(req.session.username)
+  console.log(userInfo)
+  res.render(path.resolve(__dirname,"views/userProfile.njk"), { countryList: countryList, userInfo: userInfo})
+})
 app.post("/signup", (req,res)=>{
   console.log(req.body)
   try{
@@ -139,15 +144,16 @@ app.post("/login", (req,res)=>{
   let username = req.body.Username
   let password = req.body.Password 
   console.log(password)
-  let dbPassword = Functions.getUserPassword(username).Password
+  let dbPassword = Functions.getUserPassword(username)
   console.log(dbPassword)
-  if(password==undefined){
+  if(dbPassword==null){
     res.sendStatus(403)
+    return;
   }
-  if(password===dbPassword){
+  if(password===dbPassword.Password){
     let userSSN = Functions.getUserSSN(username)
     req.session.username = username
-    req.session.ssn = userSSN
+    req.session.ssn = userSSN.Customer_SSN
     res.redirect('/')
   }else{
     res.sendStatus(403)
@@ -158,6 +164,22 @@ app.post("/logout", (req,res)=>{
   req.session.destroy();
   res.redirect('/')
 })
+
+app.post("/account", isLoggedIn, (req,res)=>{
+  try{
+    let userData = req.body
+    userData.SSN = req.session.ssn
+    userData.Username = req.session.username
+    console.log(userData)
+    Functions.updateCompleteUserInformation(userData)
+    res.redirect("/account")
+  }catch(e){
+    console.log(e)
+    res.sendStatus(500)
+  }
+})
+
+
 app.use((req, res) => {
   res.status(404).send("404 not found");
 });

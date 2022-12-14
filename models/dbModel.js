@@ -80,6 +80,61 @@ function addNewAccount(data) {
   }
 }
 
+function getCompleteUserInformation(username){
+  let statement = db.prepare(
+    `
+    SELECT a.SSN, a.Fname, a.Lname, a.Phone, a.Email, a.Birth_Date, b.Country, b.city, b.Street_address, c.Username, c.Password
+    FROM Person a, Customer b, Customer_Account c
+    WHERE a.SSN = b.Customer_SSN AND b.Customer_SSN = c.Customer_SSN AND c.Username = ?;
+    `
+  );
+  let result = statement.get(username)
+  return result;
+}
+
+function updateCompleteUserInformation(data){
+  try{
+    //Add the information to Person
+    let update_person_statement = db.prepare(`
+      UPDATE Person
+      SET Fname = ?, Lname = ?, Phone = ?, Email = ?, Birth_Date = ?
+      WHERE SSN = ?;
+      `);
+    let add_person_result = update_person_statement.run(
+      data.Fname,
+      data.Lname,
+      data.Phone,
+      data.Email,
+      data.Birth_Date,
+      data.SSN
+    );
+    
+    //Add the information to Customer
+    let update_customer_statement = db.prepare(`
+      UPDATE Customer
+      SET Country = ?, city = ?, Street_address = ?
+      WHERE Customer_SSN = ?;
+      `);
+    let add_customer_result = update_customer_statement.run(
+      data.Country,
+      data.city,
+      data.Street_address,
+      data.SSN
+    );
+    //Add the account to Customer_Account
+    let update_account_statement = db.prepare(`
+      UPDATE Customer_Account
+      SET Password = ?
+      WHERE Username = ?;
+      `);
+    let add_account_result = update_account_statement.run(
+      data.Password,
+      data.Username
+    );
+  }catch(e){
+    throw(e)
+  }
+}
 function getUserSSN(username){
   let statement1 = db.prepare(
     "SELECT Employee_SSN FROM Admin_Account WHERE Username = ?;"
@@ -225,7 +280,7 @@ function TrackPackage(package_number){
 
 
 
-module.exports = {getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+module.exports = {updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 
