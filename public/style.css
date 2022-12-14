@@ -169,6 +169,9 @@ header {
   margin: auto;
   justify-self: center;
 }
+#TrackContainer {
+  display: none;
+}
 
 .iocns {
   width: min-content;

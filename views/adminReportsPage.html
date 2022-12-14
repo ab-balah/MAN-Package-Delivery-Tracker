@@ -5,52 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="style.css" />
       
     <title>MAN Shipping</title>
 </head>
 <body>
-    <!-- <header>
-        <nav class="navbar navbar-expand-lg fixed-top " style="background-color:#FFFFFF ; color: #153C3F;">
+    <header>
+        <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0">
             <div class="container-fluid">
-                <a class="navbar-brand"  style="color: black;" href="#">
-                    <img src="../public/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                    MAN LOGISTIC
-                  </a>
-            
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active"   style="color: #153C3F;" aria-current="page" href="CustomerPage">My packages</a>
-                  </li>
-            </ul>
-        
-        <div class="d-flex align-items-right">
-          <button type="button" class="btn btn-link px-3 me-2">
-            Login
-          </button>
-          <button type="button" class="btn btn-primary me-3">
-            Sign up
-          </button>
-         
-        </div>
+              <a class="navbar-brand" style="color: black" href="#">
+                <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+                MAN LOGISTIC
+              </a>
+      
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/packages">My packages</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/account">My Account</a>
+                </li>
+              </ul>
+      
+              <div class="d-flex align-items-right">
+                <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
+              </div>
             </div>
           </nav>
-    </header> -->
+    </header>
     <!-- Payments section -->
     <section class="col-6 mx-auto">
         <div class="mb-2">
             <h2>Payments Completed</h2>
             <p>Show the payments that have been confirmed and completed.</p>
-            <button type="button" class="btn btn-primary col-12">Show</button>
+            <button type="button" class="btn btn-primary col-12" onclick="getReport('payments')">Show</button>
         </div>
-        <table class="table table-bordered">
+        <table  class="table table-bordered">
             <thead>
                 <tr>
                     <th>Package Number</th>
                     <th>Payment Amount (SAR)</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
+            <tbody id="payments_table_body" class="table-group-divider">
                 <tr>
                     <td colspan="2">Nothing to show yet</td>
                 </tr>
@@ -62,17 +59,20 @@
         <div class="mb-2">
             <h2>Packages Between Two Dates</h2>
             <p>Show the packages between the two specified dates.</p>
-            <div class="row mb-2">
-                <div class="form-group col-6">
-                    <label for="showpackage_date1_input">First Date</label>
-                    <input type="date" class="form-control" id="showpackage_date1_input">
+            <form action="javascript:void(0);" onsubmit="getReport('packagedates')">
+                <div class="row mb-2">
+                    <div class="form-group col-6">
+                        <label for="showpackage_time1" class="form-label">Time</label>
+                        <input type="datetime-local" class="form-control" id="showpackage_time1" name="time" step="1" placeholder="Time" required />
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="showpackage_time2" class="form-label">Time</label>
+                        <input type="datetime-local" class="form-control" id="showpackage_time2" name="time" step="1" placeholder="Time" required />
+                    </div>
                 </div>
-                <div class="form-group col-6">
-                    <label for="showpackage_date2_input">Second Date</label>
-                    <input type="date" class="form-control" id="showpackage_date2_input">
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary col-12">Show</button>
+                <button type="submit" class="btn btn-primary col-12">Show</button>
+            </form>
+            
         </div>
         <table class="table table-bordered">
             <thead>
@@ -81,7 +81,7 @@
                     <th>Payment Amount (SAR)</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
+            <tbody id="packagedates_table_body" class="table-group-divider">
                 <tr>
                     <td colspan="2">Nothing to show yet</td>
                 </tr>
@@ -93,17 +93,19 @@
         <div class="mb-2">
             <h2>Package Types Totals</h2>
             <p>Show the total number of package types sent between two dates.</p>
-            <div class="row mb-2">
-                <div class="form-group col-6">
-                    <label for="packagetypes_date1_input">First Date</label>
-                    <input type="date" class="form-control" id="packagetypes_date1_input">
+            <form action="javascript:void(0);" onsubmit="getReport('packagetypes')">
+                <div class="row mb-2">
+                    <div class="form-group col-6">
+                        <label for="packagetypes_time1" class="form-label">Time</label>
+                        <input type="datetime-local" class="form-control" id="packagetypes_time1" name="time" step="1" placeholder="Time" required />
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="packagetypes_time2" class="form-label">Time</label>
+                        <input type="datetime-local" class="form-control" id="packagetypes_time2" name="time" step="1" placeholder="Time" required />
+                    </div>
                 </div>
-                <div class="form-group col-6">
-                    <label for="packagetypes_date2_input">Second Date</label>
-                    <input type="date" class="form-control" id="packagetypes_date2_input">
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary col-12">Show</button>
+                <button type="submit" class="btn btn-primary col-12">Show</button>
+            </form>
         </div>
         <table class="table table-bordered">
             <thead>
@@ -114,7 +116,7 @@
                     <th>Chemical</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
+            <tbody id="packagetypes_table_body" class="table-group-divider">
                 <tr>
                     <td colspan="4">Nothing to show yet</td>
                 </tr>
@@ -215,5 +217,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="AJAXFunctions.js"></script>
 </body>
 </html>

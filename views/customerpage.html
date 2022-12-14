@@ -17,7 +17,7 @@
       
       <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0">
             <div class="container-fluid">
-                <a class="navbar-brand"  style="color: black;" href="#">
+                <a class="navbar-brand"  style="color: black;" href="/">
                     <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
                     MAN LOGISTIC
                   </a>
@@ -32,9 +32,7 @@
             </ul>
         
         <div class="d-flex align-items-right">
-          <button type="button" class="btn home-btn login px-3 me-2">
-            signout
-          </button>
+          <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
           
         </div>
             </div>
@@ -45,10 +43,10 @@
           
 <ul class="nav nav-pills d-flex justify-content-center" style="margin-top: 30px;" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" data-bs-toggle="pill" onclick="sentPackages('1')" href="#sentPackages"> sent Packages</a>
+    <a class="nav-link active" data-bs-toggle="pill" onclick="sentPackages({{userSSN}})" href="#sentPackages"> sent Packages</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="pill" href="#incomingPackages" onclick="incomingPackages('1')">incoming Packages</a>
+    <a class="nav-link" data-bs-toggle="pill" href="#incomingPackages" onclick="incomingPackages({{userSSN}})">incoming Packages</a>
   </li>
 </ul>
 <div class="tab-content" style="margin-top: 40px;">
@@ -85,7 +83,7 @@
         <td>{{package.Time}}</td>
         <td>{{package.Status}}</td>
         {% if not package.Is_Paid %}
-        <td><button class="btn btn-outline-secondary" onclick="pay({{package.Package_number}},{{package.Weight}},{{package.Height}},{{package.Width}},{{package.Length}},{{package.Value}},'1')">pay</button></td>
+        <td><button class="btn btn-outline-secondary" onclick="pay({{package.Package_number}},{{package.Weight}},{{package.Height}},{{package.Width}},{{package.Length}},{{package.Value}},{{userSSN}})">pay</button></td>
         {% else %}
         <td><button class="btn btn-outline-secondary" disabled>paid</button></td>
         {% endif %}
@@ -93,7 +91,7 @@
         {% endfor %}
         {% else %}
         <tr>
-          <td colspan="8" class ="lead display-6 mx-auto">Nothing to show yet</td>
+          <td colspan="9" class ="lead display-6 text-center">Nothing to show yet</td>
       </tr>
           {% endif %}
       
@@ -141,10 +139,22 @@
 <section>
   <dialog id="modal">
     <form method="dialog" class="edit-new-form">
-      <div class="mb-3 package_number">
+      <div class="mb-4 package_number">
         
-        <label id="value" class="form-label display-6"
-          > the payment value is </label> <br>
+          <div class="p-3" style="background-color: #eee;" >
+            <span class="fw-bold">receipt of delivery</span>
+            <div  class="d-flex justify-content-between mt-2">
+              <span>delivery fee</span> <span id="delivery_fee"></span>
+            </div>
+            <hr>
+            <div  class="d-flex justify-content-between mt-2">
+              <span>insurance amount</span> <span id="insurance_amount"></span>
+            </div>
+            <hr>
+            <div  class="d-flex justify-content-between mt-2">
+              <span>total</span> <span id="value"></span>
+            </div>
+          </div>
 
           <label for="card_info" class="form-label"
           >Card number</label>
@@ -153,19 +163,20 @@
           class="form-control"
           id="card_info"
           name="card_info"
-          placeholder="card_info"
+          placeholder="1234 5678 1234 5678"
+        
           required
         />
         <label for="CSV" class="form-label"
-          >CSV</label>
+          >CVV</label>
         <input
-          type="text"
+          type="password"
           class="form-control"
           id="CSV"
           name="CSV"
-          placeholder="CSV"
+          placeholder="123"
           required
-        />
+        />        
         <br>
         <button id="pay-btn" type="submit" class="btn home-btn login">pay</button>
       </div>

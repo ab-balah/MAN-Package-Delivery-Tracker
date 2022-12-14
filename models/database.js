@@ -62,7 +62,7 @@ var insert_Airport = "INSERT INTO Airports(ICAO,Location_ID,Country,city) values
 var Warehouses_table = "CREATE TABLE Warehouses('Country' VARCHAR(255) not null ,'city' VARCHAR(255) not null,'Street_address' VARCHAR(255) not null,'Location_ID' Integer not null,FOREIGN KEY (Location_ID) REFERENCES Locations(Location_ID),primary key(Country,City,Street_Address))"
 var insert_Warehouse = "INSERT INTO Warehouses(Country,city,Street_address,Location_ID) values (?,?,?,?)"
 var Transportation_event_table  = "CREATE TABLE Transportation_event('Schedule_number' INTEGER primary key autoincrement,'Type' Varchar(255) not null,'delivery_route' Varchar(255) not null,Vehicle_ID INTEGER NOT NULL,FOREIGN KEY (Vehicle_ID) REFERENCES Vehicle(Vehicle_ID))"
-var insert_Transportation_event  =  "INSERT INTO Transportation_event(Type,delivery_route,Vehicle_ID) Values (?,?,?,?)"
+var insert_Transportation_event  =  "INSERT INTO Transportation_event(Type,delivery_route,Vehicle_ID) Values (?,?,?)"
 
 
 var Shipped_By = "CREATE TABLE Shipped_By('Package_number' Integer not null,'Schedule_number' Integer not null,primary key(Package_number,Schedule_number),FOREIGN KEY (Package_number) REFERENCES Package(Package_number),FOREIGN KEY (Schedule_number) REFERENCES Transportation_event(Schedule_number))"
@@ -100,13 +100,10 @@ db.prepare(insert_Shipped_By).run([1,1])
  /*
  db.prepare("INSERT INTO Package(Category,Weight,Width,Height,Length,destination,Value,Status,Final_delivery_Date,Sender_SSN,Receiver_SSN,RC_ID,Time,Is_Paid) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(["chemical",19.2,12,15,12,'makkah',130,'delivered','2022-12-13','1','3',1,'2021-1-1 11:12:13',1])
 */
-db.prepare('INSERT INTO Sender(Sender_SSN) values (?)').run(['3'])
+/*db.prepare('INSERT INTO Sender(Sender_SSN) values (?)').run(['3'])
 db.prepare('INSERT INTO Receiver(Receiver_SSN) values (?)').run(['1'])
+  */
    
-
-
-
-        
 
 }
 catch(error){
