@@ -1,3 +1,7 @@
+header {
+  margin-bottom: 2rem;
+}
+
 .home-btn.login {
   border: solid 1px #153c3f;
 }
@@ -172,16 +176,17 @@
 
 .edit-new-form {
   display: grid;
-  grid-gap: 1rem;
+  column-gap: 1rem;
   padding: 2rem;
   border-radius: 10px;
 
   grid-template-areas:
     "package_number package_number package_number"
-    "value weight dimentions"
+    "weight destination destination"
+    "width height length"
     "sender_ssn receiver_ssn rc_id"
-    "delivery_date time destination"
-    "status payment_status catagory"
+    "delivery_date time value"
+    "status payment_status category"
     "cancel submit submit";
 }
 
@@ -241,14 +246,20 @@
 .package_number {
   grid-area: package_number;
 }
-.catagory {
-  grid-area: catagory;
+.category {
+  grid-area: category;
 }
 .weight {
   grid-area: weight;
 }
-.dimentions {
-  grid-area: dimentions;
+.width {
+  grid-area: width;
+}
+.height {
+  grid-area: height;
+}
+.length {
+  grid-area: length;
 }
 .destination {
   grid-area: destination;
