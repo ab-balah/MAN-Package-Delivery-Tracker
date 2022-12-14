@@ -79,13 +79,28 @@ app.get("/user/incomingPackages/:Customer_SSN", (req, res) => {
   res.send(JSON.stringify(Packages));
 });
 app.get("/admin/packageInfo/:Package_number", (req, res) => {
-  var Packages = Functions.getPackagesInfoById(req.params.Package_number);
+  var Packages = Functions.getPackagesInfoByNumber(req.params.Package_number);
   res.send(JSON.stringify(Packages));
 });
-app.get("/pay/:package_number",(req, res) => {
-  console.log('payed')
-  var Packages = Functions.updatePay(req.params.package_number)
-  res.end()
+app.post("/admin/updatePackageInfo/:Package_number", (req, res) => {
+  var Package = Functions.updatePackageInfo(req.body);
+  res.send(JSON.stringify(Package));
+});
+
+app.post("/admin/addPackage/", (req, res) => {
+  var Package = Functions.addPackage(req.body);
+  res.send(JSON.stringify(Package));
+});
+
+app.post("/admin/deletePackage/:Package_number", (req, res) => {
+  var Package = Functions.deletePackage(req.params.Package_number);
+  res.send(JSON.stringify(Package));
+});
+
+app.get("/pay/:package_number", (req, res) => {
+  console.log("payed");
+  var Packages = Functions.updatePay(req.params.package_number);
+  res.end();
 });
 
 app.get("/package/:id", (req, res) => {
@@ -117,14 +132,14 @@ app.get("/admin/users", (req, res) => {
   // res.render(path.resolve(__dirname,'views/adminUsersPage.html'));
 });
 
-app.post("/signup", (req,res)=>{
-  console.log(req.body)
-  try{
-    Functions.addNewAccount(req.body)
-  }catch(e){
-    res.sendStatus(500)
+app.post("/signup", (req, res) => {
+  console.log(req.body);
+  try {
+    Functions.addNewAccount(req.body);
+  } catch (e) {
+    res.sendStatus(500);
   }
-})
+});
 
 app.use((req, res) => {
   res.status(404).send("404 not found");
