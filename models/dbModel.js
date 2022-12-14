@@ -153,7 +153,7 @@ function updatePay(package_number){
 }
 
 
-module.exports = {getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages}
+module.exports = {getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 
