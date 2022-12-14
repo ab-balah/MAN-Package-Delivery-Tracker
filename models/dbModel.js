@@ -185,6 +185,7 @@ function getPackagesBetweenDatesCountedCategory(date1, date2){
   return result
 }
 
+<<<<<<< Updated upstream
 function addPackage(data) {
   let package = db
     .prepare(
@@ -207,6 +208,32 @@ function addPackage(data) {
       data.Is_Paid,
     ]);
   return package;
+=======
+function getPackagesBasedOnLocationsAndCategoriesAndStatus(data){
+  let statement = db.prepare(
+    `
+    SELECT a.Package_number,a.Destination ,a.Value ,a.Sender_SSN , a.Receiver_SSN, a.RC_ID, a.Time
+    FROM Package a, Located_At b
+    WHERE a.Package_number = b.Package_number
+    AND a.Category = ? 
+    AND a.Status = ? 
+    AND b.Location_ID AND EXISTS (
+      SELECT 1
+      FROM Airport c, Warehouse d
+      WHERE (c.Country = ? OR d.Country = ?) AND b.Time = (
+        SELECT MAX(d.Time)
+        FROM Located_At e
+        GROUP BY e.Package_number
+        HAVING e.Package_number = a.Package_number
+      )
+      
+    );
+    `
+  )
+  let result = statement.all(date1, date2)
+  return result
+}
+
 }
 
 function updatePackageInfo(data) {

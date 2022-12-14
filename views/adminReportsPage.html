@@ -128,31 +128,34 @@
         <div class="mb-2">
             <h2>Package Delivery Tracking Based on Variables</h2>
             <p>Show the list of packages based on categories, locations and status.</p>
-            <div class="row mb-2">
-                <div class="form-group col-4">
-                    <label for="deliverytracking_category_input">Category</label>
-                    <select id="deliverytracking_category_input" name="category" class="form-control">
-                        <option value="Regular">Regular</option>
-                        <option value="Fragile">Fragile</option>
-                        <option value="Liquid">Liquid</option>
-                        <option value="Chemical">Chemical</option>
-                    </select>
+            <form action="javascript:void(0);" onsubmit="getReport('packagetrack')">
+                <div class="row mb-2">
+                    <div class="form-group col-4">
+                        <label for="deliverytracking_category_input">Category</label>
+                        <select id="deliverytracking_category_input" name="category" class="form-select">
+                            <option value="Regular">Regular</option>
+                            <option value="Fragile">Fragile</option>
+                            <option value="Liquid">Liquid</option>
+                            <option value="Chemical">Chemical</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="deliverytracking_location_input">Location ID</label>
+                        <input type="text" class="form-control" id="deliverytracking_location_input" placeholder="Location">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="deliverytracking_status_input">Status</label>
+                        <select id="deliverytracking_status_input" name="status" class="form-select">
+                            <option value="In Transit">In Transit</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Lost">Lost</option>
+                            <option value="Damaged">Damaged</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group col-4">
-                    <label for="deliverytracking_location_input">Location</label>
-                    <input type="text" class="form-control" id="deliverytracking_location_input" placeholder="Location">
-                </div>
-                <div class="form-group col-4">
-                    <label for="deliverytracking_status_input">Status</label>
-                    <select id="deliverytracking_status_input" name="status" class="form-control">
-                        <option value="In Transit">In Transit</option>
-                        <option value="Delivered">Delivered</option>
-                        <option value="Lost">Lost</option>
-                        <option value="Damaged">Damaged</option>
-                    </select>
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary col-12">Show</button>
+                <button type="button" class="btn btn-primary col-12">Show</button>
+            </form>
+            
         </div>
         <table class="table table-bordered">
             <thead>
@@ -161,7 +164,7 @@
                     <th>Destination</th>
                     <th>Value</th>
                     <th>Sender SSN</th>
-                    <th>Reciever SSN</th>
+                    <th>Receiver SSN</th>
                     <th>Retail Center ID</th>
                     <th>Time</th>
                 </tr>
