@@ -88,6 +88,13 @@ app.get("/pay/:package_number",(req, res) => {
   res.end()
 });
 
+app.get("/Track/:Package_number", (req, res) => {
+  var Packages = Functions.TrackPackage(req.params.Package_number);
+  res.send(JSON.stringify(Packages));
+});
+
+
+
 app.get("/package/:id", (req, res) => {
   // res.render(path.resolve(__dirname,'views/packageInfoPage.html'));
 });

@@ -128,3 +128,151 @@ xhttp.send();
   sentPackages(Customer_SSN)
   incomingPackages(Customer_SSN)
 }
+
+
+
+function TrackPackage(){
+ 
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    
+    output= []
+      if (this.readyState == 4 && this.status == 200) {
+
+         document.getElementById('TrackContainer').style.display='none'
+         document.getElementById('status').innerHTML='not found'
+        document.getElementById('history').innerHTML=[]
+        JSON.parse(this.responseText).forEach(package => {
+          document.getElementById('status').innerHTML=package.Status
+          if(package.type==='Plane'){
+          document.getElementById('history').innerHTML= document.getElementById('history').innerHTML+
+          `<div class="tracking-item">
+          <div class="tracking-icon status-intransit">
+            <svg
+              class="svg-inline--fa fa-circle fa-w-16"
+              aria-hidden="true"
+              data-prefix="fas"
+              data-icon="circle"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
+              ></path>
+            </svg>
+            <!-- <i class="fas fa-circle"></i> -->
+          </div>
+          <div class="tracking-date">
+            ${(new Date(package.Time)).toLocaleString()}
+          </div>
+          <div class="tracking-content">
+            Plane ${package.Registration_number}<span
+              >in <strong>${package.type}</strong> from ${package.delivery_route}</span
+            >
+          </div>
+        </div>`}
+
+
+        else if(package.type==='Truck'){
+          document.getElementById('history').innerHTML= document.getElementById('history').innerHTML+
+          `<div class="tracking-item">
+          <div class="tracking-icon status-intransit">
+            <svg
+              class="svg-inline--fa fa-circle fa-w-16"
+              aria-hidden="true"
+              data-prefix="fas"
+              data-icon="circle"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
+              ></path>
+            </svg>
+            <!-- <i class="fas fa-circle"></i> -->
+          </div>
+          <div class="tracking-date">
+            ${(new Date(package.Time)).toLocaleString()}
+          </div>
+          <div class="tracking-content">
+            Truck <span>in <strong>${package.type}</strong> from ${package.delivery_route}</span>
+          </div>
+        </div>`}
+        else if(package.type==='Airport'){
+          document.getElementById('history').innerHTML= document.getElementById('history').innerHTML+
+          `<div class="tracking-item">
+          <div class="tracking-icon status-intransit">
+            <svg
+              class="svg-inline--fa fa-circle fa-w-16"
+              aria-hidden="true"
+              data-prefix="fas"
+              data-icon="circle"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
+              ></path>
+            </svg>
+            <!-- <i class="fas fa-circle"></i> -->
+          </div>
+          <div class="tracking-date">
+            ${(new Date(package.Time)).toLocaleString()}
+          </div>
+          <div class="tracking-content">
+            Airport ${package.ICAO} <span>in <strong> ${package.city}, ${package.Country}</strong></span>
+          </div>
+        </div>`}
+        else if(package.type==='Warehouse'){
+          document.getElementById('history').innerHTML= document.getElementById('history').innerHTML+
+          `<div class="tracking-item">
+          <div class="tracking-icon status-intransit">
+            <svg
+              class="svg-inline--fa fa-circle fa-w-16"
+              aria-hidden="true"
+              data-prefix="fas"
+              data-icon="circle"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"
+              ></path>
+            </svg>
+            <!-- <i class="fas fa-circle"></i> -->
+          </div>
+          <div class="tracking-date">
+            ${(new Date(package.Time)).toLocaleString()}
+          </div>
+          <div class="tracking-content">
+            Warehouse  <span>in <strong>${package.Street_address}, ${package.city}, ${package.Country}</strong></span>
+          </div>
+        </div>`}
+
+          
+        
+        });
+    
+
+        document.getElementById('TrackContainer').style.display='block'
+       
+      }
+  }
+  var Package_number=document.getElementById('TrackPackageInput').value
+  xhttp.open("GET", "/Track/"+Package_number);
+  xhttp.send();
+
+
+}

@@ -157,18 +157,53 @@ function getIncomingPackages(CustomerSSN){
 
 
 }
-console.log(getPackagesInfo())
+
 
 function updatePay(package_number){
   db.prepare('update Package set Is_Paid=? where Package_number  ='+package_number).run(1)
 
 
 }
+function TrackPackage(package_number){
+  var x = db.prepare(`
+    SELECT  T.*,L.*,Ta.*,'Truck' AS type
+    from Located_At L,Trucks T,Package Pa , Transportation_event Ta
+    where L.Package_number=?  and L.Location_ID=T.Location_ID and
+    L.Package_number=Pa.Package_number and T.Vehicle_ID=Ta.Vehicle_ID `).all([package_number])
+    
+    var y = db.prepare(`
+    SELECT  L.*,P.*,T.*,'Plane' AS type,Pa.Status
+    from Located_At L,Planes P,Package Pa,Transportation_event T
+    where L.Package_number=?  and L.Location_ID=P.Location_ID and
+    L.Package_number=Pa.Package_number  and T.Vehicle_ID=P.Vehicle_ID
+    
+    ;`).all([package_number])
+
+
+    var z = db.prepare(`
+    SELECT  W.*,L.*,'Warehouse' AS type,Pa.Status
+    from Located_At L,Warehouses W,Package Pa
+    where L.Package_number=?  and L.Location_ID=W.Location_ID and
+    L.Package_number=Pa.Package_number ;`).all([package_number])
+    
+    var w = db.prepare(`
+    SELECT  A.*,L.*,'Airport' AS type,Pa.Status
+    from Located_At L,Airports A,Package Pa
+    where L.Package_number=?  and L.Location_ID=A.Location_ID and
+    L.Package_number=Pa.Package_number ;`).all([package_number])
+
+    
+
+  var history = x.concat(y,z,w).sort((a,b)=>{ return Date.parse(a.Time)-Date.parse(b.Time)})
+  console.log(history)
+  return  history
+}
 
 
 
 
-module.exports = {getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+
+module.exports = {TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 
