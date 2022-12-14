@@ -61,12 +61,16 @@ cancelBtn.addEventListener("click", () => {
 });
 
 function pay(package_number,Weight,Height,Width,Length,value,Customer_SSN){
-  document.getElementById('value').innerText='the payent value including the insurance amount is '+(Weight*10/100+Height*Width*Length*10/100+value*20/100)
-  document.getElementById('pay-btn').addEventListener('click',()=>{
+  document.getElementById('value').innerText=(Weight*10/100+Height*Width*Length*10/100+value*20/100)+' SR'
+  document.getElementById('delivery_fee').innerText=(Weight*10/100+Height*Width*Length*10/100)+' SR'
+  document.getElementById('insurance_amount').innerText=value*20/100+' SR'
+  
+
+  document.getElementById('pay-btn').onclick=()=>{
   
     document.getElementById('modal').close()
     Package_payed(package_number,Customer_SSN)
-  })
-  console.log('opened')
+  }
+  
   document.getElementById('modal').showModal()
 }

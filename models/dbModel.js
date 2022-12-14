@@ -153,7 +153,10 @@ function getIncomingPackages(CustomerSSN){
 function updatePay(package_number){
   db.prepare('update Package set Is_Paid=? where Package_number  ='+package_number).run(1)
 
+
 }
+
+
 
 
 module.exports = {getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}

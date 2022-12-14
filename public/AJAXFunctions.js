@@ -21,7 +21,7 @@ function incomingPackages(Customer_SSN){
       <td>${package.RC_ID}</td>
       <td>${package.Time}</td>
       <td>${package.Status}</td>
-      ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary" onclick="pay('+package.Package_number+","+package.Weight+","+package.Height+","+package.Width+","+package.Length+","+package.Value+","+"'1'"+'">pay</button></td>': "<td><button class='btn btn-outline-secondary' disabled>paid</button></td>"}
+      ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary" onclick="pay('+package.Package_number+","+package.Weight+","+package.Height+","+package.Width+","+package.Length+","+package.Value+","+"'1')"+'">pay</button></td>': "<td><button class='btn btn-outline-secondary' disabled>paid</button></td>"}
       </tr>`
           
           });

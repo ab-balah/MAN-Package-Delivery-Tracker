@@ -141,10 +141,22 @@
 <section>
   <dialog id="modal">
     <form method="dialog" class="edit-new-form">
-      <div class="mb-3 package_number">
+      <div class="mb-4 package_number">
         
-        <label id="value" class="form-label display-6"
-          > the payment value is </label> <br>
+          <div class="p-3" style="background-color: #eee;" >
+            <span class="fw-bold">receipt of delivery</span>
+            <div  class="d-flex justify-content-between mt-2">
+              <span>delivery fee</span> <span id="delivery_fee"></span>
+            </div>
+            <hr>
+            <div  class="d-flex justify-content-between mt-2">
+              <span>insurance amount</span> <span id="insurance_amount"></span>
+            </div>
+            <hr>
+            <div  class="d-flex justify-content-between mt-2">
+              <span>total</span> <span id="value"></span>
+            </div>
+          </div>
 
           <label for="card_info" class="form-label"
           >Card number</label>
@@ -153,19 +165,21 @@
           class="form-control"
           id="card_info"
           name="card_info"
-          placeholder="card_info"
+          placeholder="1234 5678 1234 5678"
+        
           required
         />
         <label for="CSV" class="form-label"
-          >CSV</label>
+          >CVV</label>
         <input
-          type="text"
+          type="password"
           class="form-control"
           id="CSV"
           name="CSV"
-          placeholder="CSV"
+          placeholder="123"
           required
-        />
+        
+        />        
         <br>
         <button id="pay-btn" type="submit" class="btn home-btn login">pay</button>
       </div>
