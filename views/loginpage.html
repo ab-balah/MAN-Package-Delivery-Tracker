@@ -10,7 +10,7 @@
       integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
       crossorigin="anonymous"
     />
-
+    <link rel="stylesheet" href="style.css">
     <title>MAN Shipping</title>
   </head>
   <body>
@@ -32,7 +32,7 @@
 
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="CustomerPage"
+              <a class="nav-link" aria-current="page" href="/packages"
                 >My packages</a
               >
             </li>
@@ -52,7 +52,10 @@
 
     <div class="col-6 mx-auto">
       <h1>Log In</h1>
-      <form>
+      <form id="login_form" action="javascript:void(0);" onsubmit="login()">
+        <div class="invisible_component alert alert-danger" role="alert" id="login_failure">
+          Username or password is incorrect.
+        </div>
         <div class="form-group">
           <label for="login_username_input">Username</label>
           <input
@@ -61,6 +64,8 @@
             id="login_username_input"
             aria-describedby="emailHelp"
             placeholder="Username"
+            name="Username"
+            required
           />
         </div>
         <div class="form-group">
@@ -70,6 +75,8 @@
             class="form-control"
             id="login_password_input"
             placeholder="Password"
+            name="Password"
+            required
           />
         </div>
         <div>
@@ -88,5 +95,12 @@
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
       crossorigin="anonymous"
     ></script>
+    <script src="AJAXFunctions.js"></script>
   </body>
+  <div class="container">
+    <footer class="py-3 my-4">
+      <hr />
+      <p class="text-center text-muted">© 2021 MAN, Inc. 2030 Vision</p>
+    </footer>
+  </div>
 </html>

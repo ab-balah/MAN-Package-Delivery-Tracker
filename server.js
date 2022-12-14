@@ -31,7 +31,7 @@ app.use(
   session({
     secret: "a very strong secret",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: true
   })
 );
 
@@ -66,23 +66,23 @@ app.get("/about", (req, res) => {
   // res.render(path.resolve(__dirname,'views/aboutPage.html'));
 });
 
-app.get("/packages", (req, res) => {
+app.get("/packages",isLoggedIn, (req, res) => {
   res.render(path.resolve(__dirname, "views/customerpage.html"), { packages: Functions.getSenderPackages("1") });
 });
 
-app.get("/user/sentPackages/:Customer_SSN", (req, res) => {
+app.get("/user/sentPackages/:Customer_SSN",isLoggedIn, (req, res) => {
   var Packages = Functions.getSenderPackages(req.params.Customer_SSN);
   res.send(JSON.stringify(Packages));
 });
-app.get("/user/incomingPackages/:Customer_SSN", (req, res) => {
+app.get("/user/incomingPackages/:Customer_SSN",isLoggedIn, (req, res) => {
   var Packages = Functions.getIncomingPackages(req.params.Customer_SSN);
   res.send(JSON.stringify(Packages));
 });
-app.get("/admin/packageInfo/:Package_number", (req, res) => {
+app.get("/admin/packageInfo/:Package_number",isAdmin, (req, res) => {
   var Packages = Functions.getPackagesInfoById(req.params.Package_number);
   res.send(JSON.stringify(Packages));
 });
-app.get("/pay/:package_number",(req, res) => {
+app.get("/pay/:package_number",isLoggedIn,(req, res) => {
   console.log('payed')
   var Packages = Functions.updatePay(req.params.package_number)
   res.end()
@@ -107,20 +107,20 @@ app.get("/signup", (req, res) => {
   res.render(path.resolve(__dirname, "views/signupPage.html"));
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin",isLoggedIn, isAdmin, (req, res) => {
   // res.render(path.resolve(__dirname,'views/adminMainPage.html'));
 });
 
-app.get("/admin/reports", (req, res) => {
+app.get("/admin/reports",isLoggedIn,isAdmin, (req, res) => {
   res.render(path.resolve(__dirname, "views/adminReportsPage.html"));
 });
 
-app.get("/admin/packages", (req, res) => {
+app.get("/admin/packages",isLoggedIn,isAdmin, (req, res) => {
   console.log(Functions.getPackagesInfo());
   res.render(path.resolve(__dirname, "views/adminPackagesPage.html"), { packages: Functions.getPackagesInfo() });
 });
 
-app.get("/admin/users", (req, res) => {
+app.get("/admin/users",isLoggedIn, isAdmin, (req, res) => {
   // res.render(path.resolve(__dirname,'views/adminUsersPage.html'));
 });
 
@@ -128,11 +128,35 @@ app.post("/signup", (req,res)=>{
   console.log(req.body)
   try{
     Functions.addNewAccount(req.body)
+    res.redirect("/login")
   }catch(e){
     res.sendStatus(500)
   }
 })
 
+app.post("/login", (req,res)=>{
+  let username = req.body.Username
+  let password = req.body.Password 
+  console.log(password)
+  let dbPassword = Functions.getUserPassword(username).Password
+  console.log(dbPassword)
+  if(password==undefined){
+    res.sendStatus(403)
+  }
+  if(password===dbPassword){
+    let userSSN = Functions.getUserSSN(username)
+    req.session.username = username
+    req.session.ssn = userSSN
+    res.redirect('/')
+  }else{
+    res.sendStatus(403)
+  }
+})
+
+app.post("/logout", (req,res)=>{
+  req.session.destroy();
+  res.redirect('/')
+})
 app.use((req, res) => {
   res.status(404).send("404 not found");
 });

@@ -42,39 +42,61 @@ function getUserPassword(username) {
 }
 
 function addNewAccount(data) {
-  //Add the account to Customer_Account
-  let add_account_statement = db.prepare(
-    "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
-  );
-  let add_account_result = add_account_statement.run(
-    data.Username,
-    data.Password,
-    data.Customer_SSN
-  );
-  //Add the information to Person
-  let add_person_statement = db.prepare(
-    "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
-  );
-  let add_person_result = add_person_statement.run(
-    data.SSN,
-    data.Fname,
-    data.Lname,
-    data.Phone,
-    data.Email,
-    data.Birth_Date
-  );
-  //Add the information to Customer
-  let add_customer_statement = db.prepare(
-    "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
-  );
-  let add_customer_result = add_customer_statement.run(
-    data.SSN,
-    data.Country,
-    data.city,
-    data.Street_address
-  );
+  try{
+    //Add the information to Person
+    let add_person_statement = db.prepare(
+      "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
+    );
+    let add_person_result = add_person_statement.run(
+      data.SSN,
+      data.Fname,
+      data.Lname,
+      data.Phone,
+      data.Email,
+      data.Birth_Date
+    );
+    
+    //Add the information to Customer
+    let add_customer_statement = db.prepare(
+      "INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);"
+    );
+    let add_customer_result = add_customer_statement.run(
+      data.SSN,
+      data.Country,
+      data.city,
+      data.Street_address
+    );
+    //Add the account to Customer_Account
+    let add_account_statement = db.prepare(
+      "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
+    );
+    let add_account_result = add_account_statement.run(
+      data.Username,
+      data.Password,
+      data.SSN
+    );
+  }catch(e){
+    throw(e)
+  }
 }
 
+function getUserSSN(username){
+  let statement1 = db.prepare(
+    "SELECT Employee_SSN FROM Admin_Account WHERE Username = ?;"
+  );
+  let result1 = statement1.get(username);
+  if (result1 != undefined) {
+    return result1;
+  }
+  let statement2 = db.prepare(
+    "SELECT Customer_SSN FROM Customer_Account WHERE Username = ?;"
+  );
+  let result2 = statement2.get(username);
+  if (result2 != undefined) {
+    return result2;
+  }
+  return undefined;
+}
 
 function addPackage(data){
     let add_package_statement = db.prepare('INSERT INTO Package(Package_number, Category, Weight, Width, Height, Length, destination, Value, Status, Final_delivery_Date, Sender_SSN, Receiver_SSN, RC_ID, Time, Is_Paid) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);')
@@ -203,7 +225,7 @@ function TrackPackage(package_number){
 
 
 
-module.exports = {TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+module.exports = {getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 

@@ -1,6 +1,4 @@
 
-console.log(document.getElementById("signup_form").querySelectorAll("input, select"))
-
 function incomingPackages(Customer_SSN){
    
     const xhttp = new XMLHttpRequest();
@@ -92,22 +90,49 @@ async function signup(){
   };
   console.log(fetchData)
   let status = await fetch("/signup",fetchData);
-  console.log(status)
   if(status.ok){
-    if(status.body){
-      window.location.replace(window.location.hostname+"/login")
-    }else{
-      document.getElementById('signup_failure').classList.remove('invisible_component')
-    }
+    window.location.replace(status.url)
   }else{
     document.getElementById('signup_failure').classList.remove('invisible_component');
+  }
+}
+
+async function login(){
+  let form = document.getElementById("login_form")
+  formData = {}
+  form.querySelectorAll("input").forEach(element=>{
+    if(element.getAttribute("name")){
+      formData[element.getAttribute("name")] = element.value
+    }
+  })
+  let fetchData = {
+    method:"post",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(formData)
+  };
+  let status = await fetch("/login",fetchData);
+  if(status.ok){
+    window.location.replace(status.url)
+  }else{
+    document.getElementById('login_failure').classList.remove('invisible_component');
   }
   console.log("here")
 }
 
-
-
-
+async function logout(){
+  let fetchData = {
+    method:"post",
+    headers:{
+      "Content-Type":"application/json"
+    }
+  };
+  let status = await fetch("/logout",fetchData);
+  if(status.ok){
+    window.location.replace(status.url)
+  }
+}
 
 function Package_payed(package_number,Customer_SSN){
  
