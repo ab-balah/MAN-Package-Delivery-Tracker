@@ -8,6 +8,8 @@ function incomingPackages(Customer_SSN){
         if (this.readyState == 4 && this.status == 200) {
            
           document.getElementById('incoming').innerHTML=[]
+        if ( JSON.parse(this.responseText).length) {
+          
         
           JSON.parse(this.responseText).forEach(package => {
             document.getElementById('incoming').innerHTML=document.getElementById('incoming').innerHTML+`<tr class="lead">
@@ -23,7 +25,12 @@ function incomingPackages(Customer_SSN){
       </tr>`
           
           });
-      
+        }
+        else{
+          document.getElementById('incoming').innerHTML=`<tr>
+          <td colspan="9" class='lead display-6 text-center'>Nothing to show yet</td>
+      </tr>`
+        }
   
          
         }
@@ -43,10 +50,11 @@ function sentPackages(Customer_SSN){
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     
-    output= []
+  
       if (this.readyState == 4 && this.status == 200) {
          
         document.getElementById('sent').innerHTML=[]
+        if ( JSON.parse(this.responseText).length) {
         
         JSON.parse(this.responseText).forEach(package => {
           document.getElementById('sent').innerHTML=document.getElementById('sent').innerHTML+`<tr class="lead">
@@ -61,7 +69,12 @@ function sentPackages(Customer_SSN){
     ${!package.Is_Paid?'<td><button class="btn btn-outline-secondary" onclick="pay('+package.Package_number+","+package.Weight+","+package.Height+","+package.Width+","+package.Length+","+package.Value+","+"'1')"+'">pay</button></td>': "<td><button class='btn btn-outline-secondary' disabled>paid</button></td>"}
     </tr>`
         
-        });
+        });}
+        else{
+          document.getElementById('sent').innerHTML=`<tr>
+          <td colspan="9" class='lead display-6 text-center'>Nothing to show yet</td>
+      </tr>`
+        }
     
 
        
