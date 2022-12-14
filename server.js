@@ -4,7 +4,8 @@ const nunjucks = require("nunjucks");
 const session = require("express-session");
 const path = require("path");
 const app = express();
-const Functions = require('./models/dbModel')
+const Functions = require("./models/dbModel");
+
 const isAdmin = (req, res, next) => {
   if (req.session?.roles !== 100) {
     return res.status(401).send("You cannot view this page.");
@@ -65,19 +66,20 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/packages", (req, res) => {
-  
-  res.render(path.resolve(__dirname, "views/customerpage.html"),{packages:Functions.getSenderPackages('1')});
- });
+  res.render(path.resolve(__dirname, "views/customerpage.html"), { packages: Functions.getSenderPackages("1") });
+});
 
-app.get("/user/sentPackages/:Customer_SSN",(req, res) => {
-    var Packages = Functions.getSenderPackages(req.params.Customer_SSN)
-    res.send(JSON.stringify(Packages))
- 
- });
- app.get("/user/incomingPackages/:Customer_SSN",(req, res) => {
-  var Packages = Functions.getIncomingPackages(req.params.Customer_SSN)
-  res.send(JSON.stringify(Packages))
-
+app.get("/user/sentPackages/:Customer_SSN", (req, res) => {
+  var Packages = Functions.getSenderPackages(req.params.Customer_SSN);
+  res.send(JSON.stringify(Packages));
+});
+app.get("/user/incomingPackages/:Customer_SSN", (req, res) => {
+  var Packages = Functions.getIncomingPackages(req.params.Customer_SSN);
+  res.send(JSON.stringify(Packages));
+});
+app.get("/admin/packageInfo/:Package_number", (req, res) => {
+  var Packages = Functions.getPackagesInfoById(req.params.Package_number);
+  res.send(JSON.stringify(Packages));
 });
 
 app.get("/package/:id", (req, res) => {
@@ -101,10 +103,8 @@ app.get("/admin/reports", (req, res) => {
 });
 
 app.get("/admin/packages", (req, res) => {
-  res.render(
-    path.resolve(__dirname, "views/adminPackagesPage.html"),
-    dummyPackages
-  );
+  console.log(Functions.getPackagesInfo());
+  res.render(path.resolve(__dirname, "views/adminPackagesPage.html"), { packages: Functions.getPackagesInfo() });
 });
 
 app.get("/admin/users", (req, res) => {
