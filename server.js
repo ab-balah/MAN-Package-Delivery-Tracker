@@ -86,14 +86,29 @@ app.get("/user/incomingPackages/:Customer_SSN",isLoggedIn,isCustomer, (req, res)
   var Packages = Functions.getIncomingPackages(req.params.Customer_SSN);
   res.send(JSON.stringify(Packages));
 });
-app.get("/admin/packageInfo/:Package_number",isLoggedIn,isAdmin, (req, res) => {
-  var Packages = Functions.getPackagesInfoById(req.params.Package_number);
+app.get("/admin/packageInfo/:Package_number", (req, res) => {
+  var Packages = Functions.getPackagesInfoByNumber(req.params.Package_number);
   res.send(JSON.stringify(Packages));
 });
-app.get("/pay/:package_number",isLoggedIn,(req, res) => {
-  console.log('payed')
-  var Packages = Functions.updatePay(req.params.package_number)
-  res.end()
+app.post("/admin/updatePackageInfo/:Package_number", (req, res) => {
+  var Package = Functions.updatePackageInfo(req.body);
+  res.send(JSON.stringify(Package));
+});
+
+app.post("/admin/addPackage/", (req, res) => {
+  var Package = Functions.addPackage(req.body);
+  res.send(JSON.stringify(Package));
+});
+
+app.post("/admin/deletePackage/:Package_number", (req, res) => {
+  var Package = Functions.deletePackage(req.params.Package_number);
+  res.send(JSON.stringify(Package));
+});
+
+app.get("/pay/:package_number", (req, res) => {
+  console.log("payed");
+  var Packages = Functions.updatePay(req.params.package_number);
+  res.end();
 });
 
 app.get("/Track/:Package_number", (req, res) => {
@@ -145,7 +160,7 @@ app.post("/signup", (req,res)=>{
   }catch(e){
     res.sendStatus(500)
   }
-})
+});
 
 app.post("/login", (req,res)=>{
   let username = req.body.Username

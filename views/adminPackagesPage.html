@@ -50,8 +50,8 @@
   <body>
     <section class="mx-auto w-75">
       <div class="mb-2 table-responsive">
-        <h2>Package Tracking</h2>
-        <p>Show the list of packages with search</p>
+        <h2>Packages</h2>
+        <p>Search by any attribute</p>
         <div class="input-group mb-3">
           <input
             id="myInput"
@@ -67,7 +67,7 @@
             <button class="btn btn-outline-primary" type="button" id="pkg-new-btn" onclick="newPackage()">Add New</button>
           </div>
         </div>
-        <table id="myTable" class="table table-bordered w-100 .table-hover">
+        <table id="pkg-table" class="table table-bordered w-100 .table-hover">
           <thead>
             <tr>
               <th>Package Number</th>
@@ -85,7 +85,7 @@
           </thead>
           <tbody class="table-group-divider">
             {% for item in packages %}
-            <tr>
+            <tr id="tr{{item.Package_number}}">
               <td>
                 <a href="/package/{{item.Package_number}}">{{item.Package_number}}</a>
               </td>
@@ -96,10 +96,10 @@
               <td>{{item.Receiver_SSN}}</td>
               <td>{{item.RC_ID}}</td>
               <td>{{item.Time}}</td>
-              {% if package.Is_Paid %}
-              <td>pay</td>
+              {% if item.Is_Paid %}
+              <td>Paid</td>
               {% else %}
-              <td>paid</td>
+              <td>Not Paid</td>
               {% endif %}
               <td>
                 <button id="{{item.Package_number}}" class="btn btn-outline-secondary pkg-edit-btn" onclick="editPackage(this.id)">Edit</button>
@@ -119,10 +119,10 @@
     </section>
     <section>
       <dialog id="modal">
-        <form class="edit-new-form" id="pkg-form" action="javascript:void(0);" onsubmit="" method="post">
+        <form class="edit-new-form" id="pkg-form" action="javascript:void(0);" method="post">
           <div class="mb-3 package_number">
             <label for="package_number" class="form-label">Package Number</label>
-            <input type="text" class="form-control" id="package_number" name="package_number" placeholder="Package Number" required />
+            <input disabled type="text" class="form-control" id="package_number" name="package_number" placeholder="Package Number" required />
           </div>
           <div class="mb-3 weight">
             <label for="weight" class="form-label">Weight (KG)</label>
@@ -406,7 +406,7 @@
           </div>
           <div class="mb-3 time">
             <label for="time" class="form-label">Time</label>
-            <input type="datetime-local" class="form-control" id="time" name="time" placeholder="Time" required />
+            <input type="datetime-local" step="1" class="form-control" id="time" name="time" placeholder="Time" required />
           </div>
           <div class="mb-3 value">
             <label for="value" class="form-label">Value</label>
@@ -463,8 +463,17 @@
               <option value="Other">Other</option>
             </select>
           </div>
-          <input type="submit" class="btn btn-primary submit" id="submit-btn" onclick="submitPackage()" value="Submit" />
+          <input type="submit" class="btn btn-primary submit" id="submit-btn" value="Submit" />
           <input type="reset" class="btn btn-secondary cancel" id="cancel-btn" onclick="cancelPackage()" value="Cancel" />
+        </form>
+      </dialog>
+    </section>
+    <section>
+      <dialog id="modal" class="cfm-modal">
+        <form id="confirm" class="cfm-form" id="cfm-form" action="javascript:void(0);" onsubmit="confirm()" method="post">
+          <label id="cfm-label">Are you sure you want do <strong>Delete</strong> the package?</label>
+          <input type="button" class="btn btn-secondary cfm-cancel" id="cfm-cancel-btn" onclick="cancelConfirm()" value="Cancel" />
+          <input type="submit" class="btn btn-danger cfm-delete" id="cfm-delete-btn" value="Delete" />
         </form>
       </dialog>
     </section>

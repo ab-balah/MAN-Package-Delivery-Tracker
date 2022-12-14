@@ -10,7 +10,7 @@ header {
   font-weight: bold;
 }
 .invisible_component {
-  display:none;
+  display: none;
 }
 .nav-link {
   font-size: large;
@@ -192,21 +192,35 @@ header {
     "status payment_status category"
     "cancel submit submit";
 }
+.cfm-form {
+  display: grid;
+  gap: 1rem;
+  padding: 2rem;
+  border-radius: 10px;
 
-#modal {
+  grid-template-areas:
+    "cfm-label cfm-label cfm-label"
+    "cfm-cancel cfm-cancel cfm-delete";
+}
+
+#modal,
+.cfm_modal {
   border: none;
   padding: 0;
   border-radius: 10px;
   box-shadow: 0 0 1em rgb(0 0 0 / 0.3);
 }
-#modal::backdrop {
+#modal::backdrop,
+.cfm_modal::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
   animation: none;
 }
-#modal[open]::backdrop {
+#modal[open]::backdrop,
+.cfm_modal[open]::backdrop {
   animation: show-backdrop 0.5s ease 0.2s normal;
 }
-#modal.hide::backdrop {
+#modal.hide::backdrop,
+.cfm_modal.hide::backdrop {
   animation: hide-backdrop 0.5s ease 0.2s normal;
 }
 
@@ -223,7 +237,8 @@ header {
     opacity: 0;
   }
 }
-#modal[open] {
+#modal[open],
+.cfm_modal[open] {
   animation: show 0.5s ease normal;
 }
 @keyframes show {
@@ -236,7 +251,8 @@ header {
     /* opacity: 1; */
   }
 }
-#modal.hide {
+#modal.hide,
+.cfm_modal.hide {
   animation: hide 0.5s ease normal;
 }
 @keyframes hide {
@@ -296,6 +312,18 @@ header {
 }
 .cancel {
   grid-area: cancel;
+}
+.cfm-cancel {
+  grid-area: cfm-cancel;
+}
+.cfm-delete {
+  grid-area: cfm-delete;
+}
+#cfm-label {
+  grid-area: cfm-label;
+}
+#cfm-pkg-num {
+  grid-area: cfm-pkg-num;
 }
 
 #pkg-new-btn,
