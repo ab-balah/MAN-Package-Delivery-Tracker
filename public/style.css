@@ -9,7 +9,9 @@ header {
   border-radius: 0px;
   font-weight: bold;
 }
-
+.invisible_component {
+  display:none;
+}
 .nav-link {
   font-size: large;
   color: #153c3f;

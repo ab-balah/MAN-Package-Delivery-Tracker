@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <script src="AJAXFunctions.js"></script>
+   
     <title>MAN Shipping|Customer page</title>
 </head>
 <body>
@@ -76,7 +76,7 @@
           {% if packages.length%}
           {%for package in packages%}
       <tr class="lead">
-        <td><a href="/package/"+{{package.Package_number}}>{{package.Package_number}}</a></td>
+        <td><a href="/package/{{package.Package_number}}">{{package.Package_number}}</a></td>
         <td>{{package.destination}}</td>
         <td>{{package.Value}}</td>
         <td>{{package.sender}}</td>
@@ -84,19 +84,17 @@
         <td>{{package.RC_ID}}</td>
         <td>{{package.Time}}</td>
         <td>{{package.Status}}</td>
-        {% if package.Is_Paid %}
-        <td><button class="btn btn-outline-secondary" onclick="document.getElementById('modal').showModal()">pay</button></td>
+        {% if not package.Is_Paid %}
+        <td><button class="btn btn-outline-secondary" onclick="pay({{package.Package_number}},{{package.Weight}},{{package.Height}},{{package.Width}},{{package.Length}},{{package.Value}},'1')">pay</button></td>
         {% else %}
         <td><button class="btn btn-outline-secondary" disabled>paid</button></td>
         {% endif %}
         </tr>
         {% endfor %}
         {% else %}
-        
         <tr>
           <td colspan="8" class ="lead display-6 mx-auto">Nothing to show yet</td>
       </tr>
-           
           {% endif %}
       
      
@@ -134,29 +132,46 @@
   </section>
 </div>
         
-<section>
-  <dialog id="modal">
-    <form method="dialog" class="edit-new-form">
-      <div class="mb-3 package_number">
-        <label for="package_number" class="form-label"
-          >Package Number</label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="package_number"
-          name="package_number"
-          placeholder="Package Number"
-          required
-        />
-      </div>
-    </form>
-  </dialog>
-</section>
+
 
 
           
              
+
+<section>
+  <dialog id="modal">
+    <form method="dialog" class="edit-new-form">
+      <div class="mb-3 package_number">
+        
+        <label id="value" class="form-label display-6"
+          > the payment value is </label> <br>
+
+          <label for="card_info" class="form-label"
+          >Card number</label>
+        <input
+          type="text"
+          class="form-control"
+          id="card_info"
+          name="card_info"
+          placeholder="card_info"
+          required
+        />
+        <label for="CSV" class="form-label"
+          >CSV</label>
+        <input
+          type="text"
+          class="form-control"
+          id="CSV"
+          name="CSV"
+          placeholder="CSV"
+          required
+        />
+        <br>
+        <button id="pay-btn" type="submit" class="btn home-btn login">pay</button>
+      </div>
+    </form>
+  </dialog>
+</section>
 
      
     
@@ -174,4 +189,6 @@
     <p class="text-center text-muted">© 2021 MAN, Inc.   2030 Vision</p>
   </footer>
 </div>
+<script src="AJAXFunctions.js"></script>
+<script src="package.js"></script>
 </html>
