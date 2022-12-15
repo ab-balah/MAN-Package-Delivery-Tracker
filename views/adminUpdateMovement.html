@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>MAN Shipping</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
+        <div class="container-fluid">
+          <a class="navbar-brand" style="color: black" href="#">
+            <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+            MAN LOGISTIC
+          </a>
+
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin/reports">Reports</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin/packages">Packages</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin/users">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/admin/updateMovement">Update Movement Information</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-right">
+            <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <ul class="nav nav-pills d-flex justify-content-center" style="margin-top: 30px" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="pill" href="#airports_container">Add Airport Location</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#truck_container">Add Truck Location</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#plane_container">Add Plane Location</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="pill" href="#warehouse_container">Add Warehouse Location</a>
+      </li>
+    </ul>
+    <div class="tab-content col-6 mx-auto" style="margin-top: 40px">
+      <section id="airports_container" class="container tab-pane active">
+        <form id="airports_form" action="javascript:void(0);" onsubmit="updateMovement('airport')">
+            <div class="row">
+                <div class="form-group col-4">
+                    <label for="airport_packagenumber_input" class="form-label">Package Number</label>
+                    <input type="text" class="form-control" id="airport_packagenumber_input" placeholder="Package Number" name="Package_number" required />
+                </div>
+                <div class="form-group col-4">
+                    <label for="airport_icao_input" class="form-label">Airport ICAO</label>
+                    <select
+                    id="airport_icao_input"
+                    class="form-select"
+                    name="ICAO"
+                    required
+                    >
+                    <option  value="" disabled hidden selected>Choose Airport ICAO</option> 
+                    {% for icao in airports %}
+                        <option value= "{{ icao.ICAO }}">{{ icao.ICAO }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-4">
+                    <label for="airport_time_input" class="form-label">Time</label>
+                    <input type="datetime-local" class="form-control" id="airport_time_input" name="Time" step="1" placeholder="Time" required />
+                </div>
+            </div>
+            <div class="invisible_component alert alert-danger mt-2" role="alert" id="airport_failure">Could not add movement information.</div>
+            <div class="mt-2"><button type="submit" class="btn btn-primary col-12">Add Movement Information</button></div>
+        </form>
+      </section>
+      <section id="truck_container" class="container tab-pane fade">
+        <form id="truck_form" action="javascript:void(0);" onsubmit="updateMovement('truck')">
+            <div class="row">
+                <div class="form-group col-4">
+                    <label for="truck_packagenumber_input" class="form-label">Package Number</label>
+                    <input type="text" class="form-control" id="truck_packagenumber_input" placeholder="Package Number" name="Package_number" required />
+                </div>
+                <div class="form-group col-4">
+                    <label for="truck_vin_input" class="form-label">Truck VIN</label>
+                    <input type="text" class="form-control" id="truck_vin_input" placeholder="Truck VIN" name="VIN" required />
+                </div>
+                <div class="form-group col-4">
+                    <label for="truck_time_input" class="form-label">Time</label>
+                    <input type="datetime-local" class="form-control" id="truck_time_input" name="Time" step="1" placeholder="Time" required />
+                </div>
+            </div>
+            <div class="invisible_component alert alert-danger mt-2" role="alert" id="truck_failure">Could not add movement information.</div>
+            <div class="mt-2"><button type="submit" class="btn btn-primary col-12">Add Movement Information</button></div>
+        </form>
+      </section>
+      <section id="plane_container" class="container tab-pane fade">
+        <form id="plane_form" action="javascript:void(0);" onsubmit="updateMovement('plane')">
+            <div class="row">
+                <div class="form-group col-4">
+                    <label for="plane_packagenumber_input" class="form-label">Package Number</label>
+                    <input type="text" class="form-control" id="plane_packagenumber_input" placeholder="Package Number" name="Package_number" required />
+                </div>
+                <div class="form-group col-4">
+                    <label for="plane_registration_input" class="form-label">Plane Registration Number</label>
+                    <input type="text" class="form-control" id="plane_registration_input" placeholder="Plane Registration Number" name="Registration_number" required />
+                </div>
+                <div class="form-group col-4">
+                    <label for="plane_time_input" class="form-label">Time</label>
+                    <input type="datetime-local" class="form-control" id="plane_time_input" name="Time" step="1" placeholder="Time" required />
+                </div>
+            </div>
+            <div class="invisible_component alert alert-danger mt-2" role="alert" id="plane_failure">Could not add movement information.</div>
+            <div class="mt-2"><button type="submit" class="btn btn-primary col-12">Add Movement Information</button></div>
+        </form>
+      </section>
+      <section id="warehouse_container" class="container tab-pane fade">
+        <form id="warehouse_form" action="javascript:void(0);" onsubmit="updateMovement('warehouse')">
+            <div class="row">
+                <div class="form-group col-4">
+                    <label for="warehouse_packagenumber_input" class="form-label">Package Number</label>
+                    <input type="text" class="form-control" id="warehouse_packagenumber_input" placeholder="Package Number" name="Package_number" required />
+                </div>
+                <div class="form-group col-4">
+                    <label for="warehouse_address_input" class="form-label">Warehouse Address</label>
+                    <select
+                    id="warehouse_address_input"
+                    class="form-select"
+                    name="Location_ID"
+                    required
+                    >
+                    <option  value="" disabled hidden selected>Choose Warehouse Location</option> 
+                    {% for location in warehouses %}
+                        <option value= "{{ location.Location_ID }}">{{ location.Country }}, {{ location.city }}, {{ location.Street_address }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-4">
+                    <label for="warehouse_time_input" class="form-label">Time</label>
+                    <input type="datetime-local" class="form-control" id="warehouse_time_input" name="Time" step="1" placeholder="Time" required />
+                </div>
+            </div>
+            <div class="invisible_component alert alert-danger mt-2" role="alert" id="warehouse_failure">Could not add movement information.</div>
+            <div class="mt-2"><button type="submit" class="btn btn-primary col-12">Add Movement Information</button></div>
+        </form>
+      </section>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script src="AJAXFunctions.js"></script>
+  </body>
+</html>

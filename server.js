@@ -7,6 +7,7 @@ const app = express();
 const Functions = require("./models/dbModel");
 const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
+const sgMail = require('@sendgrid/mail')
 const isAdmin = (req, res, next) => {
   if (!req.session?.role.includes("Admin")) {
     return res.status(401).send("You cannot view this page.");
@@ -74,7 +75,7 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/packages", isLoggedIn, isCustomer, (req, res) => {
-  console.log(req.session);
+  console.log(Functions.getSenderPackages(req.session.ssn));
   res.render(path.resolve(__dirname, "views/customerpage.html"), {
     packages: Functions.getSenderPackages(req.session.ssn),
     userSSN: req.session.ssn,
@@ -97,6 +98,50 @@ app.get("/admin/packageInfo/:Package_number", isLoggedIn, isAdmin, (req, res) =>
   var Packages = Functions.getPackagesInfoByNumber(req.params.Package_number);
   res.send(JSON.stringify(Packages));
 });
+app.get("/admin/updateMovement", isLoggedIn, isAdmin, (req,res)=>{
+  let airportsICAO = Functions.getAllAirportICAO();
+  let warehouseInformation = Functions.getAllWarehouseAddresses();
+  res.render(path.resolve(__dirname, "views/adminUpdateMovement.html"), {airports:airportsICAO, warehouses:warehouseInformation})
+})
+
+app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req,res)=>{
+  let type = req.params.type
+  let data = req.body
+  if(type==="airport"){
+    try{
+      Functions.addPackageToAirport(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }else if(type==="truck"){
+    try{
+      Functions.addPackageToTruck(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }else if(type==="plane"){
+    try{
+      Functions.addPackageToPlane(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }else if(type==="warehouse"){
+    try{
+      Functions.addPackageToLocationID(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }
+})
+
 app.post("/admin/updatePackageInfo/:Package_number", isLoggedIn, isAdmin, (req, res) => {
   var Package = Functions.updatePackageInfo(req.body);
   res.send(JSON.stringify(Package));
@@ -275,6 +320,26 @@ app.post("/admin/reports/:type", isLoggedIn, isAdmin, (req, res) => {
     res.send(JSON.stringify(packages));
   }
 });
+
+app.post('/sendEmail',(req, res) => {
+ 
+  sgMail.setApiKey('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')
+  const msg = {
+    to: {email:'MANlogistic2@gmail.com',name:'naif'}, // Change to your recipient
+    from: {email:'MANlogistic2@gmail.com',name:'naif'}, // Change to your verified sender
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  }
+  sgMail.send(msg)
+    .then((x) => {
+      console.log('email sent')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+});
+
 
 app.use((req, res) => {
   res.status(404).send("404 not found");

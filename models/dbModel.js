@@ -301,6 +301,98 @@ function getPackagesSentAndReceivedByCustomer(customer_ssn) {
   return result;
 }
 
+function getAllAirportICAO(){
+  let statement = db.prepare(`
+    SELECT ICAO
+    FROM Airports;
+  `)
+  let result = statement.all();
+  return result
+}
+
+function addPackageToAirport(data){
+  let statement1 = db.prepare(
+    `
+      SELECT Location_ID
+      FROM Airports
+      WHERE ICAO = ?;
+    `
+  )
+  let result1 = statement1.get(data.ICAO)
+
+  let statement2 = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result2 = statement2.run(data.Package_number, result1.Location_ID, data.Time);
+  
+}
+
+function addPackageToTruck(data){
+  let statement1 = db.prepare(
+    `
+      SELECT Location_ID
+      FROM Trucks
+      WHERE VIN = ?;
+    `
+  )
+  let result1 = statement1.get(data.VIN)
+
+  let statement2 = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result2 = statement2.run(data.Package_number, result1.Location_ID, data.Time);
+  
+}
+
+function addPackageToPlane(data){
+  let statement1 = db.prepare(
+    `
+      SELECT Location_ID
+      FROM Planes
+      WHERE Registration_number = ?;
+    `
+  )
+  let result1 = statement1.get(data.Registration_number)
+
+  let statement2 = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result2 = statement2.run(data.Package_number, result1.Location_ID, data.Time);
+  
+}
+
+function getAllWarehouseAddresses(){
+  let statement = db.prepare(`
+    SELECT *
+    FROM Warehouses;
+  `)
+  let result = statement.all();
+  return result
+}
+
+function addPackageToLocationID(data){
+  let statement = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result = statement.run(data.Package_number, data.Location_ID, data.Time);
+}
+
 function addPackage(data) {
   let package = db
     .prepare(
@@ -388,7 +480,7 @@ function getSenderPackages(CustomerSSN) {
   var packages = db
     .prepare(
       `
-    select distinct p.Package_number,p.Width,p.Weight,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
+    select distinct p.Package_number,p.Width,p.Weight,p.Length,p.Height,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
     from Package p,Customer c,Sender s,Receiver r,Customer c1,person per,person per1
     where p.Sender_SSN = s.Sender_SSN AND p.Receiver_SSN = r.Receiver_SSN 
     and c.Customer_SSN = s.Sender_SSN and c1.Customer_SSN =  r.Receiver_SSN  and C.Customer_SSN=per.SSN and C1.Customer_SSN = per1.SSN
@@ -405,7 +497,7 @@ function getIncomingPackages(CustomerSSN) {
   var packages = db
     .prepare(
       `
-    select distinct p.Package_number,p.Width,p.Weight,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
+    select distinct p.Package_number,p.Width,p.Weight,p.Length,p.Height,p.destination,p.value,per.Fname || ' '|| per.Lname AS sender,per1.Fname || ' '|| per1.Lname AS Reciver,p.RC_ID,p.Time,p.Status,p.Is_paid
     from Package p,Customer c,Sender s,Receiver r,Customer c1,person per,person per1
     where p.Sender_SSN = s.Sender_SSN AND p.Receiver_SSN = r.Receiver_SSN 
     and c.Customer_SSN = s.Sender_SSN and c1.Customer_SSN =  r.Receiver_SSN  and C.Customer_SSN=per.SSN and C1.Customer_SSN = per1.SSN
@@ -477,6 +569,12 @@ module.exports = {
   getUserInfoBySSN,
   updateUserInfo,
   getUsersInfo,
+  addPackageToLocationID,
+  getAllWarehouseAddresses,
+  addPackageToPlane,
+  addPackageToTruck,
+  addPackageToAirport,
+  getAllAirportICAO,
   getPackagesInfoByNumber,
   updatePackageInfo,
   deletePackage,
