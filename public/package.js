@@ -145,26 +145,6 @@ function submitPackage(pkg_num) {
     console.log(tableData[8], typeof tableData[8]);
     tr.children[8].innerHTML = `<td>${tableData[8] === "1" ? "Paid" : "Not Paid"}</td>`;
   } else {
-    table.innerHTML += `
-    <tr id="${data.Package_number}">
-    <td>
-      <a href="/package/${data.Package_number}">${data.Package_number}</a>
-    </td>
-    <td>${data.Category}</td>
-    <td>${data.destination}</td>
-    <td>${data.Status}</td>
-    <td>${data.Sender_SSN}</td>
-    <td>${data.Receiver_SSN}</td>
-    <td>${data.RC_ID}</td>
-    <td>${data.Time}</td>
-    <td>${data.IsPaid ? "Paid" : "Not Paid"}</td>
-    <td>
-      <button id="${tableData.Package_number}" class="btn btn-outline-secondary pkg-edit-btn" onclick="editPackage(this.id)">Edit</button>
-    </td>
-    <td>
-      <button id="${tableData.Package_number}" class="btn btn-outline-danger" onclick="removePackage(this.id)">Delete</button>
-    </td>
-  </tr>`;
     fetch(`/admin/addPackage/`, {
       method: "POST",
       headers: {
@@ -177,11 +157,51 @@ function submitPackage(pkg_num) {
         packages.json();
       })
       .then((packages) => {
-        console.log(packages);
-        const tr = table.childNodes[table.childNodes.length - 1];
-        tr.id = packages.lastInsertROWID;
-        tr.childNodes[0].href = `/package/${packages.lastInsertROWID}`;
-        tr.childNodes[0].innerHTML = packages.lastInsertROWID;
+        table.innerHTML = ``;
+        fetch(`/admin/packagesInfo`)
+          .then((packages) => packages.json())
+          .then((packages) => {
+            table.innerHTML = `
+            <table id="pkg-table" class="table table-bordered w-100 .table-hover">
+            <thead>
+              <tr>
+                <th>Package Number</th>
+                <th>Category</th>
+                <th>Destination</th>
+                <th>Status</th>
+                <th>Sender SSN</th>
+                <th>Receiver SSN</th>
+                <th>Retail Center ID</th>
+                <th>Time</th>
+                <th>Payment Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">`;
+            packages.forEach((package) => {
+              table.innerHTML += `
+          <tr id="${package.Package_number}">
+          <td>
+            <a href="/package/${package.Package_number}">${package.Package_number}</a>
+          </td>
+          <td>${package.Category}</td>
+          <td>${package.destination}</td>
+          <td>${package.Status}</td>
+          <td>${package.Sender_SSN}</td>
+          <td>${package.Receiver_SSN}</td>
+          <td>${package.RC_ID}</td>
+          <td>${package.Time}</td>
+          <td>${package.Is_Paid ? "Paid" : "Not Paid"}</td>
+          <td>
+            <button id="${package.Package_number}" class="btn btn-outline-secondary pkg-edit-btn" onclick="editPackage(this.id)">Edit</button>
+          </td>
+          <td>
+            <button id="${package.Package_number}" class="btn btn-outline-danger" onclick="removePackage(this.id)">Delete</button>
+          </td>
+        </tr>`;
+            });
+          });
       });
   }
   const tr = document.querySelector(".table-warning");

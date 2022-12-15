@@ -380,7 +380,7 @@ function TrackPackage(package_number){
 
 
 
-module.exports = {getPackagesSentAndReceivedByCustomer, getPackagesBasedOnLocationsAndCategoriesAndStatus, getPackagesBetweenDatesCountedCategory, getPackagesBetweenDates, getCompletedPayments, updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+module.exports = { getPackagesInfoByNumber, updatePackageInfo, deletePackage,getPackagesSentAndReceivedByCustomer, getPackagesBasedOnLocationsAndCategoriesAndStatus, getPackagesBetweenDatesCountedCategory, getPackagesBetweenDates, getCompletedPayments, updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 
