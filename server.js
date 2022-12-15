@@ -100,7 +100,8 @@ app.get("/admin/packageInfo/:Package_number", isLoggedIn, isAdmin, (req, res) =>
 });
 app.get("/admin/updateMovement", isLoggedIn, isAdmin, (req,res)=>{
   let airportsICAO = Functions.getAllAirportICAO();
-  res.render(path.resolve(__dirname, "views/adminUpdateMovement.html"), {airports:airportsICAO})
+  let warehouseInformation = Functions.getAllWarehouseAddresses();
+  res.render(path.resolve(__dirname, "views/adminUpdateMovement.html"), {airports:airportsICAO, warehouses:warehouseInformation})
 })
 
 app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req,res)=>{
@@ -109,6 +110,30 @@ app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req,res)=>{
   if(type==="airport"){
     try{
       Functions.addPackageToAirport(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }else if(type==="truck"){
+    try{
+      Functions.addPackageToTruck(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }else if(type==="plane"){
+    try{
+      Functions.addPackageToPlane(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }else if(type==="warehouse"){
+    try{
+      Functions.addPackageToLocationID(data)
       res.sendStatus(201)
     }catch(e){
       console.log(e)

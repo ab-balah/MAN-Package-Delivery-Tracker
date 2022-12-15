@@ -215,6 +215,69 @@ function addPackageToAirport(data){
   let result2 = statement2.run(data.Package_number, result1.Location_ID, data.Time);
   
 }
+
+function addPackageToTruck(data){
+  let statement1 = db.prepare(
+    `
+      SELECT Location_ID
+      FROM Trucks
+      WHERE VIN = ?;
+    `
+  )
+  let result1 = statement1.get(data.VIN)
+
+  let statement2 = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result2 = statement2.run(data.Package_number, result1.Location_ID, data.Time);
+  
+}
+
+function addPackageToPlane(data){
+  let statement1 = db.prepare(
+    `
+      SELECT Location_ID
+      FROM Planes
+      WHERE Registration_number = ?;
+    `
+  )
+  let result1 = statement1.get(data.Registration_number)
+
+  let statement2 = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result2 = statement2.run(data.Package_number, result1.Location_ID, data.Time);
+  
+}
+
+function getAllWarehouseAddresses(){
+  let statement = db.prepare(`
+    SELECT *
+    FROM Warehouses;
+  `)
+  let result = statement.all();
+  return result
+}
+
+function addPackageToLocationID(data){
+  let statement = db.prepare(
+    `
+      INSERT INTO Located_At(Package_number, Location_ID, Time)
+      VALUES (?, ?, ?);
+    `
+  )
+
+  let result = statement.run(data.Package_number, data.Location_ID, data.Time);
+}
+
 function addPackage(data) {
   let package = db
     .prepare(
@@ -386,6 +449,10 @@ function TrackPackage(package_number) {
 }
 
 module.exports = {
+  addPackageToLocationID,
+  getAllWarehouseAddresses,
+  addPackageToPlane,
+  addPackageToTruck,
   addPackageToAirport,
   getAllAirportICAO,
   getPackagesInfoByNumber,
