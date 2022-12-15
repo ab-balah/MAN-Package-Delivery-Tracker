@@ -42,6 +42,7 @@ const pkgForm = document.querySelector("#pkg-form");
 const modal = document.querySelector("#modal");
 const cfm_modal = document.querySelector(".cfm-modal");
 const table = document.querySelector("#pkg-table");
+const tbody = document.getElementsByTagName("tbody")[0];
 
 function newPackage() {
   document.querySelector(".edit-new-form").onsubmit = () => submitPackage();
@@ -53,7 +54,7 @@ function newPackage() {
 function editPackage(pkg_num) {
   document.querySelector(".edit-new-form").onsubmit = () => submitPackage(pkg_num);
   let tr = document.querySelector(`#tr${pkg_num}`);
-  tr.classList.add("table-warning");
+  tr.classList.add("table-secondary");
   console.log(pkg_num);
   fetch(`/admin/packageInfo/${pkg_num}`)
     .then((packages) => packages.json())
@@ -73,7 +74,7 @@ function editPackage(pkg_num) {
         document.getElementById("time").value = package.Time;
         document.getElementById("value").value = package.Value;
         document.getElementById("status").value = package.Status;
-        document.getElementById("payment_status").value = package.IsPaid;
+        document.getElementById("payment_status").value = package.Is_Paid;
         document.getElementById("category").value = package.Category;
       });
       modal.showModal();
@@ -81,9 +82,9 @@ function editPackage(pkg_num) {
 }
 
 function cancelPackage() {
-  const tr = document.querySelector(".table-warning");
+  const tr = document.querySelector(".table-secondary");
   if (tr) {
-    tr.classList.remove("table-warning");
+    tr.classList.remove("table-secondary");
   }
   modal.classList.add("hide");
   modal.addEventListener("animationend", function animationEnd() {
@@ -135,15 +136,34 @@ function submitPackage(pkg_num) {
     })
       .then((packages) => packages.json())
       .then((packages) => {
-        console.log(packages);
+        fetch(`/admin/packagesInfo`)
+          .then((packages) => packages.json())
+          .then((packages) => {
+            tbody.innerHTML = "";
+            packages.forEach((package) => {
+              tbody.innerHTML += `
+          <tr id="tr${package.Package_number}">
+          <td>
+            <a href="/package/${package.Package_number}">${package.Package_number}</a>
+          </td>
+          <td>${package.Category}</td>
+          <td>${package.destination}</td>
+          <td>${package.Status}</td>
+          <td>${package.Sender_SSN}</td>
+          <td>${package.Receiver_SSN}</td>
+          <td>${package.RC_ID}</td>
+          <td>${package.Time}</td>
+          <td>${package.Is_Paid ? "Paid" : "Not Paid"}</td>
+          <td>
+            <button id="${package.Package_number}" class="btn btn-outline-secondary pkg-edit-btn" onclick="editPackage(this.id)">Edit</button>
+          </td>
+          <td>
+            <button id="${package.Package_number}" class="btn btn-outline-danger" onclick="removePackage(this.id)">Delete</button>
+          </td>
+        </tr>`;
+            });
+          });
       });
-    let tr = document.querySelector(`#tr${pkg_num}`);
-    tr.children[0].innerHTML = `<a href="/package/${tableData[0]}">${tableData[0]}</a>`;
-    for (let i = 1; i < tr.children.length - 3; i++) {
-      tr.children[i].innerText = tableData[i];
-    }
-    console.log(tableData[8], typeof tableData[8]);
-    tr.children[8].innerHTML = `<td>${tableData[8] === "1" ? "Paid" : "Not Paid"}</td>`;
   } else {
     fetch(`/admin/addPackage/`, {
       method: "POST",
@@ -152,36 +172,15 @@ function submitPackage(pkg_num) {
       },
       body: JSON.stringify(data),
     })
+      .then((packages) => packages.json())
       .then((packages) => {
-        console.log(packages);
-        packages.json();
-      })
-      .then((packages) => {
-        table.innerHTML = ``;
         fetch(`/admin/packagesInfo`)
           .then((packages) => packages.json())
           .then((packages) => {
-            table.innerHTML = `
-            <table id="pkg-table" class="table table-bordered w-100 .table-hover">
-            <thead>
-              <tr>
-                <th>Package Number</th>
-                <th>Category</th>
-                <th>Destination</th>
-                <th>Status</th>
-                <th>Sender SSN</th>
-                <th>Receiver SSN</th>
-                <th>Retail Center ID</th>
-                <th>Time</th>
-                <th>Payment Status</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider">`;
+            tbody.innerHTML = "";
             packages.forEach((package) => {
-              table.innerHTML += `
-          <tr id="${package.Package_number}">
+              tbody.innerHTML += `
+          <tr id="tr${package.Package_number}">
           <td>
             <a href="/package/${package.Package_number}">${package.Package_number}</a>
           </td>
@@ -204,9 +203,9 @@ function submitPackage(pkg_num) {
           });
       });
   }
-  const tr = document.querySelector(".table-warning");
+  const tr = document.querySelector(".table-secondary");
   if (tr) {
-    tr.classList.remove("table-warning");
+    tr.classList.remove("table-secondary");
   }
   modal.classList.add("hide");
   modal.addEventListener("animationend", function animationEnd() {
