@@ -189,6 +189,84 @@ async function updateMovement(type){
     }else{
       document.getElementById('airport_failure').classList.remove('invisible_component');
     }
+  }else if(type==="truck"){
+    let form = document.getElementById("truck_form")
+    formData = {}
+    form.querySelectorAll("input, select").forEach(element=>{
+      if(element.getAttribute("name")){
+        if(element.getAttribute("type")==="datetime-local"){
+          formData[element.getAttribute("name")] = element.value.replace("T"," ")
+        }else{
+          formData[element.getAttribute("name")] = element.value
+        }
+      }
+    })
+    let fetchData = {
+        method:"post",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formData)
+    };
+    console.log(fetchData)
+    let status = await fetch("/admin/updateMovement/truck",fetchData);
+    if(status.ok){
+      document.getElementById('truck_failure').classList.add('invisible_component');
+    }else{
+      document.getElementById('truck_failure').classList.remove('invisible_component');
+    }
+  }else if(type==="plane"){
+    let form = document.getElementById("plane_form")
+    formData = {}
+    form.querySelectorAll("input, select").forEach(element=>{
+      if(element.getAttribute("name")){
+        if(element.getAttribute("type")==="datetime-local"){
+          formData[element.getAttribute("name")] = element.value.replace("T"," ")
+        }else{
+          formData[element.getAttribute("name")] = element.value
+        }
+      }
+    })
+    let fetchData = {
+        method:"post",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formData)
+    };
+    console.log(fetchData)
+    let status = await fetch("/admin/updateMovement/plane",fetchData);
+    if(status.ok){
+      document.getElementById('plane_failure').classList.add('invisible_component');
+    }else{
+      document.getElementById('plane_failure').classList.remove('invisible_component');
+    }
+  }else if(type==="warehouse"){
+    let form = document.getElementById("warehouse_form")
+    formData = {}
+    form.querySelectorAll("input, select").forEach(element=>{
+      if(element.getAttribute("name")){
+        if(element.getAttribute("type")==="datetime-local"){
+          formData[element.getAttribute("name")] = element.value.replace("T"," ")
+        }else{
+          formData[element.getAttribute("name")] = element.value
+        }
+      }
+    })
+    let fetchData = {
+        method:"post",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formData)
+    };
+    console.log(fetchData)
+    let status = await fetch("/admin/updateMovement/warehouse",fetchData);
+    if(status.ok){
+      document.getElementById('warehouse_failure').classList.add('invisible_component');
+    }else{
+      document.getElementById('warehouse_failure').classList.remove('invisible_component');
+    }
   }
 }
 
