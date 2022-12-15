@@ -398,3 +398,37 @@ nav {
 .noAccount {
   background-color: #bee5eb;
 }
+
+.animated-border-button {
+  border: none;
+  outline: none;
+  padding: 12px 40px 10px;
+  position: relative;
+}
+
+.animated-border-button::before,
+.animated-border-button::after {
+  border: 0 solid transparent;
+  transition: all 0.3s;
+  content: "";
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+.animated-border-button::before {
+  border-top: 2px solid #263059;
+  right: 0;
+  top: -4px;
+}
+
+.animated-border-button::after {
+  border-bottom: 2px solid #263059;
+  bottom: -4px;
+  left: 0;
+}
+
+.animated-border-button:hover::before,
+.animated-border-button:hover::after {
+  width: 100%;
+}

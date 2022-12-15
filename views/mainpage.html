@@ -27,26 +27,15 @@
   </head>
   <body>
     <header>
-      <nav
-        class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded"
-      >
-        <div class="container-fluid">
-          <a class="navbar-brand" style="color: black" href="#">
-            <img
-              src="logo.png"
-              alt=""
-              width="30"
-              height="24"
-              class="d-inline-block align-text-top"
-            />
+      <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
+        <div class="container-fluid d-flex justify-content-between">
+          <a class="navbar-brand mr-2" style="color: black" href="/">
+            <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
             MAN LOGISTIC
           </a>
-
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/packages"
-                >My packages</a
-              >
+          <ul class="navbar-nav d-flex justify-content-around w-50">
+            <li class="nav-item mr-4">
+              <a class="nav-link animated-border-button" aria-current="page" href="/packages">My Packages</a>
             </li>
           </ul>
 
@@ -61,47 +50,25 @@
         </div>
       </nav>
 
-      <h1
-        class="display-1 lead text-center mt-10"
-        style="color: #153c3f; font-weight: bolder"
-      >
-        Your Path To The World
-      </h1>
+      <h1 class="display-1 lead text-center mt-10" style="color: #153c3f; font-weight: bolder">Your Path To The World</h1>
     </header>
     <div class="card col-4 mx-auto mt-10" style="margin-top: 30px">
       <div class="card-header text-left lead">shippment Tracking</div>
       <div class="card-body text-center">
         <h5 class="card-title text-left">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
-            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+            <path
+              d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"
+            />
           </svg>
           Enter Tracking number
         </h5>
-        <form action="javascript:void(0)"  onsubmit="TrackPackage()">
-          <input
-            type="text"
-            id="TrackPackageInput"
-            placeholder="Exmaple A32kksk23"
-            class="card-text form-control"
-            
-            required
-          />
-          <button
-            class="btn home-btn btn-info login align-right"
-            style="margin-top: 10px"
-           
-          >
-            Track
-          </button>
+        <form action="javascript:void(0)" onsubmit="TrackPackage()">
+          <input type="text" id="TrackPackageInput" placeholder="Exmaple A32kksk23" class="card-text form-control" required />
+          <button class="btn home-btn btn-info login align-right" style="margin-top: 10px">Track</button>
         </form>
       </div>
     </div>
-    
-
-
-
-
-
 
     <div class="container" id="TrackContainer" style="margin-top: 10px">
       <h2 class="lead display-6" id="TrackHead">TRACK INFO</h2>
@@ -112,16 +79,7 @@
             <div class="text-center tracking-status-intransit">
               <p class="tracking-status text-tight" id="status">in transit</p>
             </div>
-            <div class="tracking-list" id="history">
-              
-
-           
-              
-              
-             
-              
-              
-            </div>
+            <div class="tracking-list" id="history"></div>
           </div>
         </div>
       </div>
