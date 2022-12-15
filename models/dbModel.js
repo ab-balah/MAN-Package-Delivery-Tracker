@@ -185,6 +185,43 @@ function getPackagesBetweenDatesCountedCategory(date1, date2){
   return result
 }
 
+function getPackagesBasedOnLocationsAndCategoriesAndStatus(data){
+  let statement = db.prepare(
+    `
+    SELECT a.Package_number,a.Destination ,a.Value ,a.Sender_SSN , a.Receiver_SSN, a.RC_ID, a.Time
+    FROM Package a, Located_At b
+    WHERE a.Package_number = b.Package_number
+    AND UPPER(a.Category) = ? 
+    AND UPPER(a.Status) = ?
+    AND b.Location_ID AND EXISTS (
+      SELECT 1
+      FROM Airports c, Warehouses d
+      WHERE ((UPPER(c.Country = ?) AND UPPER(c.city) = ?) OR (UPPER(d.Country) = ? AND UPPER(d.city) = ?)) AND b.Time = (
+        SELECT MAX(e.Time)
+        FROM Located_At e
+        GROUP BY e.Package_number
+        HAVING e.Package_number = a.Package_number
+      )
+    );
+
+    `
+  )
+  console.log(data)
+  let result = statement.all([data.Category.toUpperCase(), data.Status.toUpperCase(), data.Country.toUpperCase(), data.city.toUpperCase(), data.Country.toUpperCase(), data.city.toUpperCase()])
+  console.log(result)
+  return result
+}
+
+function getPackagesSentAndReceivedByCustomer(customer_ssn){
+  let statement = db.prepare(`
+    SELECT * 
+    FROM Package
+    WHERE Sender_SSN = ? OR Receiver_SSN = ?;
+  `)
+  let result = statement.all([customer_ssn, customer_ssn])
+  return result
+}
+
 function addPackage(data) {
   let package = db
     .prepare(
@@ -207,32 +244,6 @@ function addPackage(data) {
       data.Is_Paid,
     ]);
   return package;
-
-function getPackagesBasedOnLocationsAndCategoriesAndStatus(data){
-  let statement = db.prepare(
-    `
-    SELECT a.Package_number,a.Destination ,a.Value ,a.Sender_SSN , a.Receiver_SSN, a.RC_ID, a.Time
-    FROM Package a, Located_At b
-    WHERE a.Package_number = b.Package_number
-    AND a.Category = ? 
-    AND a.Status = ? 
-    AND b.Location_ID AND EXISTS (
-      SELECT 1
-      FROM Airport c, Warehouse d
-      WHERE (c.Country = ? OR d.Country = ?) AND b.Time = (
-        SELECT MAX(d.Time)
-        FROM Located_At e
-        GROUP BY e.Package_number
-        HAVING e.Package_number = a.Package_number
-      )
-      
-    );
-    `
-  )
-  let result = statement.all(date1, date2)
-  return result
-}
-
 }
 
 function updatePackageInfo(data) {
@@ -369,7 +380,7 @@ function TrackPackage(package_number){
 
 
 
-module.exports = {getPackagesBetweenDatesCountedCategory, getPackagesBetweenDates, getCompletedPayments, updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
+module.exports = {getPackagesSentAndReceivedByCustomer, getPackagesBasedOnLocationsAndCategoriesAndStatus, getPackagesBetweenDatesCountedCategory, getPackagesBetweenDates, getCompletedPayments, updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
 
 
 

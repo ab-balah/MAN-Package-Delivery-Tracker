@@ -34,7 +34,7 @@
           </nav>
     </header>
     <!-- Payments section -->
-    <section class="col-6 mx-auto">
+    <section class="col-8 mx-auto">
         <div class="mb-2">
             <h2>Payments Completed</h2>
             <p>Show the payments that have been confirmed and completed.</p>
@@ -55,7 +55,7 @@
         </table>
     </section>
     <!-- Lost/delayed/delivered packages section -->
-    <section class="col-6 mx-auto">
+    <section class="col-8 mx-auto">
         <div class="mb-2">
             <h2>Packages Between Two Dates</h2>
             <p>Show the packages between the two specified dates.</p>
@@ -89,7 +89,7 @@
         </table>
     </section>
     <!-- Total Number of package types between two dates section -->
-    <section class="col-6 mx-auto">
+    <section class="col-8 mx-auto">
         <div class="mb-2">
             <h2>Package Types Totals</h2>
             <p>Show the total number of package types sent between two dates.</p>
@@ -124,28 +124,32 @@
         </table>
     </section>
     <!-- Package Delivery Tracking section  -->
-    <section class="col-6 mx-auto">
+    <section class="col-8 mx-auto">
         <div class="mb-2">
             <h2>Package Delivery Tracking Based on Variables</h2>
             <p>Show the list of packages based on categories, locations and status.</p>
             <form action="javascript:void(0);" onsubmit="getReport('packagetrack')">
                 <div class="row mb-2">
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         <label for="deliverytracking_category_input">Category</label>
-                        <select id="deliverytracking_category_input" name="category" class="form-select">
+                        <select id="deliverytracking_category_input" name="category" class="form-select" required>
                             <option value="Regular">Regular</option>
                             <option value="Fragile">Fragile</option>
                             <option value="Liquid">Liquid</option>
                             <option value="Chemical">Chemical</option>
                         </select>
                     </div>
-                    <div class="form-group col-4">
-                        <label for="deliverytracking_location_input">Location ID</label>
-                        <input type="text" class="form-control" id="deliverytracking_location_input" placeholder="Location">
+                    <div class="form-group col-3">
+                        <label for="deliverytracking_country_input">Country</label>
+                        <input type="text" class="form-control" id="deliverytracking_country_input" placeholder="Country" required>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
+                        <label for="deliverytracking_city_input">City</label>
+                        <input type="text" class="form-control" id="deliverytracking_city_input" placeholder="City" required>
+                    </div>
+                    <div class="form-group col-3">
                         <label for="deliverytracking_status_input">Status</label>
-                        <select id="deliverytracking_status_input" name="status" class="form-select">
+                        <select id="deliverytracking_status_input" name="status" class="form-select" required>
                             <option value="In Transit">In Transit</option>
                             <option value="Delivered">Delivered</option>
                             <option value="Lost">Lost</option>
@@ -153,7 +157,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary col-12">Show</button>
+                <button type="submit" class="btn btn-primary col-12">Show</button>
             </form>
             
         </div>
@@ -169,34 +173,28 @@
                     <th>Time</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
-                <!-- <tr>
-                    <td colspan="4">Nothing to show yet</td>
-                </tr> -->
+            <tbody id="packagetrack_table_body" class="table-group-divider">
                 <tr>
-                    <td><a href="/package/991020301">991020301</a></td>
-                    <td>Riyadh</td>
-                    <td>1000</td>
-                    <td>21000201</td>
-                    <td>24002010</td>
-                    <td>5</td>
-                    <td>11-02-2022</td>
+                    <td colspan="7">Nothing to show yet</td>
                 </tr>
+                
             </tbody>
         </table>
     </section>
     <!-- Packages of a Customer section -->
-    <section class="col-6 mx-auto">
+    <section class="col-8 mx-auto">
         <div class="mb-2">
             <h2>Packages of a Customer</h2>
             <p>Show the packages information either sent or received by a particular customer.</p>
-            <div class="row mb-2">
-                <div class="form-group col-12">
-                    <label for="customerpackage_ssn_input">Customer SSN</label>
-                    <input type="text" class="form-control" id="customerpackage_ssn_input" placeholder="Social Security Number">
+            <form action="javascript:void(0);" onsubmit="getReport('packagecustomer')">
+                <div class="row mb-2">
+                    <div class="form-group col-12">
+                        <label for="customerpackage_ssn_input">Customer SSN</label>
+                        <input type="text" class="form-control" id="customerpackage_ssn_input" placeholder="Social Security Number" required>
+                    </div>
                 </div>
-            </div>
-            <button type="button" class="btn btn-primary col-12">Show</button>
+                <button type="submit" class="btn btn-primary col-12">Show</button>
+            </form>
         </div>
         <table class="table table-bordered">
             <thead>
@@ -210,9 +208,9 @@
                     <th>Time</th>
                 </tr>
             </thead>
-            <tbody class="table-group-divider">
+            <tbody id="packagecustomer_table_body" class="table-group-divider">
                 <tr>
-                    <td colspan="2">Nothing to show yet</td>
+                    <td colspan="7">Nothing to show yet</td>
                 </tr>
             </tbody>
         </table>

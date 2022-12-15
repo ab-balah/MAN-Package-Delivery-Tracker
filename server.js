@@ -237,6 +237,14 @@ app.post("/admin/reports/:type", isLoggedIn, isAdmin, (req,res)=>{
     let dates = req.body
     let packages = Functions.getPackagesBetweenDatesCountedCategory(dates.Time1, dates.Time2)
     res.send(JSON.stringify(packages))
+  }else if(type==="packagetrack"){
+    let incoming_data = req.body
+    let packages = Functions.getPackagesBasedOnLocationsAndCategoriesAndStatus(incoming_data)
+    res.send(JSON.stringify(packages))
+  }else if(type==="packagecustomer"){
+    let incoming_data = req.body
+    let packages = Functions.getPackagesSentAndReceivedByCustomer(incoming_data.SSN)
+    res.send(JSON.stringify(packages))
   }
 })
 

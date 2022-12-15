@@ -242,36 +242,112 @@ async function getReport(type){
       
       if(data_array.length>0){
         let entries = {
-          Regular:0,
-          Fragile:0,
-          Liquid:0,
-          Chemical:0
+          regular:0,
+          fragile:0,
+          liquid:0,
+          chemical:0
         }
         table_body.innerHTML=""
         data_array.forEach(element => {
           console.log(element.Category)
-          entries[element.Category] = element.Count
+          entries[element.Category.toLowerCase()] = element.Count
         });
         table_body.innerHTML+= `
         <tr>
-          <td>`+entries.Regular+`</td>
-          <td>`+entries.Fragile+`</td>
-          <td>`+entries.Liquid+`</td>
-          <td>`+entries.Chemical+`</td>
+          <td>`+entries.regular+`</td>
+          <td>`+entries.fragile+`</td>
+          <td>`+entries.liquid+`</td>
+          <td>`+entries.chemical+`</td>
         </tr>
         `
       }else{
         table_body.innerHTML=`
         <tr>
-            <td colspan="2">No results found</td>
+            <td colspan="4">No results found</td>
         </tr>
         `
       }
     }
   }else if(type==="packagetrack"){
-
-  }else{
-
+    let table_body = document.getElementById("packagetrack_table_body")
+    let sendData = {
+      Category: document.getElementById("deliverytracking_category_input").value.toLowerCase(),
+      Country: document.getElementById("deliverytracking_country_input").value,
+      city: document.getElementById("deliverytracking_city_input").value,
+      Status: document.getElementById("deliverytracking_status_input").value.toLowerCase()
+    }
+    let fetchData = {
+      method:"post",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(sendData)
+    };
+    let data = await fetch("/admin/reports/packagetrack",fetchData);
+    if(data.ok){
+      let data_array = await data.json()
+      if(data_array.length>0){
+        table_body.innerHTML=""
+        data_array.forEach(element => {
+          table_body.innerHTML+= `
+          <tr>
+            <td>`+element.Package_number+`</td>
+            <td>`+element.destination+`</td>
+            <td>`+element.Value+`</td>
+            <td>`+element.Sender_SSN+`</td>
+            <td>`+element.Receiver_SSN+`</td>
+            <td>`+element.RC_ID+`</td>
+            <td>`+element.Time+`</td>
+          </tr>
+          `
+        });
+      }else{
+        table_body.innerHTML=`
+        <tr>
+            <td colspan="7">No results found</td>
+        </tr>
+        `
+      }
+    }
+  }else if(type==="packagecustomer"){
+    let table_body = document.getElementById("packagecustomer_table_body")
+    let sendData = {
+      SSN: document.getElementById("customerpackage_ssn_input").value
+    }
+    let fetchData = {
+      method:"post",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(sendData)
+    };
+    let data = await fetch("/admin/reports/packagecustomer",fetchData);
+    if(data.ok){
+      let data_array = await data.json()
+      
+      if(data_array.length>0){
+        table_body.innerHTML=""
+        data_array.forEach(element => {
+          table_body.innerHTML+= `
+          <tr>
+            <td>`+element.Package_number+`</td>
+            <td>`+element.destination+`</td>
+            <td>`+element.Value+`</td>
+            <td>`+element.Sender_SSN+`</td>
+            <td>`+element.Receiver_SSN+`</td>
+            <td>`+element.RC_ID+`</td>
+            <td>`+element.Time+`</td>
+          </tr>
+          `
+        });
+      }else{
+        table_body.innerHTML=`
+        <tr>
+            <td colspan="7">No results found</td>
+        </tr>
+        `
+      }
+    }
   }
 }
 
