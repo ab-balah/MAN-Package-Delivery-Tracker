@@ -500,3 +500,132 @@ function TrackPackage(){
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function sendEmail() {
+  
+  Email.send({
+      Host : "smtp.elasticemail.com",
+      Username : "manlogistic2@gmail.com",
+      Password : "DEA9D66168070C743C2BC2BDC52408B08EEB",
+      To : 'naifxbl99@gmail.com',
+      From : "manlogistic2@gmail.com",
+      Subject : "Test email",
+      Body : "hello"
+     
+  }).then(
+    message => {alert(message)
+      console.log(message)
+    }
+  );
+  }

@@ -272,24 +272,3 @@ function pay(package_number, Weight, Height, Width, Length, value, Customer_SSN)
   document.getElementById("modal").showModal();
 }
 
-
-function sendEmail() {
-  
-  Email.send({
-      Host : "smtp.elasticemail.com",
-      port:"2525",
-      Username : "MANlogistic@logistic.com",
-      Password : "DEA9D66168070C743C2BC2BDC52408B08EEB",
-      To : 'naifxbl99@gmail.com',
-      From : "manlogistic2@gmail.com",
-      Auth: "PLAIN, LOGIN and CRAM-MD5",
-      TLS: "Optional (STARTTLS on all ports)",
-      Subject : "Test email",
-      Body : "<html><h2>Header</h2><strong>Bold text</strong><br></br><em>Italic</em></html>;",
-     
-  }).then(
-    message => {alert(message)
-      console.log(message)
-    }
-  );
-  }
