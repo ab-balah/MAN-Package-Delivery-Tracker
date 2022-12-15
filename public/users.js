@@ -91,6 +91,7 @@ function cancelUser() {
   });
 }
 function submitUser(usr_num) {
+  console.log(usr_num, typeof usr_num);
   data = {
     SSN: document.getElementById("SSN").value,
     Fname: document.getElementById("Fname").value,
@@ -103,21 +104,20 @@ function submitUser(usr_num) {
     Street_address: document.getElementById("Street_Address").value,
   };
   if (usr_num) {
+    console.log("edit");
     fetch(`/admin/updateUserInfo/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((users) => users.json())
-      .then((users) => {
-        fetch(`/admin/usersInfo`)
-          .then((users) => users.json())
-          .then((users) => {
-            tbody.innerHTML = "";
-            users.forEach((User) => {
-              tbody.innerHTML += `
+    }).then((users) => {
+      fetch(`/admin/usersInfo`)
+        .then((users) => users.json())
+        .then((users) => {
+          tbody.innerHTML = "";
+          users.forEach((User) => {
+            tbody.innerHTML += `
             <tr id="tr${User.SSN}" class=${User.Has_Account ? "" : "table-info"}>
             <td>${User.SSN}</td>
             <td>${User.Fname}</td>
@@ -133,43 +133,43 @@ function submitUser(usr_num) {
               <button id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
             </td>
           </tr>`;
-            });
           });
-      });
+        });
+    });
   } else {
+    console.log("new");
     fetch(`/admin/addUser/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((users) => users.json())
-      .then((users) => {
-        fetch(`/admin/usersInfo`)
-          .then((users) => users.json())
-          .then((users) => {
-            tbody.innerHTML = "";
-            users.forEach((User) => {
-              tbody.innerHTML += `
-              <tr id="tr${User.SSN}" class=${User.Has_Account ? "" : "table-info"}>
-              <td>${User.SSN}</td>
-            <td>${User.Fname}</td>
-            <td>${User.Lname}</td>
-            <td>${User.Phone}</td>
-            <td>${User.Email}</td>
-            <td>${User.Birth_Date}</td>
-            <td>${User.Country}</td>
-            <td>
-              <button id="${User.SSN}" class="btn btn-outline-secondary usr-edit-btn" onclick="editUser(this.id)">Edit</button>
-            </td>
-            <td>
-              <button id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
-            </td>
-          </tr>`;
-            });
+    }).then((users) => {
+      console.log("entered");
+      fetch(`/admin/usersInfo`)
+        .then((users) => users.json())
+        .then((users) => {
+          tbody.innerHTML = "";
+          users.forEach((User) => {
+            tbody.innerHTML += `
+          <tr id="tr${User.SSN}" class=${User.Has_Account ? "" : "table-info"}>
+          <td>${User.SSN}</td>
+          <td>${User.Fname}</td>
+          <td>${User.Lname}</td>
+          <td>${User.Phone}</td>
+          <td>${User.Email}</td>
+          <td>${User.Birth_Date}</td>
+          <td>${User.Country}</td>
+          <td>
+            <button id="${User.SSN}" class="btn btn-outline-secondary usr-edit-btn" onclick="editUser(this.id)">Edit</button>
+          </td>
+          <td>
+            <button id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
+          </td>
+        </tr>`;
           });
-      });
+        });
+    });
   }
   const tr = document.querySelector(".table-active");
   if (tr) {
@@ -199,15 +199,13 @@ function confirm() {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((users) => users.json())
-    .then((users) => {
-      fetch(`/admin/usersInfo`)
-        .then((users) => users.json())
-        .then((users) => {
-          tbody.innerHTML = "";
-          users.forEach((User) => {
-            tbody.innerHTML += `
+  }).then((users) => {
+    fetch(`/admin/usersInfo`)
+      .then((users) => users.json())
+      .then((users) => {
+        tbody.innerHTML = "";
+        users.forEach((User) => {
+          tbody.innerHTML += `
           <tr id="tr${User.SSN}" class=${User.Has_Account ? "" : "table-info"}>
           <td>${User.SSN}</td>
         <td>${User.Fname}</td>
@@ -223,9 +221,9 @@ function confirm() {
           <button id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
         </td>
       </tr>`;
-          });
         });
-    });
+      });
+  });
 
   cfm_modal.classList.add("hide");
   cfm_modal.addEventListener("animationend", function animationEnd() {
