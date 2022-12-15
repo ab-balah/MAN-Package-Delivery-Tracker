@@ -98,6 +98,25 @@ app.get("/admin/packageInfo/:Package_number", isLoggedIn, isAdmin, (req, res) =>
   var Packages = Functions.getPackagesInfoByNumber(req.params.Package_number);
   res.send(JSON.stringify(Packages));
 });
+app.get("/admin/updateMovement", isLoggedIn, isAdmin, (req,res)=>{
+  let airportsICAO = Functions.getAllAirportICAO();
+  res.render(path.resolve(__dirname, "views/adminUpdateMovement.html"), {airports:airportsICAO})
+})
+
+app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req,res)=>{
+  let type = req.params.type
+  let data = req.body
+  if(type==="airport"){
+    try{
+      Functions.addPackageToAirport(data)
+      res.sendStatus(201)
+    }catch(e){
+      console.log(e)
+      res.sendStatus(500)
+    }
+  }
+})
+
 app.post("/admin/updatePackageInfo/:Package_number", isLoggedIn, isAdmin, (req, res) => {
   var Package = Functions.updatePackageInfo(req.body);
   res.send(JSON.stringify(Package));

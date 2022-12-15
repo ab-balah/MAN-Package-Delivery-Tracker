@@ -162,6 +162,36 @@ function edit_userinfo_form(){
   })
 }
 
+async function updateMovement(type){
+  if(type==="airport"){
+    let form = document.getElementById("airports_form")
+    formData = {}
+    form.querySelectorAll("input, select").forEach(element=>{
+      if(element.getAttribute("name")){
+        if(element.getAttribute("type")==="datetime-local"){
+          formData[element.getAttribute("name")] = element.value.replace("T"," ")
+        }else{
+          formData[element.getAttribute("name")] = element.value
+        }
+      }
+    })
+    let fetchData = {
+        method:"post",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(formData)
+    };
+    console.log(fetchData)
+    let status = await fetch("/admin/updateMovement/airport",fetchData);
+    if(status.ok){
+      document.getElementById('airport_failure').classList.add('invisible_component');
+    }else{
+      document.getElementById('airport_failure').classList.remove('invisible_component');
+    }
+  }
+}
+
 async function getReport(type){
   if(type==="payments"){
     let table_body = document.getElementById("payments_table_body")
