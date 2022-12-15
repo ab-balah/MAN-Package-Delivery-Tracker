@@ -612,20 +612,21 @@ function TrackPackage(){
 
 
 
-function sendEmail() {
+function sendEmail(email){
+const xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
   
-  Email.send({
-      Host : "smtp.elasticemail.com",
-      Username : "manlogistic2@gmail.com",
-      Password : "DEA9D66168070C743C2BC2BDC52408B08EEB",
-      To : 'naifxbl99@gmail.com',
-      From : "manlogistic2@gmail.com",
-      Subject : "Test email",
-      Body : "hello"
-     
-  }).then(
-    message => {alert(message)
-      console.log(message)
+ 
+    if (this.readyState == 4 && this.status == 200) {
+    
     }
-  );
+    
+    
+    
   }
+  console.log('here')
+  
+  xhttp.open("POST", "/sendEmail");
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(JSON.stringify({email}));
+}

@@ -7,6 +7,7 @@ const app = express();
 const Functions = require("./models/dbModel");
 const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
+const sgMail = require('@sendgrid/mail')
 const isAdmin = (req, res, next) => {
   if (!req.session?.role.includes("Admin")) {
     return res.status(401).send("You cannot view this page.");
@@ -251,6 +252,26 @@ app.post("/admin/reports/:type", isLoggedIn, isAdmin, (req, res) => {
     res.send(JSON.stringify(packages));
   }
 });
+
+app.post('/sendEmail',(req, res) => {
+ 
+  sgMail.setApiKey('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')
+  const msg = {
+    to: {email:'MANlogistic2@gmail.com',name:'naif'}, // Change to your recipient
+    from: {email:'MANlogistic2@gmail.com',name:'naif'}, // Change to your verified sender
+    subject: 'Sending with SendGrid is Fun',
+    text: 'and easy to do anywhere, even with Node.js',
+    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  }
+  sgMail.send(msg)
+    .then((x) => {
+      console.log('email sent')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+});
+
 
 app.use((req, res) => {
   res.status(404).send("404 not found");
