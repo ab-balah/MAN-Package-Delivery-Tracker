@@ -141,26 +141,29 @@
 <section>
   <dialog id="modal">
     <form method="dialog" class="edit-new-form">
-      <div class="mb-4 package_number">
+      <div class="mb-5 package_number">
         
           <div class="p-3" style="background-color: #eee;" >
-            <span class="fw-bold">receipt of delivery</span>
+            <span class="fw-bold">Receipt Of Delivery</span>
             <div  class="d-flex justify-content-between mt-2">
-              <span>delivery fee</span> <span id="delivery_fee"></span>
+              <span>Delivery Fee</span> <span id="delivery_fee"></span>
             </div>
             <hr>
             <div  class="d-flex justify-content-between mt-2">
-              <span>insurance amount</span> <span id="insurance_amount"></span>
+              <span>Insurance Amount</span> <span id="insurance_amount"></span>
             </div>
             <hr>
             <div  class="d-flex justify-content-between mt-2">
-              <span>total</span> <span id="value"></span>
+              <span></span> <span id="value"></span>
             </div>
           </div>
 
           <label for="card_info" class="form-label"
           >Card number</label>
         <input
+        title="invalid card number"
+
+        pattern="[0-9]{16}"
           type="text"
           class="form-control"
           id="card_info"

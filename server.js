@@ -75,7 +75,7 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/packages", isLoggedIn, isCustomer, (req, res) => {
-  console.log(req.session);
+  console.log(Functions.getSenderPackages(req.session.ssn));
   res.render(path.resolve(__dirname, "views/customerpage.html"), {
     packages: Functions.getSenderPackages(req.session.ssn),
     userSSN: req.session.ssn,
