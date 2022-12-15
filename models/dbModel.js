@@ -6,18 +6,16 @@ const db = new Database(path.resolve(__dirname, "Database.db3"), {
 });
 
 function getUserRole(username) {
-  let roles = []
-  let statement1 = db.prepare(
-    "SELECT Username FROM Admin_Account WHERE Username = ?;"
-  );
+  let roles = [];
+  let statement1 = db.prepare("SELECT Username FROM Admin_Account WHERE Username = ?;");
   let result1 = statement1.get(username);
   if (result1 != undefined) {
-    roles.push("Admin")
+    roles.push("Admin");
   }
   let statement2 = db.prepare("SELECT Username FROM Customer_Account WHERE Username = ?;");
   let result2 = statement2.get(username);
   if (result2 != undefined) {
-    roles.push("Customer")
+    roles.push("Customer");
   }
   return roles;
 }
@@ -37,45 +35,23 @@ function getUserPassword(username) {
 }
 
 function addNewAccount(data) {
-  try{
+  try {
     //Add the information to Person
-    let add_person_statement = db.prepare(
-      "INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);"
-    );
-    let add_person_result = add_person_statement.run(
-      data.SSN,
-      data.Fname,
-      data.Lname,
-      data.Phone,
-      data.Email,
-      data.Birth_Date
-    );
-    
+    let add_person_statement = db.prepare("INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);");
+    let add_person_result = add_person_statement.run(data.SSN, data.Fname, data.Lname, data.Phone, data.Email, data.Birth_Date);
+
     //Add the information to Customer
-    let add_customer_statement = db.prepare(
-      "INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);"
-    );
-    let add_customer_result = add_customer_statement.run(
-      data.SSN,
-      data.Country,
-      data.city,
-      data.Street_address
-    );
+    let add_customer_statement = db.prepare("INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);");
+    let add_customer_result = add_customer_statement.run(data.SSN, data.Country, data.city, data.Street_address);
     //Add the account to Customer_Account
-    let add_account_statement = db.prepare(
-      "INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);"
-    );
-    let add_account_result = add_account_statement.run(
-      data.Username,
-      data.Password,
-      data.SSN
-    );
-  }catch(e){
-    throw(e)
+    let add_account_statement = db.prepare("INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);");
+    let add_account_result = add_account_statement.run(data.Username, data.Password, data.SSN);
+  } catch (e) {
+    throw e;
   }
 }
 
-function getCompleteUserInformation(username){
+function getCompleteUserInformation(username) {
   let statement = db.prepare(
     `
     SELECT a.SSN, a.Fname, a.Lname, a.Phone, a.Email, a.Birth_Date, b.Country, b.city, b.Street_address, c.Username, c.Password
@@ -83,65 +59,46 @@ function getCompleteUserInformation(username){
     WHERE a.SSN = b.Customer_SSN AND b.Customer_SSN = c.Customer_SSN AND c.Username = ?;
     `
   );
-  let result = statement.get(username)
+  let result = statement.get(username);
   return result;
 }
 
-function updateCompleteUserInformation(data){
-  try{
+function updateCompleteUserInformation(data) {
+  try {
     //Add the information to Person
     let update_person_statement = db.prepare(`
       UPDATE Person
       SET Fname = ?, Lname = ?, Phone = ?, Email = ?, Birth_Date = ?
       WHERE SSN = ?;
       `);
-    let add_person_result = update_person_statement.run(
-      data.Fname,
-      data.Lname,
-      data.Phone,
-      data.Email,
-      data.Birth_Date,
-      data.SSN
-    );
-    
+    let add_person_result = update_person_statement.run(data.Fname, data.Lname, data.Phone, data.Email, data.Birth_Date, data.SSN);
+
     //Add the information to Customer
     let update_customer_statement = db.prepare(`
       UPDATE Customer
       SET Country = ?, city = ?, Street_address = ?
       WHERE Customer_SSN = ?;
       `);
-    let add_customer_result = update_customer_statement.run(
-      data.Country,
-      data.city,
-      data.Street_address,
-      data.SSN
-    );
+    let add_customer_result = update_customer_statement.run(data.Country, data.city, data.Street_address, data.SSN);
     //Add the account to Customer_Account
     let update_account_statement = db.prepare(`
       UPDATE Customer_Account
       SET Password = ?
       WHERE Username = ?;
       `);
-    let add_account_result = update_account_statement.run(
-      data.Password,
-      data.Username
-    );
-  }catch(e){
-    throw(e)
+    let add_account_result = update_account_statement.run(data.Password, data.Username);
+  } catch (e) {
+    throw e;
   }
 }
-function getUserSSN(username){
-  let statement1 = db.prepare(
-    "SELECT Employee_SSN FROM Admin_Account WHERE Username = ?;"
-  );
+function getUserSSN(username) {
+  let statement1 = db.prepare("SELECT Employee_SSN FROM Admin_Account WHERE Username = ?;");
   let result1 = statement1.get(username);
-  console.log(result1)
+  console.log(result1);
   if (result1 != undefined) {
     return result1.Employee_SSN;
   }
-  let statement2 = db.prepare(
-    "SELECT Customer_SSN FROM Customer_Account WHERE Username = ?;"
-  );
+  let statement2 = db.prepare("SELECT Customer_SSN FROM Customer_Account WHERE Username = ?;");
   let result2 = statement2.get(username);
   if (result2 != undefined) {
     return result2.Customer_SSN;
@@ -149,30 +106,30 @@ function getUserSSN(username){
   return undefined;
 }
 
-function getCompletedPayments(){
+function getCompletedPayments() {
   let statement = db.prepare(
     `
     SELECT Package_number, Weight, Width, Height, Length, Value 
     FROM Package WHERE is_Paid = 1;
     `
-  )
-  let result = statement.all()
-  return result
+  );
+  let result = statement.all();
+  return result;
 }
 
-function getPackagesBetweenDates(date1, date2){
+function getPackagesBetweenDates(date1, date2) {
   let statement = db.prepare(
     `
     SELECT *
     FROM Package
     WHERE Time BETWEEN ? AND ?;
     `
-  )
-  let result = statement.all(date1, date2)
-  return result
+  );
+  let result = statement.all(date1, date2);
+  return result;
 }
 
-function getPackagesBetweenDatesCountedCategory(date1, date2){
+function getPackagesBetweenDatesCountedCategory(date1, date2) {
   let statement = db.prepare(
     `
     SELECT Category, COUNT(*) AS Count
@@ -180,12 +137,12 @@ function getPackagesBetweenDatesCountedCategory(date1, date2){
     WHERE Time BETWEEN ? AND ?
     GROUP BY Category;
     `
-  )
-  let result = statement.all(date1, date2)
-  return result
+  );
+  let result = statement.all(date1, date2);
+  return result;
 }
 
-function getPackagesBasedOnLocationsAndCategoriesAndStatus(data){
+function getPackagesBasedOnLocationsAndCategoriesAndStatus(data) {
   let statement = db.prepare(
     `
     SELECT a.Package_number,a.Destination ,a.Value ,a.Sender_SSN , a.Receiver_SSN, a.RC_ID, a.Time
@@ -205,21 +162,28 @@ function getPackagesBasedOnLocationsAndCategoriesAndStatus(data){
     );
 
     `
-  )
-  console.log(data)
-  let result = statement.all([data.Category.toUpperCase(), data.Status.toUpperCase(), data.Country.toUpperCase(), data.city.toUpperCase(), data.Country.toUpperCase(), data.city.toUpperCase()])
-  console.log(result)
-  return result
+  );
+  console.log(data);
+  let result = statement.all([
+    data.Category.toUpperCase(),
+    data.Status.toUpperCase(),
+    data.Country.toUpperCase(),
+    data.city.toUpperCase(),
+    data.Country.toUpperCase(),
+    data.city.toUpperCase(),
+  ]);
+  console.log(result);
+  return result;
 }
 
-function getPackagesSentAndReceivedByCustomer(customer_ssn){
+function getPackagesSentAndReceivedByCustomer(customer_ssn) {
   let statement = db.prepare(`
     SELECT * 
     FROM Package
     WHERE Sender_SSN = ? OR Receiver_SSN = ?;
-  `)
-  let result = statement.all([customer_ssn, customer_ssn])
-  return result
+  `);
+  let result = statement.all([customer_ssn, customer_ssn]);
+  return result;
 }
 
 function addPackage(data) {
@@ -287,6 +251,10 @@ function updatePackageInfo(data) {
 }
 
 function deletePackage(pkg_number) {
+  var package = db.prepare("DELETE FROM Located_At WHERE Package_number = ?").run([pkg_number]);
+  var Schedule = db.prepare("SELECT Schedule_number FROM Shipped_By WHERE Package_number = ?").run([pkg_number]);
+  var package = db.prepare("DELETE FROM Shipped_By WHERE Package_number = ?").run([pkg_number]);
+  var package = db.prepare("DELETE FROM Transportation_Event WHERE Schedule_number = ?").run([Schedule.Schedule_number]);
   var package = db.prepare("DELETE FROM Package WHERE Package_number = ?").run([pkg_number]);
   return package;
 }
@@ -335,52 +303,78 @@ function getIncomingPackages(CustomerSSN) {
   return packages;
 }
 
-
-function updatePay(package_number){
-  db.prepare('update Package set Is_Paid=? where Package_number  ='+package_number).run(1)
-
-
+function updatePay(package_number) {
+  db.prepare("update Package set Is_Paid=? where Package_number  =" + package_number).run(1);
 }
-function TrackPackage(package_number){
-  var x = db.prepare(`
+function TrackPackage(package_number) {
+  var x = db
+    .prepare(
+      `
     SELECT  T.*,L.*,Ta.*,'Truck' AS type
     from Located_At L,Trucks T,Package Pa , Transportation_event Ta
     where L.Package_number=?  and L.Location_ID=T.Location_ID and
-    L.Package_number=Pa.Package_number and T.Vehicle_ID=Ta.Vehicle_ID `).all([package_number])
-    
-    var y = db.prepare(`
+    L.Package_number=Pa.Package_number and T.Vehicle_ID=Ta.Vehicle_ID `
+    )
+    .all([package_number]);
+
+  var y = db
+    .prepare(
+      `
     SELECT  L.*,P.*,T.*,'Plane' AS type,Pa.Status
     from Located_At L,Planes P,Package Pa,Transportation_event T
     where L.Package_number=?  and L.Location_ID=P.Location_ID and
     L.Package_number=Pa.Package_number  and T.Vehicle_ID=P.Vehicle_ID
     
-    ;`).all([package_number])
+    ;`
+    )
+    .all([package_number]);
 
-
-    var z = db.prepare(`
+  var z = db
+    .prepare(
+      `
     SELECT  W.*,L.*,'Warehouse' AS type,Pa.Status
     from Located_At L,Warehouses W,Package Pa
     where L.Package_number=?  and L.Location_ID=W.Location_ID and
-    L.Package_number=Pa.Package_number ;`).all([package_number])
-    
-    var w = db.prepare(`
+    L.Package_number=Pa.Package_number ;`
+    )
+    .all([package_number]);
+
+  var w = db
+    .prepare(
+      `
     SELECT  A.*,L.*,'Airport' AS type,Pa.Status
     from Located_At L,Airports A,Package Pa
     where L.Package_number=?  and L.Location_ID=A.Location_ID and
-    L.Package_number=Pa.Package_number ;`).all([package_number])
+    L.Package_number=Pa.Package_number ;`
+    )
+    .all([package_number]);
 
-    
-
-  var history = x.concat(y,z,w).sort((a,b)=>{ return Date.parse(a.Time)-Date.parse(b.Time)})
-  console.log(history)
-  return  history
+  var history = x.concat(y, z, w).sort((a, b) => {
+    return Date.parse(a.Time) - Date.parse(b.Time);
+  });
+  console.log(history);
+  return history;
 }
 
-
-
-
-
-module.exports = { getPackagesInfoByNumber, updatePackageInfo, deletePackage,getPackagesSentAndReceivedByCustomer, getPackagesBasedOnLocationsAndCategoriesAndStatus, getPackagesBetweenDatesCountedCategory, getPackagesBetweenDates, getCompletedPayments, updateCompleteUserInformation,getCompleteUserInformation, getUserSSN,TrackPackage,getUserRole, getUserPassword, addNewAccount, addPackage,  getPackagesInfo,getSenderPackages,getIncomingPackages,updatePay}
-
-
-
+module.exports = {
+  getPackagesInfoByNumber,
+  updatePackageInfo,
+  deletePackage,
+  getPackagesSentAndReceivedByCustomer,
+  getPackagesBasedOnLocationsAndCategoriesAndStatus,
+  getPackagesBetweenDatesCountedCategory,
+  getPackagesBetweenDates,
+  getCompletedPayments,
+  updateCompleteUserInformation,
+  getCompleteUserInformation,
+  getUserSSN,
+  TrackPackage,
+  getUserRole,
+  getUserPassword,
+  addNewAccount,
+  addPackage,
+  getPackagesInfo,
+  getSenderPackages,
+  getIncomingPackages,
+  updatePay,
+};

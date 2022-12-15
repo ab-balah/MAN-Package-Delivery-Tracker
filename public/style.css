@@ -188,7 +188,7 @@ nav {
 
   grid-template-areas:
     "package_number package_number package_number"
-    "weight destination destination"
+    "destination destination weight"
     "width height length"
     "sender_ssn receiver_ssn rc_id"
     "delivery_date time value"
