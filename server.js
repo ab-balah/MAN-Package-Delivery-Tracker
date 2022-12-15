@@ -9,13 +9,13 @@ const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
 const sgMail = require("@sendgrid/mail");
 const isAdmin = (req, res, next) => {
-  if (!req.session?.role==="Admin") {
+  if (req.session.role!=="Admin") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
 };
 const isCustomer = (req, res, next) => {
-  if (!req.session?.role==="Customer") {
+  if (req.session.role!=="Customer") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
@@ -23,6 +23,16 @@ const isCustomer = (req, res, next) => {
 const isLoggedIn = (req, res, next) => {
   if (!req.session?.username) {
     return res.redirect("/login");
+  }
+  next();
+};
+const isNotLoggedIn = (req, res, next) => {
+  if (req.session?.username) {
+    if(req.session.role==="Admin"){
+      return res.redirect('/admin')
+    }else{
+      return res.redirect('/packages')
+    }
   }
   next();
 };
@@ -157,7 +167,7 @@ app.post("/admin/deletePackage/:Package_number", isLoggedIn, isAdmin, (req, res)
   res.send(JSON.stringify(Package));
 });
 
-app.get("/pay/:package_number", (req, res) => {
+app.get("/pay/:package_number",isLoggedIn,isCustomer,  (req, res) => {
   console.log("payed");
   var Packages = Functions.updatePay(req.params.package_number);
   res.end();
@@ -172,16 +182,16 @@ app.get("/package/:id", (req, res) => {
   // res.render(path.resolve(__dirname,'views/packageInfoPage.html'));
 });
 
-app.get("/login", (req, res) => {
+app.get("/login",isNotLoggedIn, (req, res) => {
   res.render(path.resolve(__dirname, "views/loginPage.html"));
 });
 
-app.get("/signup", (req, res) => {
+app.get("/signup",isNotLoggedIn, (req, res) => {
   res.render(path.resolve(__dirname, "views/signupPage.html"));
 });
 
 app.get("/admin", isLoggedIn, isAdmin, (req, res) => {
-  // res.render(path.resolve(__dirname,'views/adminMainPage.html'));
+  res.redirect('/admin/reports')
 });
 
 app.get("/admin/reports", isLoggedIn, isAdmin, (req, res) => {
@@ -225,7 +235,7 @@ app.get("/account", isLoggedIn, isCustomer, (req, res) => {
   console.log(userInfo);
   res.render(path.resolve(__dirname, "views/userProfile.njk"), { countryList: countryList, userInfo: userInfo });
 });
-app.post("/signup", (req, res) => {
+app.post("/signup",isNotLoggedIn, (req, res) => {
   console.log(req.body);
   try {
     Functions.addNewAccount(req.body);
@@ -235,7 +245,7 @@ app.post("/signup", (req, res) => {
   }
 });
 
-app.post("/login", (req, res) => {
+app.post("/login",isNotLoggedIn, (req, res) => {
   let username = req.body.Username;
   let password = req.body.Password;
   console.log(password);
