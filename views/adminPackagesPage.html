@@ -45,7 +45,7 @@
         </ul>
 
         <div class="d-flex align-items-right">
-          <button type="button" class="btn home-btn login px-3 me-2">signout</button>
+          <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
         </div>
       </div>
     </nav>
@@ -61,7 +61,6 @@
             onkeyup="search()"
             type="text"
             class="form-control"
-            id="pkg-search"
             placeholder="Search"
             aria-label="Search"
             aria-describedby="basic-addon2"
@@ -455,5 +454,6 @@
       </dialog>
     </section>
     <script src="package.js"></script>
+    <script src="AJAXFunctions.js"></script>
   </body>
 </html>

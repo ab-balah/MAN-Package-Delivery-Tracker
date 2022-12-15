@@ -180,7 +180,7 @@ nav {
   width: min-content;
 }
 
-.edit-new-form {
+#pkg-form {
   display: grid;
   column-gap: 1rem;
   padding: 2rem;
@@ -193,6 +193,20 @@ nav {
     "sender_ssn receiver_ssn rc_id"
     "delivery_date time value"
     "status payment_status category"
+    "cancel submit submit";
+}
+#usr-form {
+  display: grid;
+  column-gap: 1rem;
+  padding: 2rem;
+  border-radius: 10px;
+
+  grid-template-areas:
+    "SSN SSN SSN"
+    "Email Email Phone"
+    "Fname Lname Birth_Date"
+    "Country Country City"
+    "Street_Address Street_Address Street_Address"
     "cancel submit submit";
 }
 .cfm-form {
@@ -316,6 +330,36 @@ nav {
 .cancel {
   grid-area: cancel;
 }
+.SSN {
+  grid-area: SSN;
+}
+.Username {
+  grid-area: Username;
+}
+.Fname {
+  grid-area: Fname;
+}
+.Lname {
+  grid-area: Lname;
+}
+.Phone {
+  grid-area: Phone;
+}
+.Email {
+  grid-area: Email;
+}
+.Birth_Date {
+  grid-area: Birth_Date;
+}
+.Country {
+  grid-area: Country;
+}
+.City {
+  grid-area: City;
+}
+.Street_Address {
+  grid-area: Street_Address;
+}
 .cfm-cancel {
   grid-area: cfm-cancel;
 }
@@ -329,7 +373,28 @@ nav {
   grid-area: cfm-pkg-num;
 }
 
-#pkg-new-btn,
-#pkg-search {
+#new-btn,
+#search {
   border-radius: 0 10% 10% 0;
+}
+
+.badges {
+  margin-bottom: 10px;
+}
+
+.edit,
+.delete,
+.noAccount {
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.edit {
+  background-color: #d6d8db;
+}
+.delete {
+  background-color: #f5c6cb;
+}
+.noAccount {
+  background-color: #bee5eb;
 }

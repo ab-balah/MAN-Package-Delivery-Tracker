@@ -45,7 +45,7 @@
         </ul>
 
         <div class="d-flex align-items-right">
-          <button type="button" class="btn home-btn login px-3 me-2">signout</button>
+          <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
         </div>
       </div>
     </nav>
@@ -53,67 +53,67 @@
   <body>
     <section class="mx-auto w-75">
       <div class="mb-2 table-responsive">
-        <h2>Users</h2>
+        <h2>Customers</h2>
         <p>Search by any attribute</p>
+        <div class="badges">
+          <span class="edit">Being Edited</span>
+          <span class="delete">Ready to be Deleted</span>
+          <span class="noAccount">A Customer Without An Account</span>
+        </div>
+
         <div class="input-group mb-3">
           <input
             id="myInput"
             onkeyup="search()"
             type="text"
             class="form-control"
-            id="usr-search"
             placeholder="Search"
             aria-label="Search"
             aria-describedby="basic-addon2"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" id="usr-new-btn" onclick="newPackage()">Add New</button>
+            <button class="btn btn-outline-primary" type="button" id="new-btn" onclick="newUser()">Add New</button>
           </div>
         </div>
         <table id="usr-table" class="table table-bordered w-100 .table-hover">
           <thead>
             <tr>
-              <th>Package Number</th>
-              <th>Category</th>
-              <th>Destination</th>
-              <th>Status</th>
-              <th>Sender SSN</th>
-              <th>Receiver SSN</th>
-              <th>Retail Center ID</th>
-              <th>Time</th>
-              <th>Payment Status</th>
+              <th>SSN</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Birthdate</th>
+              <th>Country</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
           </thead>
           <tbody class="table-group-divider">
-            {% for item in packages %}
-            <tr id="tr{{item.Package_number}}">
-              <td>
-                <a href="/package/{{item.Package_number}}">{{item.Package_number}}</a>
-              </td>
-              <td>{{item.Category}}</td>
-              <td>{{item.destination}}</td>
-              <td>{{item.Status}}</td>
-              <td>{{item.Sender_SSN}}</td>
-              <td>{{item.Receiver_SSN}}</td>
-              <td>{{item.RC_ID}}</td>
-              <td>{{item.Time}}</td>
-              {% if item.Is_Paid %}
-              <td>Paid</td>
+            {% for item in users %} {% if item.Has_Account %}
+            <tr id="tr{{item.SSN}}">
               {% else %}
-              <td>Not Paid</td>
+            </tr>
+
+            <tr id="tr{{item.SSN}}" class="table-info">
               {% endif %}
+              <td>{{item.SSN}}</td>
+              <td>{{item.Fname}}</td>
+              <td>{{item.Lname}}</td>
+              <td>{{item.Phone}}</td>
+              <td>{{item.Email}}</td>
+              <td>{{item.Birth_Date}}</td>
+              <td>{{item.Country}}</td>
               <td>
-                <button id="{{item.Package_number}}" class="btn btn-outline-secondary pkg-edit-btn" onclick="editPackage(this.id)">Edit</button>
+                <button id="{{item.SSN}}" class="btn btn-outline-secondary usr-edit-btn" onclick="editUser(this.id)">Edit</button>
               </td>
               <td>
-                <button id="{{item.Package_number}}" class="btn btn-outline-danger" onclick="removePackage(this.id)">Delete</button>
+                <button id="{{item.SSN}}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
               </td>
             </tr>
             {% else %}
             <tr>
-              <td colspan="11">Nothing to show yet</td>
+              <td colspan="10">Nothing to show yet</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -122,14 +122,34 @@
     </section>
     <section>
       <dialog id="modal">
-        <form class="edit-new-form" id="pkg-form" action="javascript:void(0);" method="post">
-          <div class="mb-3 package_number">
-            <label for="package_number" class="form-label">Package Number</label>
-            <input disabled type="text" class="form-control" id="package_number" name="package_number" placeholder="Package Number" required />
+        <form class="edit-new-form" id="usr-form" action="javascript:void(0);" method="post">
+          <div class="mb-3 SSN">
+            <label for="SSN" class="form-label">Social Security Number</label>
+            <input type="text" class="form-control" id="SSN" name="SSN" placeholder="Social Security Number" required />
           </div>
-          <div class="mb-3 destination">
-            <label for="destination" class="form-label">Destination</label>
-            <select id="destination" name="destination" class="form-select" required>
+          <div class="mb-3 Email">
+            <label for="Email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" placeholder="Email" required />
+          </div>
+          <div class="mb-3 Phone">
+            <label for="Phone" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone Number" required />
+          </div>
+          <div class="mb-3 Fname">
+            <label for="Fname" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="Fname" name="Fname" placeholder="First Name" required />
+          </div>
+          <div class="mb-3 Lname">
+            <label for="Lname" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="Lname" name="Lname" placeholder="Last Name" required />
+          </div>
+          <div class="mb-3 Birth_Date">
+            <label for="Birth_Date" class="form-label">Birthdate</label>
+            <input type="date" step="1" class="form-control" id="Birth_Date" name="Birth_Date" placeholder="Birthdate" required />
+          </div>
+          <div class="mb-3 Country">
+            <label for="Country" class="form-label">Country</label>
+            <select id="Country" name="Country" class="form-select" required>
               <option value="Afghanistan">Afghanistan</option>
               <option value="Åland Islands">Åland Islands</option>
               <option value="Albania">Albania</option>
@@ -375,85 +395,29 @@
               <option value="Zimbabwe">Zimbabwe</option>
             </select>
           </div>
-          <div class="mb-3 weight">
-            <label for="weight" class="form-label">Weight (kg)</label>
-            <input type="text" class="form-control" id="weight" name="weight" placeholder="Weight" required />
+          <div class="mb-3 City">
+            <label for="City" class="form-label">City</label>
+            <input type="text" class="form-control" id="City" name="City" placeholder="City" required />
           </div>
-          <div class="mb-3 width">
-            <label for="width" class="form-label">Width (cm)</label>
-            <input type="text" class="form-control" id="width" name="width" placeholder="width" required />
-          </div>
-          <div class="mb-3 height">
-            <label for="height" class="form-label">Height (cm)</label>
-            <input type="text" class="form-control" id="height" name="height" placeholder="height" required />
-          </div>
-          <div class="mb-3 length">
-            <label for="length" class="form-label">Length (cm)</label>
-            <input type="text" class="form-control" id="length" name="length" placeholder="length" required />
-          </div>
-          <div class="mb-3 sender_ssn">
-            <label for="sender_ssn" class="form-label">Sender SSN</label>
-            <input type="text" class="form-control" id="sender_ssn" name="sender_ssn" placeholder="Sender SSN" required />
-          </div>
-          <div class="mb-3 receiver_ssn">
-            <label for="receiver_ssn" class="form-label">Receiver SSN</label>
-            <input type="text" class="form-control" id="receiver_ssn" name="receiver_ssn" placeholder="Receiver SSN" required />
-          </div>
-          <div class="mb-3 rc_id">
-            <label for="rc_id" class="form-label">Retail Center ID</label>
-            <input type="text" class="form-control" id="rc_id" name="rc_id" placeholder="Retail Center ID" required />
-          </div>
-          <div class="mb-3 delivery_date">
-            <label for="delivery_date" class="form-label">Delivery Date</label>
-            <input type="date" class="form-control" id="delivery_date" name="delivery_date" placeholder="Delivery Date" required />
-          </div>
-          <div class="mb-3 time">
-            <label for="time" class="form-label">Time</label>
-            <input type="datetime-local" step="1" class="form-control" id="time" name="time" placeholder="Time" required />
-          </div>
-          <div class="mb-3 value">
-            <label for="value" class="form-label">Value (SR)</label>
-            <input type="text" class="form-control" id="value" name="value" placeholder="Value" required />
-          </div>
-          <div class="mb-3 status">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select" id="status" name="status" required>
-              <option value="In Transit">In Transit</option>
-              <option value="Delivered">Delivered</option>
-              <option value="Lost">Lost</option>
-              <option value="Damaged">Damaged</option>
-            </select>
-          </div>
-          <div class="mb-3 payment_status">
-            <label for="payment_status" class="form-label">Payment Status</label>
-            <select class="form-select" id="payment_status" name="payment_status" required>
-              <option value="1">Paid</option>
-              <option value="0" selected>Not Paid</option>
-            </select>
-          </div>
-          <div class="mb-3 category">
-            <label for="category" class="form-label">Category</label>
-            <select name="category" id="category" class="form-select" required>
-              <option value="Chemical">Chemical</option>
-              <option value="Regular">Regular</option>
-              <option value="Fragile">Fragile</option>
-              <option value="Liquid">Liquid</option>
-            </select>
+          <div class="mb-3 Street_Address">
+            <label for="Street Address" class="form-label">Street Address</label>
+            <input type="text" class="form-control" id="Street_Address" name="Street Address" placeholder="Street Address" required />
           </div>
           <input type="submit" class="btn btn-primary submit" id="submit-btn" value="Submit" />
-          <input type="reset" class="btn btn-secondary cancel" id="cancel-btn" onclick="cancelPackage()" value="Cancel" />
+          <input type="reset" class="btn btn-secondary cancel" id="cancel-btn" onclick="cancelUser()" value="Cancel" />
         </form>
       </dialog>
     </section>
     <section>
       <dialog id="modal" class="cfm-modal">
         <form id="confirm" class="cfm-form" id="cfm-form" action="javascript:void(0);" onsubmit="confirm()" method="post">
-          <label id="cfm-label">Are you sure you want do <strong>Delete</strong> the package?</label>
+          <label id="cfm-label">Are you sure you want do <strong>Delete</strong> the account of the customer?</label>
           <input type="button" class="btn btn-secondary cfm-cancel" id="cfm-cancel-btn" onclick="cancelConfirm()" value="Cancel" />
           <input type="submit" class="btn btn-danger cfm-delete" id="cfm-delete-btn" value="Delete" />
         </form>
       </dialog>
     </section>
-    <script src="package.js"></script>
+    <script src="users.js"></script>
+    <script src="AJAXFunctions.js"></script>
   </body>
 </html>

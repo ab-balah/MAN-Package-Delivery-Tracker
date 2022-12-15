@@ -149,8 +149,32 @@ app.get("/admin/packages", isLoggedIn, isAdmin, (req, res) => {
 });
 
 app.get("/admin/users", isLoggedIn, isAdmin, (req, res) => {
-  res.render(path.resolve(__dirname, "views/adminPackagesPage.html"), { packages: Functions.getUsersInfo() });
+  res.render(path.resolve(__dirname, "views/adminUsersPage.html"), { users: Functions.getUsersInfo() });
 });
+app.get("/admin/usersInfo", isLoggedIn, isAdmin, (req, res) => {
+  var Users = Functions.getUsersInfo();
+  res.send(JSON.stringify(Users));
+});
+app.get("/admin/userInfo/:SSN", isLoggedIn, isAdmin, (req, res) => {
+  var Users = Functions.getUserInfoBySSN(req.params.SSN);
+  console.log(Users);
+  res.send(JSON.stringify(Users));
+});
+app.post("/admin/updateUserInfo", isLoggedIn, isAdmin, (req, res) => {
+  var User = Functions.updateUserInfo(req.body);
+  res.send(JSON.stringify(User));
+});
+
+app.post("/admin/addUser/", isLoggedIn, isAdmin, (req, res) => {
+  var User = Functions.addNewCustomer(req.body);
+  res.send(JSON.stringify(User));
+});
+
+app.post("/admin/deleteUser/:SSN", isLoggedIn, isAdmin, (req, res) => {
+  var User = Functions.deleteUser(req.params.SSN);
+  res.send(JSON.stringify(User));
+});
+
 app.get("/account", isLoggedIn, isCustomer, (req, res) => {
   let userInfo = Functions.getCompleteUserInformation(req.session.username);
   console.log(userInfo);

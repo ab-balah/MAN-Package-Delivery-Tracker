@@ -51,6 +51,121 @@ function addNewAccount(data) {
   }
 }
 
+function addNewCustomer(data) {
+  try {
+    //Add the information to Person
+    let add_person_statement = db.prepare("INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);");
+    let add_person_result = add_person_statement.run(data.SSN, data.Fname, data.Lname, data.Phone, data.Email, data.Birth_Date);
+
+    //Add the information to Customer
+    let add_customer_statement = db.prepare("INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);");
+    let add_customer_result = add_customer_statement.run(data.SSN, data.Country, data.city, data.Street_address);
+  } catch (e) {
+    throw e;
+  }
+}
+
+function getUsersInfo() {
+  try {
+    let usersExists = db
+      .prepare(
+        `
+      SELECT a.SSN, a.Fname, a.Lname, a.Phone, a.Email, a.Birth_Date, b.Country, b.city, b.Street_address, 1 as Has_Account
+      FROM Person a, Customer b
+      WHERE a.SSN = b.Customer_SSN
+      AND EXISTS (
+        SELECT 1 FROM Customer_Account c 
+        WHERE a.SSN = c.Customer_SSN
+      );
+      `
+      )
+      .all([]);
+    let usersNot = db
+      .prepare(
+        `
+      SELECT a.SSN, a.Fname, a.Lname, a.Phone, a.Email, a.Birth_Date, b.Country, b.city, b.Street_address, 0 as Has_Account
+      FROM Person a, Customer b
+      WHERE a.SSN = b.Customer_SSN
+      AND NOT EXISTS (
+        SELECT 1 FROM Customer_Account c
+        WHERE a.SSN = c.Customer_SSN
+      );
+      `
+      )
+      .all([]);
+    return usersExists.concat(usersNot);
+  } catch (e) {
+    throw e;
+  }
+}
+
+function getUserInfoBySSN(SSN) {
+  try {
+    let usersExists = db
+      .prepare(
+        `
+      SELECT a.SSN, a.Fname, a.Lname, a.Phone, a.Email, a.Birth_Date, b.Country, b.city, b.Street_address, 1 as Has_Account
+      FROM Person a, Customer b
+      WHERE a.SSN = b.Customer_SSN
+      AND b.Customer_SSN = ?
+      AND EXISTS (
+        SELECT 1 FROM Customer_Account c 
+        WHERE a.SSN = c.Customer_SSN
+      );
+      `
+      )
+      .all([SSN]);
+    let usersNot = db
+      .prepare(
+        `
+      SELECT a.SSN, a.Fname, a.Lname, a.Phone, a.Email, a.Birth_Date, b.Country, b.city, b.Street_address, 0 as Has_Account
+      FROM Person a, Customer b
+      WHERE a.SSN = b.Customer_SSN
+      AND b.Customer_SSN = ?
+      AND NOT EXISTS (
+        SELECT 1 FROM Customer_Account c
+        WHERE a.SSN = c.Customer_SSN
+      );
+      `
+      )
+      .all([SSN]);
+    return usersExists.concat(usersNot);
+  } catch (e) {
+    throw e;
+  }
+}
+
+function updateUserInfo(data) {
+  try {
+    let update_person_statement = db.prepare(`
+    UPDATE Person
+    SET Fname = ?, Lname = ?, Phone = ?, Email = ?, Birth_Date = ?
+    WHERE SSN = ?;
+    `);
+    let add_person_result = update_person_statement.run(data.Fname, data.Lname, data.Phone, data.Email, data.Birth_Date, data.SSN);
+
+    //Add the information to Customer
+    let update_customer_statement = db.prepare(`
+    UPDATE Customer
+    SET Country = ?, city = ?, Street_address = ?
+    WHERE Customer_SSN = ?;
+    `);
+    let add_customer_result = update_customer_statement.run(data.Country, data.city, data.Street_address, data.SSN);
+    return [add_person_result, add_customer_result];
+  } catch (e) {
+    throw e;
+  }
+}
+
+function deleteUser(SSN) {
+  try {
+    let account = db.prepare("DELETE FROM Customer_Account WHERE Customer_SSN = ?").run([SSN]);
+    return account;
+  } catch (e) {
+    throw e;
+  }
+}
+
 function getCompleteUserInformation(username) {
   let statement = db.prepare(
     `
@@ -357,6 +472,11 @@ function TrackPackage(package_number) {
 }
 
 module.exports = {
+  addNewCustomer,
+  deleteUser,
+  getUserInfoBySSN,
+  updateUserInfo,
+  getUsersInfo,
   getPackagesInfoByNumber,
   updatePackageInfo,
   deletePackage,
