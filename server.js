@@ -9,13 +9,13 @@ const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
 const sgMail = require("@sendgrid/mail");
 const isAdmin = (req, res, next) => {
-  if (!req.session?.role.includes("Admin")) {
+  if (!req.session?.role==="Admin") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
 };
 const isCustomer = (req, res, next) => {
-  if (!req.session?.role.includes("Customer")) {
+  if (!req.session?.role==="Customer") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
@@ -247,12 +247,12 @@ app.post("/login", (req, res) => {
   }
   if (password === dbPassword.Password) {
     let userSSN = Functions.getUserSSN(username);
-    let userRoles = Functions.getUserRole(username);
+    let userRole = Functions.getUserRole(username);
     req.session.username = username;
     req.session.ssn = userSSN;
-    req.session.role = userRoles;
+    req.session.role = userRole;
     console.log(req.session);
-    if (userRoles.includes("Admin")) {
+    if (userRole==="Admin") {
       res.redirect("/admin/reports");
     } else {
       res.redirect("/packages");
