@@ -149,7 +149,7 @@ app.get("/admin/packages", isLoggedIn, isAdmin, (req, res) => {
 });
 
 app.get("/admin/users", isLoggedIn, isAdmin, (req, res) => {
-  // res.render(path.resolve(__dirname,'views/adminUsersPage.html'));
+  res.render(path.resolve(__dirname, "views/adminPackagesPage.html"), { packages: Functions.getUsersInfo() });
 });
 app.get("/account", isLoggedIn, isCustomer, (req, res) => {
   let userInfo = Functions.getCompleteUserInformation(req.session.username);

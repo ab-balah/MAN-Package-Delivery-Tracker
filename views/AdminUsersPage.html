@@ -53,7 +53,7 @@
   <body>
     <section class="mx-auto w-75">
       <div class="mb-2 table-responsive">
-        <h2>Packages</h2>
+        <h2>Users</h2>
         <p>Search by any attribute</p>
         <div class="input-group mb-3">
           <input
@@ -61,16 +61,16 @@
             onkeyup="search()"
             type="text"
             class="form-control"
-            id="pkg-search"
+            id="usr-search"
             placeholder="Search"
             aria-label="Search"
             aria-describedby="basic-addon2"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" id="pkg-new-btn" onclick="newPackage()">Add New</button>
+            <button class="btn btn-outline-primary" type="button" id="usr-new-btn" onclick="newPackage()">Add New</button>
           </div>
         </div>
-        <table id="pkg-table" class="table table-bordered w-100 .table-hover">
+        <table id="usr-table" class="table table-bordered w-100 .table-hover">
           <thead>
             <tr>
               <th>Package Number</th>
