@@ -180,6 +180,9 @@ app.get("/Track/:Package_number", (req, res) => {
 
 app.get("/package/:Package_number", isLoggedIn, (req, res) => {
   var Package = Functions.getPackagesInfoByNumber(req.params.Package_number);
+  if (req.session.role === "Customer" && ((Package.Sender_SSN !== req.session.ssn) || (Package.Receiver_SSN !== req.session.ssn))) {
+    return res.status(403).send("You cannot access this page");
+  }
   var Track = Functions.TrackPackage(req.params.Package_number);
   res.render(path.resolve(__dirname, "views/packagePage.html"), { package: Package[0], trackes: Track });
 });
