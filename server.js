@@ -9,13 +9,13 @@ const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
 const sgMail = require("@sendgrid/mail");
 const isAdmin = (req, res, next) => {
-  if (req.session.role!=="Admin") {
+  if (req.session.role !== "Admin") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
 };
 const isCustomer = (req, res, next) => {
-  if (req.session.role!=="Customer") {
+  if (req.session.role !== "Customer") {
     return res.status(401).send("You cannot view this page.");
   }
   next();
@@ -28,10 +28,10 @@ const isLoggedIn = (req, res, next) => {
 };
 const isNotLoggedIn = (req, res, next) => {
   if (req.session?.username) {
-    if(req.session.role==="Admin"){
-      return res.redirect('/admin')
-    }else{
-      return res.redirect('/packages')
+    if (req.session.role === "Admin") {
+      return res.redirect("/admin");
+    } else {
+      return res.redirect("/packages");
     }
   }
   next();
@@ -40,7 +40,7 @@ const isNotLoggedIn = (req, res, next) => {
 app.use(express.static("public"));
 app.use("/admin", express.static("public"));
 app.use("/packages", express.static("public"));
-app.use("/packages", express.static("public"));
+app.use("/package", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 nunjucks.configure("views", { express: app });
@@ -167,7 +167,7 @@ app.post("/admin/deletePackage/:Package_number", isLoggedIn, isAdmin, (req, res)
   res.send(JSON.stringify(Package));
 });
 
-app.get("/pay/:package_number",isLoggedIn,isCustomer,  (req, res) => {
+app.get("/pay/:package_number", isLoggedIn, isCustomer, (req, res) => {
   console.log("payed");
   var Packages = Functions.updatePay(req.params.package_number);
   res.end();
@@ -178,20 +178,22 @@ app.get("/Track/:Package_number", (req, res) => {
   res.send(JSON.stringify(Packages));
 });
 
-app.get("/package/:id", (req, res) => {
-  // res.render(path.resolve(__dirname,'views/packageInfoPage.html'));
+app.get("/package/:Package_number", isLoggedIn, (req, res) => {
+  var Package = Functions.getPackagesInfoByNumber(req.params.Package_number);
+  var Track = Functions.TrackPackage(req.params.Package_number);
+  res.render(path.resolve(__dirname, "views/packagePage.html"), { package: Package[0], trackes: Track });
 });
 
-app.get("/login",isNotLoggedIn, (req, res) => {
+app.get("/login", isNotLoggedIn, (req, res) => {
   res.render(path.resolve(__dirname, "views/loginPage.html"));
 });
 
-app.get("/signup",isNotLoggedIn, (req, res) => {
+app.get("/signup", isNotLoggedIn, (req, res) => {
   res.render(path.resolve(__dirname, "views/signupPage.html"));
 });
 
 app.get("/admin", isLoggedIn, isAdmin, (req, res) => {
-  res.redirect('/admin/reports')
+  res.redirect("/admin/reports");
 });
 
 app.get("/admin/reports", isLoggedIn, isAdmin, (req, res) => {
@@ -235,7 +237,7 @@ app.get("/account", isLoggedIn, isCustomer, (req, res) => {
   console.log(userInfo);
   res.render(path.resolve(__dirname, "views/userProfile.njk"), { countryList: countryList, userInfo: userInfo });
 });
-app.post("/signup",isNotLoggedIn, (req, res) => {
+app.post("/signup", isNotLoggedIn, (req, res) => {
   console.log(req.body);
   try {
     Functions.addNewAccount(req.body);
@@ -245,7 +247,7 @@ app.post("/signup",isNotLoggedIn, (req, res) => {
   }
 });
 
-app.post("/login",isNotLoggedIn, (req, res) => {
+app.post("/login", isNotLoggedIn, (req, res) => {
   let username = req.body.Username;
   let password = req.body.Password;
   console.log(password);
@@ -262,7 +264,7 @@ app.post("/login",isNotLoggedIn, (req, res) => {
     req.session.ssn = userSSN;
     req.session.role = userRole;
     console.log(req.session);
-    if (userRole==="Admin") {
+    if (userRole === "Admin") {
       res.redirect("/admin/reports");
     } else {
       res.redirect("/packages");

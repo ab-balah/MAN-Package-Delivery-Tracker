@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+      integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+      crossorigin="anonymous"
+    ></script>
+    <script src="AJAXFunctions.js"></script>
+    <title>MAN Shipping</title>
+  </head>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
+      <div class="container-fluid d-flex justify-content-between">
+        <a class="navbar-brand mr-2" style="color: black" href="/">
+          <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+          MAN LOGISTIC
+        </a>
+        <ul class="navbar-nav d-flex justify-content-around w-50">
+          <li class="nav-item mr-4">
+            <a class="nav-link animated-border-button" aria-current="page" href="/packages">My Packages</a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-right">
+          <a href="/login">
+            <button type="button" class="btn home-btn login px-3 me-2">Login</button>
+          </a>
+          <a href="/signup">
+            <button type="button" class="btn me-3">Sign up</button>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- <h1 class="display-1 lead text-center mt-10" style="color: #153c3f; font-weight: bolder">Your Path To The World</h1> -->
+  </header>
+  {% if package.Package_number %}
+  <body>
+    <div class="card col-8 mx-auto mt-10" style="margin-top: 30px">
+      <fieldset disabled="disabled">
+        <form class="pkgPage-form" id="pkg-form" action="javascript:void(0);" method="post">
+          <div class="mb-3 package_number">
+            <label for="package_number" class="form-label">Package Number</label>
+            <input
+              type="text"
+              class="form-control"
+              id="package_number"
+              name="package_number"
+              placeholder="Package Number"
+              value="{{package.Package_number}}"
+              required
+            />
+          </div>
+          <div class="mb-3 destination">
+            <label for="destination" class="form-label">Destination</label>
+            <select id="destination" name="destination" class="form-select" required>
+              <option selected value="{{package.destination}}">{{package.destination}}</option>
+            </select>
+          </div>
+          <div class="mb-3 weight">
+            <label for="weight" class="form-label">Weight (kg)</label>
+            <input type="text" class="form-control" id="weight" name="weight" placeholder="Weight" value="{{package.Weight}}" required />
+          </div>
+          <div class="mb-3 width">
+            <label for="width" class="form-label">Width (cm)</label>
+            <input type="text" class="form-control" id="width" name="width" placeholder="width" value="{{package.Width}}" required />
+          </div>
+          <div class="mb-3 height">
+            <label for="height" class="form-label">Height (cm)</label>
+            <input type="text" class="form-control" id="height" name="height" placeholder="height" value="{{package.Height}}" required />
+          </div>
+          <div class="mb-3 length">
+            <label for="length" class="form-label">Length (cm)</label>
+            <input type="text" class="form-control" id="length" name="length" placeholder="length" value="{{package.Length}}" required />
+          </div>
+          <div class="mb-3 sender_ssn">
+            <label for="sender_ssn" class="form-label">Sender SSN</label>
+            <input
+              type="text"
+              class="form-control"
+              id="sender_ssn"
+              name="sender_ssn"
+              placeholder="Sender SSN"
+              value="{{package.Sender_SSN}}"
+              required
+            />
+          </div>
+          <div class="mb-3 receiver_ssn">
+            <label for="receiver_ssn" class="form-label">Receiver SSN</label>
+            <input
+              type="text"
+              class="form-control"
+              id="receiver_ssn"
+              name="receiver_ssn"
+              placeholder="Receiver SSN"
+              value="{{package.Receiver_SSN}}"
+              required
+            />
+          </div>
+          <div class="mb-3 rc_id">
+            <label for="rc_id" class="form-label">Retail Center ID</label>
+            <input type="text" class="form-control" id="rc_id" name="rc_id" placeholder="Retail Center ID" value="{{package.RC_ID}}" required />
+          </div>
+          <div class="mb-3 delivery_date">
+            <label for="delivery_date" class="form-label">Delivery Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="delivery_date"
+              name="delivery_date"
+              placeholder="Delivery Date"
+              value="{{package.Final_delivery_Date}}"
+              required
+            />
+          </div>
+          <div class="mb-3 time">
+            <label for="time" class="form-label">Time</label>
+            <input type="datetime-local" step="1" class="form-control" id="time" name="time" placeholder="Time" value="{{package.Time}}" required />
+          </div>
+          <div class="mb-3 value">
+            <label for="value" class="form-label">Value (SR)</label>
+            <input type="text" class="form-control" id="value" name="value" placeholder="Value" value="{{package.Value}}" required />
+          </div>
+          <div class="mb-3 status">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status" required>
+              <option selected value="{{package.Status}}">{{package.Status}}</option>
+            </select>
+          </div>
+          <div class="mb-3 payment_status">
+            <label for="payment_status" class="form-label">Payment Status</label>
+            <select class="form-select" id="payment_status" name="payment_status" required>
+              {% if package.Is_Paid %}
+              <option selected value="1">Paid</option>
+              {% else %}
+              <option selected value="0">Not Paid</option>
+              {% endif %}
+            </select>
+          </div>
+          <div class="mb-3 category">
+            <label for="category" class="form-label">Category</label>
+            <select name="category" id="category" class="form-select" required>
+              <option selected value="{{package.Category}}">{{package.Category}}</option>
+            </select>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+    <div class="container" id="TrackContainer" style="margin-top: 10px; display: block">
+      <h2 class="lead display-6" id="TrackHead">TRACK INFO</h2>
+      <div class="row">
+        <div class="col-md-12 col-lg-12">
+          <div id="tracking-pre"></div>
+          <div id="tracking">
+            <div class="text-center tracking-status-intransit">
+              {% if trackes.length %}
+              <p class="tracking-status text-tight" id="status">{{track[trackes.length - 1].Status}}</p>
+              {% else %}
+              <p class="tracking-status text-tight" id="status">Not Found</p>
+              {% endif %}
+            </div>
+            {% for track in trackes %} {% if track.type === "Plane" %}
+            <div class="tracking-item">
+              <div class="tracking-icon status-intransit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-airplane-engines black" viewBox="0 0 16 16">
+                  <path
+                    d="M8 0c-.787 0-1.292.592-1.572 1.151A4.347 4.347 0 0 0 6 3v3.691l-2 1V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.191l-1.17.585A1.5 1.5 0 0 0 0 10.618V12a.5.5 0 0 0 .582.493l1.631-.272.313.937a.5.5 0 0 0 .948 0l.405-1.214 2.21-.369.375 2.253-1.318 1.318A.5.5 0 0 0 5.5 16h5a.5.5 0 0 0 .354-.854l-1.318-1.318.375-2.253 2.21.369.405 1.214a.5.5 0 0 0 .948 0l.313-.937 1.63.272A.5.5 0 0 0 16 12v-1.382a1.5 1.5 0 0 0-.83-1.342L14 8.691V7.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.191l-2-1V3c0-.568-.14-1.271-.428-1.849C9.292.591 8.787 0 8 0ZM7 3c0-.432.11-.979.322-1.401C7.542 1.159 7.787 1 8 1c.213 0 .458.158.678.599C8.889 2.02 9 2.569 9 3v4a.5.5 0 0 0 .276.447l5.448 2.724a.5.5 0 0 1 .276.447v.792l-5.418-.903a.5.5 0 0 0-.575.41l-.5 3a.5.5 0 0 0 .14.437l.646.646H6.707l.647-.646a.5.5 0 0 0 .14-.436l-.5-3a.5.5 0 0 0-.576-.411L1 11.41v-.792a.5.5 0 0 1 .276-.447l5.448-2.724A.5.5 0 0 0 7 7V3Z"
+                  />
+                  <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
+                </svg>
+                <!-- <i class="fas fa-circle"></i> -->
+              </div>
+              <div class="tracking-date">{{track.Time}}</div>
+              <div class="tracking-content">
+                Plane {{track.Registration_number}}<span>in <strong>{{track.type}}</strong> from {{track.delivery_route}}</span>
+              </div>
+            </div>
+            {% elif track.type === "Truck" %}
+            <div class="tracking-item">
+              <div class="tracking-icon status-intransit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-truck" viewBox="0 0 16 16">
+                  <path
+                    d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+                  />
+                </svg>
+                <!-- <i class="fas fa-circle"></i> -->
+              </div>
+              <div class="tracking-date">{{track.Time}}</div>
+              <div class="tracking-content">
+                Truck <span>in <strong>{{track.type}}</strong> from {{track.delivery_route}}</span>
+              </div>
+            </div>
+            {% elif track.type === "Airport" %}
+
+            <div class="tracking-item">
+              <div class="tracking-icon status-intransit">
+                <img src="airport.png" width="30px" />
+                <!-- <i class="fas fa-circle"></i> -->
+              </div>
+              <div class="tracking-date">{{track.Time}}</div>
+              <div class="tracking-content">
+                Airport {{package.ICAO}} <span>in <strong> {{package.city}}, {{package.Country}}</strong></span>
+              </div>
+            </div>
+            {% elif track.type === "Warehouse" %}
+            <div class="tracking-item">
+              <div class="tracking-icon status-intransit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-building-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M3 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3v-3.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5V16h3a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H3Zm1 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5ZM4 5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM7.5 5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1ZM4.5 8h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Zm2.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1Zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Z"
+                  />
+                </svg>
+                <!-- <i class="fas fa-circle"></i> -->
+              </div>
+              <div class="tracking-date">{{track.Time}}</div>
+              <div class="tracking-content">
+                Warehouse <span>in <strong>{{package.Street_address}}, {{package.city}}, {{package.Country}}</strong></span>
+              </div>
+            </div>
+            {% endif %}
+            <div class="tracking-list" id="history"></div>
+            {% else %}
+            <div class="tracking-list" id="history"></div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  {% else %}
+  <body>
+    <div class="card col-8 mx-auto mt-10" style="margin-top: 30px">
+      <fieldset disabled="disabled" class="mx-auto my-0">
+        <form class="noPkg-form mx-auto my-0" id="noPkg-form" action="javascript:void(0);" method="post">
+          <div class="mb-3 package_number col-8 w-100 m-0">
+            <label for="package_number" class="form-label display-4 m-0">Package Not Found</label>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </body>
+  {% endif %}
+  <div class="container">
+    <footer class="py-3 my-4">
+      <hr />
+      <p class="text-center text-muted">© 2021 MAN, Inc. 2030 Vision</p>
+    </footer>
+  </div>
+</html>
