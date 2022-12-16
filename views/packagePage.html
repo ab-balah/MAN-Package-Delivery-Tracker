@@ -167,11 +167,11 @@
           <div id="tracking-pre"></div>
           <div id="tracking">
             <div class="text-center tracking-status-intransit">
-              {% if trackes.length %}
-              <p class="tracking-status text-tight" id="status">{{track[trackes.length - 1].Status}}</p>
-              {% else %}
+              {% for track in trackes %} {% if loop.last %}
+              <p class="tracking-status text-tight" id="status">{{track.Status}}</p>
+              {% endif %} {% else %}
               <p class="tracking-status text-tight" id="status">Not Found</p>
-              {% endif %}
+              {% endfor %}
             </div>
             {% for track in trackes %} {% if track.type === "Plane" %}
             <div class="tracking-item">
