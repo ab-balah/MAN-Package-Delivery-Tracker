@@ -44,6 +44,13 @@ const cfm_modal = document.querySelector(".cfm-modal");
 const table = document.querySelector("#pkg-table");
 const tbody = document.getElementsByTagName("tbody")[0];
 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    cancelPackage()
+    cancelConfirm()
+  }
+})
+
 function newPackage() {
   document.querySelector(".edit-new-form").onsubmit = () => submitPackage();
   document.querySelector("#package_number").placeholder = "Added Automatically";

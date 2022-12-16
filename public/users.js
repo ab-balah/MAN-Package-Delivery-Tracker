@@ -44,6 +44,13 @@ const cfm_modal = document.querySelector(".cfm-modal");
 const table = document.querySelector("#usr-table");
 const tbody = document.getElementsByTagName("tbody")[0];
 
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    cancelUser();
+    cancelConfirm();
+  }
+});
+
 function newUser() {
   document.querySelector("#SSN").disabled = false;
   document.querySelector(".edit-new-form").onsubmit = () => submitUser();
