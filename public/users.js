@@ -164,7 +164,7 @@ function submitUser(usr_num) {
             <button id="${User.SSN}" class="btn btn-outline-secondary usr-edit-btn" onclick="editUser(this.id)">Edit</button>
           </td>
           <td>
-            <button id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
+            <button ${User.Has_Account ? _ : disabled} id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
           </td>
         </tr>`;
           });
@@ -218,7 +218,7 @@ function confirm() {
           <button id="${User.SSN}" class="btn btn-outline-secondary usr-edit-btn" onclick="editUser(this.id)">Edit</button>
         </td>
         <td>
-          <button id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
+          <button ${User.Has_Account ? _ : disabled} id="${User.SSN}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
         </td>
       </tr>`;
         });

@@ -96,7 +96,6 @@
             <tr id="tr{{item.SSN}}">
               {% else %}
             </tr>
-
             <tr id="tr{{item.SSN}}" class="table-info">
               {% endif %}
               <td>{{item.SSN}}</td>
@@ -110,7 +109,11 @@
                 <button id="{{item.SSN}}" class="btn btn-outline-secondary usr-edit-btn" onclick="editUser(this.id)">Edit</button>
               </td>
               <td>
+                {% if item.Has_Account %}
                 <button id="{{item.SSN}}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
+                {% else %}
+                <button disabled id="{{item.SSN}}" class="btn btn-outline-danger" onclick="removeUser(this.id)">Delete</button>
+                {% endif %}
               </td>
             </tr>
             {% else %}
