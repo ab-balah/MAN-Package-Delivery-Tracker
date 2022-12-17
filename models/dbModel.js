@@ -19,6 +19,30 @@ function getUserRole(username) {
   return undefined
 }
 
+function getTablesWhereSSNExists(SSN){
+  let tables = {Person: false, Customer: false, Customer_Account: false}
+
+  let statement_1 = db.prepare("SELECT SSN FROM Person WHERE SSN = ?;")
+  let result_1 = statement_1.get(SSN)
+  if(result_1 != undefined){
+    tables.Person = true
+  }
+
+  let statement_2 = db.prepare("SELECT Customer_SSN FROM Customer WHERE Customer_SSN = ?;")
+  let result_2 = statement_2.get(SSN)
+  if(result_2 != undefined){
+    tables.Customer = true
+  }
+
+  let statement_3 = db.prepare("SELECT Customer_SSN FROM Customer_Account WHERE Customer_SSN = ?;")
+  let result_3 = statement_3.get(SSN)
+  if(result_3 != undefined){
+    tables.Customer_Account = true
+  }
+
+  return tables
+}
+
 function getUserPassword(username) {
   let statement1 = db.prepare("SELECT Password FROM Admin_Account WHERE Username = ?;");
   let result1 = statement1.get(username);
@@ -35,16 +59,31 @@ function getUserPassword(username) {
 
 function addNewAccount(data) {
   try {
-    //Add the information to Person
-    let add_person_statement = db.prepare("INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);");
-    let add_person_result = add_person_statement.run(data.SSN, data.Fname, data.Lname, data.Phone, data.Email, data.Birth_Date);
-
-    //Add the information to Customer
-    let add_customer_statement = db.prepare("INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);");
-    let add_customer_result = add_customer_statement.run(data.SSN, data.Country, data.city, data.Street_address);
-    //Add the account to Customer_Account
-    let add_account_statement = db.prepare("INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);");
-    let add_account_result = add_account_statement.run(data.Username, data.Password, data.SSN);
+    let tables = getTablesWhereSSNExists(data.SSN)
+    if(! tables.Person){
+      //Add the information to Person
+      let add_person_statement = db.prepare("INSERT INTO Person(SSN, Fname, Lname, Phone, Email, Birth_Date) VALUES(?, ?, ?, ?, ?, ?);");
+      let add_person_result = add_person_statement.run(data.SSN, data.Fname, data.Lname, data.Phone, data.Email, data.Birth_Date);
+    }
+    
+    if(! tables.Customer){
+      //Add the information to Customer
+      let add_customer_statement = db.prepare("INSERT INTO Customer(Customer_SSN, Country, city, Street_address) VALUES(?, ?, ?, ?);");
+      let add_customer_result = add_customer_statement.run(data.SSN, data.Country, data.city, data.Street_address);
+    }
+    
+    if(! tables.Customer_Account){
+      let check_admin_statement = db.prepare("SELECT Username FROM Admin_Account WHERE Username = ?;")
+      let check_admin_result = check_admin_statement.get(data.Username)
+      if(check_admin_result != undefined){
+        throw 'Account Already Exists';
+      }
+      //Add the account to Customer_Account
+      let add_account_statement = db.prepare("INSERT INTO Customer_Account(Username, Password, Customer_SSN) VALUES(?, ?, ?);");
+      let add_account_result = add_account_statement.run(data.Username, data.Password, data.SSN);
+    }else{
+      throw 'Account Already Exists';
+    }
   } catch (e) {
     throw e;
   }
@@ -563,6 +602,7 @@ function TrackPackage(package_number) {
 }
 
 module.exports = {
+  getTablesWhereSSNExists,
   addNewCustomer,
   deleteUser,
   getUserInfoBySSN,
