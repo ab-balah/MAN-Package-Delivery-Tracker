@@ -180,9 +180,9 @@ app.get("/Track/:Package_number", (req, res) => {
 
 app.get("/package/:Package_number", isLoggedIn, (req, res) => {
   var Package = Functions.getPackagesInfoByNumber(req.params.Package_number);
-  console.log(Package[0].Sender_SSN)
+  
 
-  console.log(req.session.ssn)
+
   if ((req.session.role === "Customer" && (Package[0].Sender_SSN !== req.session.ssn) &&(Package[0].Receiver_SSN !== req.session.ssn))) {
     return res.status(403).send("You cannot access this page");
   }
