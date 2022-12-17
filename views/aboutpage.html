@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+      integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+      crossorigin="anonymous"
+    ></script>
+    <script src="AJAXFunctions.js"></script>
+    <title>MAN Shipping|about</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
+        <div class="container-fluid d-flex justify-content-between">
+          <a class="navbar-brand mr-2" style="color: black" href="/">
+            <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+            MAN LOGISTIC
+          </a>
+          <ul class="navbar-nav d-flex justify-content-around w-50">
+            <li class="nav-item mr-4">
+              <a class="nav-link animated-border-button" aria-current="page" href="/packages">My Packages</a>
+            </li>
+            <li class="nav-item mr-4">
+              <a class="nav-link animated-border-button" aria-current="page" href="/about">About</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-right">
+            <a href="/login">
+              <button type="button" class="btn home-btn login px-3 me-2">Login</button>
+            </a>
+            <a href="/signup">
+              <button type="button" class="btn me-3">Sign up</button>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+    <section >
+      <div class="container p-relative white-bg">
+        <div class="row">
+                <div class="text-center col-md-3 mt-4 col-6 ">
+                    <div class="fact-box-container">
+                        <div class="facts-image-container">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#153C3F" class="bi bi-calendar3" viewBox="0 0 16 16">
+                            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                          </svg>
+                        </div>
+                        <h3 class="my-2">2021</h3>
+                        <p class="main-description lead">Year of Establishment</p>
+                    </div>
+                </div>
+                <div class="text-center col-md-3 mt-4 col-6 ">
+                    <div class="fact-box-container">
+                        <div class="facts-image-container">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#153C3F" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                            <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5ZM9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8Zm1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z"/>
+                            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
+                          </svg>
+                        </div>
+                        <h3 class="my-2">1021</h3>
+                        <p class="main-description lead">Number of Employees</p>
+                    </div>
+                </div>
+                <div class="text-center col-md-3 mt-4 col-6 ">
+                    <div class="fact-box-container">
+                        <div class="facts-image-container">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#153C3F" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                          </svg>
+                        </div>
+                        <h3 class="my-2">130</h3>
+                        <p class="main-description lead">Postal Points</p>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+    </section>
+    <section class="my-5">
+      <div class="container pb-5">
+          <div class="row">
+              <div class="col-md-12">
+                  
+      <div class="umb-grid">
+                  <div class="grid-section">
+      <div>
+          <div class="container">
+          <div class="row clearfix">
+              <div class="col-md-12 column">
+                  <div>
+                              
+      
+  <p class="lead">We are a global shipping corporation founded in 2021. We at MAN Logistics offer a range of logistical and postal services, and we've been putting the finishing touches on a grand plan to create a network system of networks. Through collaborations with organizations in the public and commercial sectors, we establish e-governmental transactions and support e-commerce exchanges, enabling e-government programs and e-commerce applications.</p>
+  
+                  </div>
+              </div>        </div>
+          </div>
+      </div>
+                  </div>
+      </div>
+  
+  
+  
+              </div>
+          </div>
+      </div>
+  </section>
+
+
+    <section class="vision-mession-box py-5">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12 display-6 green-title lead"><strong>Vision</strong></div>
+              <p class="main-description col-md-12 my-3 lead">Be The National Champion in postal and logistics solutions providing added value to our customers and linking KSA to the world</p>
+              <div class="col-md-12 green-title display-6 lead"><strong>Mission</strong></div>
+              <p class="main-description col-md-12 my-3 lead">Be the modern logistics arm of KSA commerce and government digitalization providing top quality service to our customers, supported by our highly engaged and driven organization</p>
+          </div>
+      </div>
+  </section>
+
+      
+
+    
+  </body>
+  <div class="container">
+    <footer class="py-3 my-4">
+      <hr />
+      <p class="text-center text-muted">© 2021 MAN, Inc. 2030 Vision</p>
+    </footer>
+  </div>
+</html>

@@ -81,7 +81,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-  // res.render(path.resolve(__dirname,'views/aboutPage.html'));
+  res.render(path.resolve(__dirname,'views/aboutpage.html'));
 });
 
 app.get("/packages", isLoggedIn, isCustomer, (req, res) => {
