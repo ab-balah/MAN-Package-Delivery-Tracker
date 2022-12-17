@@ -77,11 +77,11 @@ const dummyPackages = {
 };
 
 app.get("/", (req, res) => {
-  res.render(path.resolve(__dirname, "views/mainPage.html"));
+  res.render(path.resolve(__dirname, "views/mainPage.html"), { role: req.session.role });
 });
 
 app.get("/about", (req, res) => {
-  res.render(path.resolve(__dirname,'views/aboutpage.html'));
+  res.render(path.resolve(__dirname, "views/aboutpage.html"), { role: req.session.role });
 });
 
 app.get("/packages", isLoggedIn, isCustomer, (req, res) => {
@@ -180,14 +180,12 @@ app.get("/Track/:Package_number", (req, res) => {
 
 app.get("/package/:Package_number", isLoggedIn, (req, res) => {
   var Package = Functions.getPackagesInfoByNumber(req.params.Package_number);
-  
 
-
-  if ((req.session.role === "Customer" && (Package[0].Sender_SSN !== req.session.ssn) &&(Package[0].Receiver_SSN !== req.session.ssn))) {
+  if (req.session.role === "Customer" && Package[0].Sender_SSN !== req.session.ssn && Package[0].Receiver_SSN !== req.session.ssn) {
     return res.status(403).send("You cannot access this page");
   }
   var Track = Functions.TrackPackage(req.params.Package_number);
-  res.render(path.resolve(__dirname, "views/packagePage.html"), { package: Package[0], trackes: Track });
+  res.render(path.resolve(__dirname, "views/packagePage.html"), { package: Package[0], trackes: Track, role: req.session.role });
 });
 
 app.get("/login", isNotLoggedIn, (req, res) => {
@@ -208,7 +206,10 @@ app.get("/admin/reports", isLoggedIn, isAdmin, (req, res) => {
 
 app.get("/admin/packages", isLoggedIn, isAdmin, (req, res) => {
   console.log(Functions.getPackagesInfo());
-  res.render(path.resolve(__dirname, "views/adminPackagesPage.html"), { packages: Functions.getPackagesInfo() });
+  res.render(path.resolve(__dirname, "views/adminPackagesPage.html"), {
+    packages: Functions.getPackagesInfo(),
+    SSNs: Functions.getSSNs(),
+  });
 });
 
 app.get("/admin/users", isLoggedIn, isAdmin, (req, res) => {
@@ -252,11 +253,11 @@ app.post("/signup", isNotLoggedIn, (req, res) => {
   }
 });
 
-app.post("/signup/checkssn", isNotLoggedIn, (req,res)=>{
-  let tables = Functions.getTablesWhereSSNExists(req.body.SSN)
-  console.log(tables)
-  res.render(path.resolve(__dirname, "views/signUpForm.njk"), { countryList: countryList, tables: tables })
-})
+app.post("/signup/checkssn", isNotLoggedIn, (req, res) => {
+  let tables = Functions.getTablesWhereSSNExists(req.body.SSN);
+  console.log(tables);
+  res.render(path.resolve(__dirname, "views/signUpForm.njk"), { countryList: countryList, tables: tables });
+});
 
 app.post("/login", isNotLoggedIn, (req, res) => {
   let username = req.body.Username;

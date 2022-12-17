@@ -24,7 +24,6 @@
       crossorigin="anonymous"
     ></script>
     <title>MAN Shipping</title>
-
   </head>
   <header>
     <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
@@ -45,6 +44,9 @@
           </li>
           <li class="nav-item mr-4">
             <a class="nav-link animated-border-button" aria-current="page" href="/admin/updateMovement">Update Movement Information</a>
+          </li>
+          <li class="nav-item mr-4">
+            <a class="nav-link animated-border-button" aria-current="page" href="/about">About</a>
           </li>
         </ul>
 
@@ -403,11 +405,23 @@
           </div>
           <div class="mb-3 sender_ssn">
             <label for="sender_ssn" class="form-label">Sender SSN</label>
-            <input type="text" class="form-control" id="sender_ssn" name="sender_ssn" placeholder="Sender SSN" required />
+            <select id="sender_ssn" name="sender_ssn" class="form-select" required>
+              {% for ssn in SSNs %}
+              <option value="{{ssn.SSN}}">{{ssn.SSN}}</option>
+              {% else %}
+              <option value="No SSNs">No SSNs</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-3 receiver_ssn">
             <label for="receiver_ssn" class="form-label">Receiver SSN</label>
-            <input type="text" class="form-control" id="receiver_ssn" name="receiver_ssn" placeholder="Receiver SSN" required />
+            <select id="receiver_ssn" name="receiver_ssn" class="form-select" required>
+              {% for ssn in SSNs %}
+              <option value="{{ssn.SSN}}">{{ssn.SSN}}</option>
+              {% else %}
+              <option value="No SSNs">No SSNs</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="mb-3 rc_id">
             <label for="rc_id" class="form-label">Retail Center ID</label>

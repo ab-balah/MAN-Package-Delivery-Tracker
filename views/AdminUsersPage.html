@@ -45,6 +45,9 @@
           <li class="nav-item mr-4">
             <a class="nav-link animated-border-button" aria-current="page" href="/admin/updateMovement">Update Movement Information</a>
           </li>
+          <li class="nav-item mr-4">
+            <a class="nav-link animated-border-button" aria-current="page" href="/about">About</a>
+          </li>
         </ul>
 
         <div class="d-flex align-items-right">
@@ -142,7 +145,7 @@
           </div>
           <div class="mb-3 Phone">
             <label for="Phone" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone Number" required />
+            <input type="tel" pattern="[0-9]{10}" class="form-control" id="Phone" name="Phone" placeholder="Phone Number" required />
           </div>
           <div class="mb-3 Fname">
             <label for="Fname" class="form-label">First Name</label>

@@ -171,14 +171,8 @@ async function logout(){
 
 function edit_userinfo_form(){
   let form = document.getElementById("profile_form")
-  form.querySelectorAll("input").forEach(element=>{
-    if(element.getAttribute("name")!="SSN" && element.getAttribute("name")!="Username"){
-      element.removeAttribute('readonly')
-    }
-  })
-  form.querySelectorAll("select").forEach(element=>{
-    element.removeAttribute('disabled')
-  })
+  let feild = document.getElementsByTagName("fieldset")[0]
+  feild.removeAttribute("disabled")
   form.querySelectorAll("button").forEach(element=>{
     element.removeAttribute('disabled')
   })
@@ -483,6 +477,8 @@ async function getReport(type){
 
 async function update_userinfo(){
   let form = document.getElementById("profile_form")
+  let feild = document.getElementsByTagName("fieldset")[0];
+  feild.disabled = true
   let formData = {}
   form.querySelectorAll("input, select").forEach(element=>{
     if(element.getAttribute("name")){

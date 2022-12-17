@@ -329,6 +329,16 @@ function getPackagesBasedOnLocationsAndCategoriesAndStatus(data) {
   return result;
 }
 
+function getSSNs(){
+  try {
+    let output = db.prepare("SELECT SSN FROM Person").all([])
+    return output
+  } catch (e) {
+    throw(e)
+  }
+}
+
+
 function getPackagesSentAndReceivedByCustomer(customer_ssn) {
   let statement = db.prepare(`
     SELECT * 
@@ -602,6 +612,7 @@ function TrackPackage(package_number) {
 }
 
 module.exports = {
+  getSSNs,
   getTablesWhereSSNExists,
   addNewCustomer,
   deleteUser,

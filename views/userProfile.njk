@@ -15,33 +15,35 @@
   </head>
   <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0">
-            <div class="container-fluid">
-                <a class="navbar-brand"  style="color: black;" href="#">
-                    <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                    MAN LOGISTIC
-                  </a>
-            
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link"   aria-current="page" href="/packages">My packages</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link"   aria-current="page" href="/account">My Account</a>
-                  </li>
-            </ul>
-        
-        <div class="d-flex align-items-right">
-          <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
-          
+      <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
+        <div class="container-fluid d-flex justify-content-between">
+          <a class="navbar-brand mr-2" style="color: black" href="/">
+            <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+            MAN LOGISTIC
+          </a>
+          <ul class="navbar-nav d-flex justify-content-around w-50">
+            <li class="nav-item mr-4">
+              <a class="nav-link animated-border-button" aria-current="page" href="/packages">My Packages</a>
+            </li>
+            <li class="nav-item mr-4">
+              <a class="nav-link animated-border-button" aria-current="page" href="/account">My Account</a>
+            </li>
+            <li class="nav-item mr-4">
+              <a class="nav-link animated-border-button" aria-current="page" href="/about">About</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-right">
+            <button type="button" class="btn btn-danger" onclick="logout()">Log Out</button>
+          </div>
         </div>
-            </div>
-          </nav>
+      </nav>
     </header> 
 
     <div class="col-6 mx-auto">
       <h1>My Profile</h1>
       <form id="profile_form" action="javascript:void(0);" onsubmit="update_userinfo()">
+        <fieldset disabled="disabled">
         <div class="row">
           <div class="form-group col-6">
             <label for="profile_firstname_input">First Name</label>
@@ -51,7 +53,7 @@
               id="profile_firstname_input"
               placeholder="First Name"
               name="Fname"
-              required disabled
+              required
               value = "{{ userInfo.Fname }}"
             />
           </div>
@@ -63,7 +65,7 @@
               id="profile_lastname_input"
               placeholder="Last Name"
               name="Lname"
-              required disabled
+              required
               value = "{{ userInfo.Lname}}"
             />
           </div>
@@ -76,7 +78,7 @@
             id="profile_ssn_input"
             placeholder="Social Security Number"
             name="SSN"
-            required disabled
+            required
             value = "{{ userInfo.SSN}}"
           />
         </div>
@@ -88,7 +90,7 @@
             id="profile_email_input"
             placeholder="Email"
             name="Email"
-            required disabled
+            required
               value = "{{ userInfo.Email}}"
           />
         </div>
@@ -102,7 +104,7 @@
               placeholder="XXXXXXXXXX"
               pattern="[0-9]{10}"
               name="Phone"
-              required disabled
+              required
               value = "{{ userInfo.Phone}}"
             />
           </div>
@@ -113,7 +115,7 @@
               class="form-control"
               id="profile_birthdate_input"
               name="Birth_Date"
-              required disabled
+              required 
               value = "{{ userInfo.Birth_Date}}"
             />
           </div>
@@ -125,7 +127,7 @@
               id="profile_country_input"
               class="form-select"
               name="Country"
-              required disabled
+              required 
             >
               {% for country in countryList %}
                 <option value= "{{ country }}" {% if country == userInfo.Country %} selected {% endif %}>{{ country }}</option>
@@ -140,7 +142,7 @@
               id="profile_city_input"
               placeholder="City"
               name="city"
-              required disabled
+              required 
               value = "{{ userInfo.city}}"
             />
           </div>
@@ -153,7 +155,7 @@
             id="profile_streetaddress_input"
             placeholder="Street Address"
             name="Street_address"
-            required disabled
+            required 
               value = "{{ userInfo.Street_address}}"
           />
         </div>
@@ -166,7 +168,7 @@
               id="profile_username_input"
               placeholder="Username"
               name="Username"
-              required disabled
+              required 
               value = "{{ userInfo.Username}}"
             />
           </div>
@@ -178,11 +180,12 @@
               id="profile_password_input"
               placeholder="Password"
               name="Password"
-              required disabled
+              required 
               value = "{{ userInfo.Password}}"
             />
           </div>
         </div>
+        </fieldset>
         <div class="invisible_component alert alert-danger" role="alert" id="userinfo_failure">
           Error, could not go through.
         </div>
