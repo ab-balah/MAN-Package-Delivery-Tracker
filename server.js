@@ -244,7 +244,6 @@ app.get("/account", isLoggedIn, isCustomer, (req, res) => {
   res.render(path.resolve(__dirname, "views/userProfile.njk"), { countryList: countryList, userInfo: userInfo });
 });
 app.post("/signup", isNotLoggedIn, (req, res) => {
-  console.log(req.body);
   try {
     Functions.addNewAccount(req.body);
     res.redirect("/login");
@@ -252,6 +251,12 @@ app.post("/signup", isNotLoggedIn, (req, res) => {
     res.sendStatus(500);
   }
 });
+
+app.post("/signup/checkssn", isNotLoggedIn, (req,res)=>{
+  let tables = Functions.getTablesWhereSSNExists(req.body.SSN)
+  console.log(tables)
+  res.render(path.resolve(__dirname, "views/signUpForm.njk"), { countryList: countryList, tables: tables })
+})
 
 app.post("/login", isNotLoggedIn, (req, res) => {
   let username = req.body.Username;

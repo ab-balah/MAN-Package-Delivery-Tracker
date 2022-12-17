@@ -85,10 +85,32 @@ function sentPackages(Customer_SSN){
 
 
 }
-
+async function checkssn(){
+  let ssn_input = document.getElementById("signup_ssn_input")
+  let formData = {SSN: ssn_input.value}
+  let fetchData = {
+    method:"post",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(formData)
+  };
+  let response = await fetch("/signup/checkssn",fetchData);
+  if(response.ok){
+    let ssn_form = document.getElementById('ssn_form')
+    ssn_form.querySelectorAll("input, button").forEach(element =>{
+      element.setAttribute('disabled', true)
+    })
+    let form_container = document.getElementById('form_container')
+    let text = await response.text()
+    form_container.innerHTML = text
+  }else{
+    document.getElementById('signup_failure').classList.remove('invisible_component');
+  }
+}
 async function signup(){
   let form = document.getElementById("signup_form")
-  formData = {}
+  let formData = {SSN: document.getElementById("signup_ssn_input").value}
   form.querySelectorAll("input, select").forEach(element=>{
     if(element.getAttribute("name")){
       formData[element.getAttribute("name")] = element.value
@@ -112,7 +134,7 @@ async function signup(){
 
 async function login(){
   let form = document.getElementById("login_form")
-  formData = {}
+  let formData = {}
   form.querySelectorAll("input").forEach(element=>{
     if(element.getAttribute("name")){
       formData[element.getAttribute("name")] = element.value
@@ -165,7 +187,7 @@ function edit_userinfo_form(){
 async function updateMovement(type){
   if(type==="airport"){
     let form = document.getElementById("airports_form")
-    formData = {}
+    let formData = {}
     form.querySelectorAll("input, select").forEach(element=>{
       if(element.getAttribute("name")){
         if(element.getAttribute("type")==="datetime-local"){
@@ -191,7 +213,7 @@ async function updateMovement(type){
     }
   }else if(type==="truck"){
     let form = document.getElementById("truck_form")
-    formData = {}
+    let formData = {}
     form.querySelectorAll("input, select").forEach(element=>{
       if(element.getAttribute("name")){
         if(element.getAttribute("type")==="datetime-local"){
@@ -217,7 +239,7 @@ async function updateMovement(type){
     }
   }else if(type==="plane"){
     let form = document.getElementById("plane_form")
-    formData = {}
+    let formData = {}
     form.querySelectorAll("input, select").forEach(element=>{
       if(element.getAttribute("name")){
         if(element.getAttribute("type")==="datetime-local"){
@@ -243,7 +265,7 @@ async function updateMovement(type){
     }
   }else if(type==="warehouse"){
     let form = document.getElementById("warehouse_form")
-    formData = {}
+    let formData = {}
     form.querySelectorAll("input, select").forEach(element=>{
       if(element.getAttribute("name")){
         if(element.getAttribute("type")==="datetime-local"){
@@ -461,7 +483,7 @@ async function getReport(type){
 
 async function update_userinfo(){
   let form = document.getElementById("profile_form")
-  formData = {}
+  let formData = {}
   form.querySelectorAll("input, select").forEach(element=>{
     if(element.getAttribute("name")){
       if(element.getAttribute("name")!="SSN" && element.getAttribute("name")!="Username"){
