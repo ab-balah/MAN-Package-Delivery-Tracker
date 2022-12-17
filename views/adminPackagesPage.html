@@ -23,6 +23,8 @@
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
       crossorigin="anonymous"
     ></script>
+    <title>MAN Shipping</title>
+
   </head>
   <header>
     <nav class="navbar navbar-expand-lg bg-white position-sticky top-0 start-0 shadow p-3 mb-5 bg-white rounded">
@@ -57,9 +59,12 @@
       <div class="mb-2 table-responsive">
         <h2>Packages</h2>
         <p>Search by any attribute</p>
-        <div class="badges">
-          <span class="edit">Being Edited</span>
-          <span class="delete">Ready to be Deleted</span>
+        <div class="badges d-flex justify-content-between">
+          <div>
+            <span class="edit">Being Edited</span>
+            <span class="delete">Ready to be Deleted</span>
+          </div>
+          <button class="btn btn-outline-success ml-auto" onclick="toExcel('Packages')">Export to Excel</button>
         </div>
         <div class="input-group mb-3">
           <input
@@ -72,7 +77,7 @@
             aria-describedby="basic-addon2"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" id="pkg-new-btn" onclick="newPackage()">Add New</button>
+            <button class="btn btn-outline-primary" id="new-btn" onclick="newPackage()">Add New</button>
           </div>
         </div>
         <table id="pkg-table" class="table table-bordered w-100 .table-hover">
@@ -461,5 +466,12 @@
     </section>
     <script src="package.js"></script>
     <script src="AJAXFunctions.js"></script>
+    <script src="table2excel.js"></script>
+    <script>
+      function toExcel(name) {
+        var table2excel = new Table2Excel();
+        table2excel.export(document.querySelectorAll("#pkg-table"), name);
+      }
+    </script>
   </body>
 </html>

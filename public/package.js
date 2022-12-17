@@ -38,18 +38,98 @@ function search() {
   }
 }
 
+function searchCustomerSent() {
+  // Declare variables
+  var input, filter, table, tr, i, txtValue;
+  input = document.getElementById("myInput-0");
+  filter = typeof input.value === "number" ? input.value : input.value.toUpperCase();
+  table = document.getElementById("myTable-0");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    let found = false;
+    let tds = tr[i].getElementsByTagName("td");
+    if (tds.length === 0 || filter === "") {
+      found = true;
+    }
+    for (j = 0; j < tds.length; j++) {
+      let td = tds[j];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue) {
+          if (typeof txtValue === "number") {
+            if (txtValue.toString().indexOf(filter) > -1) {
+              found = true;
+            }
+          } else {
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+            }
+          }
+        }
+      }
+    }
+    if (found) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
+}
+
+function searchCustomerInc() {
+  // Declare variables
+  var input, filter, table, tr, i, txtValue;
+  input = document.getElementById("myInput-1");
+  filter = typeof input.value === "number" ? input.value : input.value.toUpperCase();
+  table = document.getElementById("myTable-1");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    let found = false;
+    let tds = tr[i].getElementsByTagName("td");
+    if (tds.length === 0 || filter === "") {
+      found = true;
+    }
+    for (j = 0; j < tds.length; j++) {
+      let td = tds[j];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue) {
+          if (typeof txtValue === "number") {
+            if (txtValue.toString().indexOf(filter) > -1) {
+              found = true;
+            }
+          } else {
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+            }
+          }
+        }
+      }
+    }
+    if (found) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
+}
+
 const pkgForm = document.querySelector("#pkg-form");
 const modal = document.querySelector("#modal");
 const cfm_modal = document.querySelector(".cfm-modal");
 const table = document.querySelector("#pkg-table");
 const tbody = document.getElementsByTagName("tbody")[0];
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    cancelPackage()
-    cancelConfirm()
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    cancelPackage();
+    cancelConfirm();
   }
-})
+});
 
 function newPackage() {
   document.querySelector(".edit-new-form").onsubmit = () => submitPackage();

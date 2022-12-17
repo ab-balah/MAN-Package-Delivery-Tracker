@@ -240,13 +240,12 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="d-flex justify-content-center">
-  <svg style="width: 100vw;height: 100vh;" id="barcode"></svg>
-</div>
-<script>
-JsBarcode("#barcode", {{package.Package_number}});
-</script>
+    <div class="d-flex justify-content-center">
+      <svg style="width: 100vw; height: 100vh" id="barcode"></svg>
+    </div>
+    <script>
+      JsBarcode("#barcode", {{package.Package_number}});
+    </script>
   </body>
   {% else %}
   <body>
@@ -258,7 +257,7 @@ JsBarcode("#barcode", {{package.Package_number}});
           </div>
         </form>
       </fieldset>
-   
+    </div>
   </body>
   {% endif %}
   <div class="container">
