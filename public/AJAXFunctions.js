@@ -284,7 +284,7 @@ async function getReport(type){
         data_array.forEach(element => {
           table_body.innerHTML+= `
           <tr>
-          <td><a href="/admin/packageInfo/`+element.Package_number+`">`+element.Package_number+`</a></td>
+          <td><a href="/package/`+element.Package_number+`">`+element.Package_number+`</a></td>
             <td>`+element.Payment+`</td>
           </tr>
           `
@@ -318,7 +318,7 @@ async function getReport(type){
         data_array.forEach(element => {
           table_body.innerHTML+= `
           <tr>
-            <td><a href="/admin/packageInfo/`+element.Package_number+`">`+element.Package_number+`</a></td>
+            <td><a href="/package/`+element.Package_number+`">`+element.Package_number+`</a></td>
             <td>`+element.Payment+`</td>
           </tr>
           `
@@ -399,7 +399,7 @@ async function getReport(type){
         data_array.forEach(element => {
           table_body.innerHTML+= `
           <tr>
-            <td>`+element.Package_number+`</td>
+            <td><a href="/package/`+element.Package_number+`">`+element.Package_number+`</a></td>
             <td>`+element.destination+`</td>
             <td>`+element.Value+`</td>
             <td>`+element.Sender_SSN+`</td>
@@ -438,7 +438,7 @@ async function getReport(type){
         data_array.forEach(element => {
           table_body.innerHTML+= `
           <tr>
-            <td>`+element.Package_number+`</td>
+            <td><a href="/package/`+element.Package_number+`">`+element.Package_number+`</a></td>
             <td>`+element.destination+`</td>
             <td>`+element.Value+`</td>
             <td>`+element.Sender_SSN+`</td>
