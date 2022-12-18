@@ -240,7 +240,7 @@
               </div>
               <div class="tracking-date">{{track.Time}}</div>
               <div class="tracking-content">
-                Airport {{package.ICAO}} <span>in <strong> {{package.city}}, {{package.Country}}</strong></span>
+                Airport {{track.ICAO}} <span>in <strong> {{track.city}}, {{track.Country}}</strong></span>
               </div>
             </div>
             {% elif track.type === "Warehouse" %}
@@ -255,7 +255,7 @@
               </div>
               <div class="tracking-date">{{track.Time}}</div>
               <div class="tracking-content">
-                Warehouse <span>in <strong>{{package.Street_address}}, {{package.city}}, {{package.Country}}</strong></span>
+                Warehouse <span>in <strong>{{track.Street_address}}, {{track.city}}, {{track.Country}}</strong></span>
               </div>
             </div>
             {% endif %}
