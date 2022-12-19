@@ -338,6 +338,13 @@ function getSSNs(){
   }
 }
 
+function getSenderAndReceiverEmails(senderSSN, receiverSSN){
+  let statement = db.prepare(`
+    SELECT Email FROM Person WHERE SSN = ? OR SSN = ?;
+  `)
+  let result = statement.all(senderSSN, receiverSSN)
+  return result
+}
 
 function getPackagesSentAndReceivedByCustomer(customer_ssn) {
   let statement = db.prepare(`
@@ -612,6 +619,7 @@ function TrackPackage(package_number) {
 }
 
 module.exports = {
+  getSenderAndReceiverEmails,
   getSSNs,
   getTablesWhereSSNExists,
   addNewCustomer,

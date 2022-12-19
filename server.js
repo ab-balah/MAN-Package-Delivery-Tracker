@@ -7,9 +7,7 @@ const app = express();
 const Functions = require("./models/dbModel");
 const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
-const sgMail = require("@sendgrid/mail");
-const mail = require('nodemailer')
-
+const sendEmailToUser = require("./models/sendEmail").sendEmailToUser
 
 
 
@@ -129,9 +127,14 @@ app.get("/admin/updateMovement", isLoggedIn, isAdmin, (req, res) => {
 app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req, res) => {
   let type = req.params.type;
   let data = req.body;
+  let package = Functions.getPackagesInfoByNumber(data.Package_number)[0]
+  let emails = Functions.getSenderAndReceiverEmails(package.Sender_SSN, package.Receiver_SSN)
   if (type === "airport") {
     try {
       Functions.addPackageToAirport(data);
+      emails.forEach(element =>{
+        sendEmailToUser(element.Email, data)
+      })
       res.sendStatus(201);
     } catch (e) {
       console.log(e);
@@ -140,6 +143,9 @@ app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req, res) => {
   } else if (type === "truck") {
     try {
       Functions.addPackageToTruck(data);
+      emails.forEach(element =>{
+        sendEmailToUser(element.Email, data)
+      })
       res.sendStatus(201);
     } catch (e) {
       console.log(e);
@@ -148,6 +154,9 @@ app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req, res) => {
   } else if (type === "plane") {
     try {
       Functions.addPackageToPlane(data);
+      emails.forEach(element =>{
+        sendEmailToUser(element.Email, data)
+      })
       res.sendStatus(201);
     } catch (e) {
       console.log(e);
@@ -156,6 +165,9 @@ app.post("/admin/updateMovement/:type", isLoggedIn, isAdmin, (req, res) => {
   } else if (type === "warehouse") {
     try {
       Functions.addPackageToLocationID(data);
+      emails.forEach(element =>{
+        sendEmailToUser(element.Email, data)
+      })
       res.sendStatus(201);
     } catch (e) {
       console.log(e);
@@ -357,52 +369,52 @@ app.post("/admin/reports/:type", isLoggedIn, isAdmin, (req, res) => {
   }
 });
 
-app.post("/sendEmail", (req, res) => {
+// app.post("/sendEmail", (req, res) => {
 
-  //working
+//   //working
 
-  var transporter = mail.createTransport({
-    service:'gmail',
-    auth : {
-      user:"MANlogistic2@gmail.com",
-      pass:"acjrhrvwudzgazfc"
-    }
-  })
-  var mailop={
-    from : "MANlogistic2@gmail.com",
-    to:"naifxbl99@gmail.com",
-    subject:"hello",
-    text:"test"
+//   var transporter = mail.createTransport({
+//     service:'gmail',
+//     auth : {
+//       user:"MANlogistic2@gmail.com",
+//       pass:"acjrhrvwudzgazfc"
+//     }
+//   })
+//   var mailop={
+//     from : "MANlogistic2@gmail.com",
+//     to:"naifxbl99@gmail.com",
+//     subject:"hello",
+//     text:"test"
 
-  }
-  transporter.sendMail(mailop,(error,info)=>{
-    if(error){
-      console.log(error)
-    }
-    else {
-      console.log(info.response)
-    }
+//   }
+//   transporter.sendMail(mailop,(error,info)=>{
+//     if(error){
+//       console.log(error)
+//     }
+//     else {
+//       console.log(info.response)
+//     }
 
-  })
+//   })
 
 
-  /*sgMail.setApiKey("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");
-  const msg = {
-    to: { email: "MANlogistic2@gmail.com", name: "naif" }, // Change to your recipient
-    from: { email: "MANlogistic2@gmail.com", name: "naif" }, // Change to your verified sender
-    subject: "Sending with SendGrid is Fun",
-    text: "and easy to do anywhere, even with Node.js",
-    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-  };
-  sgMail
-    .send(msg)
-    .then((x) => {
-      console.log("email sent");
-    })
-    .catch((error) => {
-      console.error(error);
-    });*/
-});
+//   /*sgMail.setApiKey("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");
+//   const msg = {
+//     to: { email: "MANlogistic2@gmail.com", name: "naif" }, // Change to your recipient
+//     from: { email: "MANlogistic2@gmail.com", name: "naif" }, // Change to your verified sender
+//     subject: "Sending with SendGrid is Fun",
+//     text: "and easy to do anywhere, even with Node.js",
+//     html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+//   };
+//   sgMail
+//     .send(msg)
+//     .then((x) => {
+//       console.log("email sent");
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });*/
+// });
 
 app.use((req, res) => {
   res.status(404).send("404 not found");
