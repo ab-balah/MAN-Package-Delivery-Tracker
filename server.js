@@ -8,6 +8,18 @@ const Functions = require("./models/dbModel");
 const paymentCalculator = require("./models/paymentCalculator");
 const countryList = require("./models/countryList").countryList;
 const sgMail = require("@sendgrid/mail");
+const mail = require('nodemailer')
+
+
+
+
+
+
+
+
+
+
+
 const isAdmin = (req, res, next) => {
   if (req.session.role !== "Admin") {
     return res.status(401).send("You cannot view this page.");
@@ -346,7 +358,35 @@ app.post("/admin/reports/:type", isLoggedIn, isAdmin, (req, res) => {
 });
 
 app.post("/sendEmail", (req, res) => {
-  sgMail.setApiKey("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");
+
+  //working
+
+  var transporter = mail.createTransport({
+    service:'gmail',
+    auth : {
+      user:"MANlogistic2@gmail.com",
+      pass:"acjrhrvwudzgazfc"
+    }
+  })
+  var mailop={
+    from : "MANlogistic2@gmail.com",
+    to:"naifxbl99@gmail.com",
+    subject:"hello",
+    text:"test"
+
+  }
+  transporter.sendMail(mailop,(error,info)=>{
+    if(error){
+      console.log(error)
+    }
+    else {
+      console.log(info.response)
+    }
+
+  })
+
+
+  /*sgMail.setApiKey("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");
   const msg = {
     to: { email: "MANlogistic2@gmail.com", name: "naif" }, // Change to your recipient
     from: { email: "MANlogistic2@gmail.com", name: "naif" }, // Change to your verified sender
@@ -361,7 +401,7 @@ app.post("/sendEmail", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-    });
+    });*/
 });
 
 app.use((req, res) => {
