@@ -306,7 +306,7 @@ function getPackagesBasedOnLocationsAndCategoriesAndStatus(data) {
     AND b.Location_ID AND EXISTS (
       SELECT 1
       FROM Airports c, Warehouses d
-      WHERE ((UPPER(c.Country = ?) AND UPPER(c.city) = ?) OR (UPPER(d.Country) = ? AND UPPER(d.city) = ?)) AND b.Time = (
+      WHERE ((UPPER(c.Country) = ? AND UPPER(c.city) = ?) OR (UPPER(d.Country) = ? AND UPPER(d.city) = ?)) AND b.Time = (
         SELECT MAX(e.Time)
         FROM Located_At e
         GROUP BY e.Package_number
