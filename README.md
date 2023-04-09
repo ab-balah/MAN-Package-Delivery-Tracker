@@ -1,2 +1,2 @@
-# ICS-321_Project
+# MAN_Project
 MAN
